@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Bambino</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="../css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="../css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <header>
+    <nav class="nav-extended deep-purple accent-1">
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo center">Bambino</a>
+        <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li> <a href=""><a class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
+                             href="#modal1">
+                               <i class="material-icons flo">person</i>
+                           </a>
+                         David Cruz
+               </a>
+         </li>
+          <li><a href="../index.html">Cerrar Sesion</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+          <li><a href="#">David Cruz</a></li>
+          <li><a href="#">Cerrar Sesion</a></li>
+        </ul>
+      </div>
+     </nav>
+ </header><br>
+ <div class="row container">
+  <form class="white pad">
+      <div class="center grey-text text-darken-3">
+          <p><h5>Nueva Reservación</h5></p>
+      </div>
+      <div class="row">
+        <div class="col s6">
+            <label for="Date" class="black-text">Fecha</label>
+            <input id="Date"type="text" class="datepicker">
+        </div>
+        <div class="col s6">
+            <label for="startTime" class="black-text">Hora</label>
+            <input id="startTime"type="text" class="timepicker">
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s6">
+          <select id ="tipoPago|">
+                <option value="" selected></option>
+                <option value="1">Tarjeta de Credito/Debito</option>
+                <option value="2">Paypal</option>
+                <option value="3">Oxxo</option>
+          </select>
+        <label class="black-text">Tipo de Pago</label>
+        </div>
+        <div class="input-field col s6">
+          <select id ="tipoServicio">
+              <option value="" selected></option>
+              <option value="1">Bambino Care</option>
+              <option value="2">Eventos</option>
+              <option value="3">Tutorias</option>
+          </select>
+          <label class="black-text">Tipo de Servicio</label>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div id="Tutorias">
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="Materia" type="text" class="validate black-text" required>
+            <label for="Materia">Materia</label>
+          </div>
+          <div class="input-field col s6">
+            <input id="Tema" type="text" class="validate black-text" required>
+            <label for="Tema">Tema</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea id="Observaciones" class="materialize-textarea" data-length="120"></textarea>
+            <label for="Observaciones">Observaciones</label>
+          </div>
+        </div>
+      </div>
+      <div id="Evento">
+        <div class="row">
+            <div class="input-field col s4">
+              <input id="TipoEvento" type="text" class="validate black-text" required>
+              <label for="TipoEvento">Tipo de Evento</label>
+            </div>
+            <div class="input-field col s4">
+              <input id="NoBambino" type="text" class="validate black-text" required>
+              <label for="NoBambino">Numero de Bambinos</label>
+            </div>
+            <div class="input-field col s4">
+              <input id="edades" type="text" class="validate black-text" required>
+              <label for="edades">Edades</label>
+            </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s3">
+            <input id="street_num" type="text" class="validate black-text" required>
+            <label for="street_num">Calle - Numero</label>
+          </div>
+          <div class="input-field col s3">
+            <input id="neighborhood" type="text" class="validate black-text" required>
+            <label for="neighborhood">Colonia</label>
+          </div>
+          <div class="input-field col s3">
+            <input id="city" type="text" class="validate black-text" required>
+            <label for="city">Municipio</label>
+          </div>
+          <div class="input-field col s3">
+            <input id="stage" type="text" class="validate black-text" required>
+            <label for="stage">Estado</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <textarea id="Observaciones" class="materialize-textarea" data-length="120"></textarea>
+            <label for="Observaciones">Observaciones</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="right-align" style="">
+            <a href="user.html" class="waves-effect waves-light btn deep-purple accent-2">Cancelar</a>
+            <button class="btn waves-effect waves-light deep-purple accent-2" type="submit" name="action">Enviar</button>
+        </div>
+      </div>
+    </form>
+</div>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="../js/materialize.js"></script>
+  <script src="../js/init.js"></script>
+
+  </body>
+</html>
