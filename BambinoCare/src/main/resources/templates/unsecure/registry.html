@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
+	http-equiv="Content-Type"/>
+<title>Bambino</title>
+
+<!-- CSS  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+<link href="../css/materialize.css" type="text/css" rel="stylesheet"
+	media="screen,projection" />
+<link href="../css/style.css" type="text/css" rel="stylesheet"
+	media="screen,projection" />
+</head>
+<body>
+	<div class="">
+		<nav class="deep-purple accent-1" role="navigation">
+			<div class="nav-wrapper container">
+				<a id="logo-container" href="#" class="brand-logo">Logo</a>
+				<ul class="right hide-on-med-and-down">
+					<li><a href="../index.html">Inicio</a></li>
+					<li><a href="../index.html#Servicios">Servicios</a></li>
+					<li><a href="../index.html#Nosotros">Nosotros</a></li>
+					<li><a href="../index.html#Footer">Contacto</a></li>
+					<li><a href="">Registrarse</a></li>
+					<li><a href="IniciarSesion.html">Iniciar Sesion</a></li>
+				</ul>
+
+				<ul id="nav-mobile" class="side-nav white">
+					<li><a href="#">Inicio</a></li>
+					<li><a href="#Servicios">Servicios</a></li>
+					<li><a href="#Nosotros">Nosotros</a></li>
+					<li><a href="#Footer">Contacto</a></li>
+					<li><a href="">Registrarse</a></li>
+					<li><a href="IniciarSesion.html">Iniciar Sesion</a></li>
+				</ul>
+				<a href="#" data-activates="nav-mobile" class="button-collapse"><i
+					class="material-icons">menu</i></a>
+			</div>
+		</nav>
+	</div>
+	<div id="index-banner" class="parallax-container">
+		<div class="section no-pad-bot">
+			<div class="row container">
+				<form class="white pad" action="#"
+					th:action="@{/registry/createuserclient}" th:object="${client}"
+					method="post">
+					<div class="center grey-text text-darken-3">
+						<p>
+						<h5>Registro</h5>
+						</p>
+					</div>
+					<div class="row">
+						<div class="input-field col s6">
+							<input id="first_name" type="text" class="validate black-text"
+								th:field="*{user.name}"
+								th:value="${user == null ? '' : user.name }" required="required" />
+							<label for="first_name">Nombre</label>
+						</div>
+						<div class="input-field col s6">
+							<input id="last_name" type="text" class="validate black-text"
+								th:field="*{user.lastname}"
+								th:value="${user == null ? '' : user.lastname}"
+								required="required" /> <label for="last_name">Apellidos</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s3">
+							<input id="street_num" type="text" class="validate black-text"
+								th:field="*{street}" th:value="${street}" required="required" />
+							<label for="street_num">Calle - Numero</label>
+						</div>
+						<div class="input-field col s3">
+							<input id="neighborhood" type="text" class="validate black-text"
+								th:field="*{suburb}" th:value="${suburb}" required="required" />
+							<label for="neighborhood">Colonia</label>
+						</div>
+						<div class="input-field col s3">
+							<input id="city" type="text" class="validate black-text"
+								th:field="*{town}" th:value="${town}" required="required" /> <label
+								for="city">Municipio</label>
+						</div>
+						<div class="input-field col s3">
+							<input id="state" type="text" class="validate black-text"
+								th:field="*{state}" th:value="${state}" required="required" />
+							<label for="state">Estado</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s4">
+							<input id="Municipio" type="text" class="validate black-text"
+								th:field="*{employment}" th:value="${employment}"
+								required="required" /> <label for="Municipio">Ocupación</label>
+						</div>
+						<div class="input-field col s4">
+							<input id="Telefono" type="number" class="validate black-text"
+								th:field="*{user.telephone}"
+								th:value="${user == null ? '' : user.telephone}"
+								required="required" /> <label for="Telefono">Telefono</label>
+						</div>
+						<div class="input-field col s4">
+							<input id="email" type="email" class="validate black-text"
+								th:field="*{user.email}"
+								th:value="${user == null ? '' : user.email}" required="required" />
+							<label for="email">Email</label>
+						</div>
+					</div>
+					<div class="input-field col s4">
+						<input id="password" type="password" class="validate black-text"
+							th:field="*{user.password}"
+							th:value="${user == null ? '' : user.password}"
+							required="required" /> <label for="password">Contraseña</label>
+					</div>
+					<!-- div class="input-field col s4">
+                  <input id="password2" type="password" class="validate black-text" required>
+                  <label for="password2">Confirmar Contraseña</label>
+                </div-->
+					<div class="row">
+						<div class="col s10 black-text">
+							<p>*Tu perfil sera validado, una vez que se haya aprobado te
+								llegara un correo electronico y podras iniciar sesion.</p>
+						</div>
+						<div class="col s2 right-align ">
+							<button
+								class="btn waves-effect waves-light right-align deep-purple accent-2"
+								type="submit" name="action">Enviar</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="parallax">
+		<img src="../static/img/home2.jpg" th:src="@{/img/home2.jpg}" alt="Unsplashed background img 1" />
+	</div>
+
+	<!--  Scripts-->
+	<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script src="../js/materialize.js"></script>
+	<script src="../js/init.js"></script>
+
+</body>
+</html>
