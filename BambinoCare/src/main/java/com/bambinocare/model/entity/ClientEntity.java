@@ -40,7 +40,7 @@ public class ClientEntity {
 	private String state;
 	
 	public ClientEntity(Integer idClient, UserEntity user, String employment, String street, String suburb, String town,
-			String state, byte[] ife) {
+			String state) {
 		super();
 		this.idClient = idClient;
 		this.user = user;

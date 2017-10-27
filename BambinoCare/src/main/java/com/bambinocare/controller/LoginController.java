@@ -17,13 +17,11 @@ public class LoginController {
 		
 		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);
-		System.out.println("**********************Entrando en show");
 		return ViewConstants.LOGIN_FORM;
 	}
 	
 	@GetMapping({"/loginsuccess","/"})
 	public String loginCheck(){
-		System.out.println("*********************Entrando en loginchec");
-		return "/secure/user/user";
+		return "redirect:/users/showbookings";
 	}
 }

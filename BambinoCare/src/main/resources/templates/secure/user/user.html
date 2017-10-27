@@ -1,184 +1,192 @@
 <!DOCTYPE html>
- <html>
-   <head>
-     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-     <link type="text/css" rel="stylesheet" href="../css/materialize.min.css"  media="screen,projection"/>
-     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0"/>
-   </head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+	
+<link type="text/css" rel="stylesheet"
+	href="../static/css/materialize.min.css"
+	th:href="@{/css/materialize.min.css}" media="screen,projection" />
+	
+<meta charset="UTF-8" name="viewport"
+	content="width=device-width, initial-scale=1.0" />
+</head>
 
-   <body>
-     <header>
-       <nav class="nav-extended deep-purple accent-1">
-         <div class="nav-wrapper">
-           <a href="#" class="brand-logo center">Bambino</a>
-           <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-           <ul id="nav-mobile" class="right hide-on-med-and-down">
-             <li> <a class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
-                                href="#modal1">
-                                  <i class="material-icons flo">person</i>
-                                  
-                              </a>
-                              David Cruz
-            </li>
-             <li><a href="../index.html">Cerrar Sesion</a></li>
-           </ul>
-           <ul class="side-nav" id="mobile-demo">
-             <li><a href="#">David Cruz</a></li>
-             <li><a href="#">Cerrar Sesion</a></li>
-           </ul>
-         </div>
-         <div class="nav-content">
-           <ul class="tabs tabs-transparent">
-             <li class="tab"><a class="active" href="#Reservaciones">Mis Reservaciones</a></li>
-             <li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
-           </ul>
-         </div>
-        </nav>
-    </header>
+<body>
+	<header>
+		<nav class="nav-extended deep-purple accent-1">
+			<div class="nav-wrapper">
+				<a href="#" class="brand-logo center">BambinoCare</a> <a href="#"
+					data-activates="mobile-demo" class="button-collapse"><i
+					class="material-icons">menu</i></a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<li><a
+						class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
+						href="#modal1"> <i class="material-icons flo">person</i>
 
-    <div>
-      <div id="Reservaciones" class="col s12">
-        <div class="row">
-          <div class="col s2"></div>
-          <div class="col s8 center">
-            <h4>Mis Reservaciones</h4>
-          </div>
-          <div class="col s2">
-            <br/>
-            <a href="newBooking.html" class="btn-floating deep-purple lighten-1 btn-large"><i class="material-icons">add</i></a>
-          </div>
-        </div>
+					</a> David Cruz</li>
+					<li><a href="../index.html">Cerrar Sesion</a></li>
+				</ul>
+				<ul class="side-nav" id="mobile-demo">
+					<li><a href="#">David Cruz</a></li>
+					<li><a href="#">Cerrar Sesion</a></li>
+				</ul>
+			</div>
+			<div class="nav-content">
+				<ul class="tabs tabs-transparent">
+					<li class="tab"><a class="active" href="#Reservaciones">Mis
+							Reservaciones</a></li>
+					<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
+				</ul>
+			</div>
+		</nav>
+	</header>
 
-        <div class="row">
-          <div class="col s1"></div>
-          <div class="col s10">
-            <table class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-                <thead>
-                  <tr>
-                      <th>Detalles</th>
-                      <th>Fecha</th>
-                      <th>Hora</th>
-                      <th>Estatus</th>
-                      <th>Nanny</th>
-                      <th>Editar</th>
-                      <th>Borrar</th>
-                  </tr>
-                </thead>
+	<div>
+		<div id="Reservaciones" class="col s12">
+			<div class="row">
+				<div class="col s2"></div>
+				<div class="col s8 center">
+					<h4>Mis Reservaciones</h4>
+				</div>
+				<div class="col s2">
+					<br /> <a href="#" th:href="@{/users/bookingcreateform}"
+						class="btn-floating deep-purple lighten-1 btn-large"><i
+						class="material-icons">add</i></a>
+				</div>
+			</div>
 
-                <tbody>
-                  <tr>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">event_note</i></a></td>
-                    <td>12-Julio-2017</td>
-                    <td>5:30 PM-9:30 PM</td>
-                    <td>Pendiente</td>
-                    <td></td>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">edit</i></a></td>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">delete</i></a></td>
+			<div class="row">
+				<div class="col s1"></div>
+				<div class="col s10">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 table">
+						<thead>
+							<tr>
+								<th>Id Reservación</th>
+								<th>Usuario</th>
+								<th>Tipo de Reservación</th>
+								<th>Fecha</th>
+								<th>Duración</th>
+								<th>Estatus</th>
+								<th>Nanny</th>
+								<th>Costo</th>
+								<th>Tutorias</th>
+								<th>Eventos</th>
+								<th>Editar</th>
+								<th>Borrar</th>
+							</tr>
+						</thead>
 
+						<tbody>
+							<tr th:each="booking : ${bookings}">
+								<td><a class="btn-floating deep-purple lighten-1"><i
+										class="material-icons">event_note</i></a></td>
+								<td th:text="${idBooking}"></td>
+								<td th:text="${user.idUser}"></td>
+								<td th:text="${reservationType.idReservationType}"></td>
+								<td th:text="${date}"></td>
+								<td th:text="${duration}"></td>
+								<td th:text="${status.idStatus}"></td>
+								<td th:text="${nanny.idNanny}"></td>
+								<td th:text="${cost}"></td>
+								<td th:text="${tutory.idTutory}"></td>
+								<td th:text="${event.idEvent}"></td>
+								<td></td>
+								<td><a class="btn-floating deep-purple lighten-1"><i
+										class="material-icons">edit</i></a></td>
+								<td><a class="btn-floating deep-purple lighten-1"><i
+										class="material-icons">delete</i></a></td>
 
-                  </tr>
-                  <tr>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">event_note</i></a></td>
-                    <td>12-Julio-2017</td>
-                    <td>5:30 PM-9:30 PM</td>
-                    <td>Completo</td>
-                    <td>Cecilia Carolina</td>
-                    <td><a class="btn-floating deep-purple lighten-1 disabled"><i class="material-icons">edit</i></a></td>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">delete</i></a></td>
-                  </tr>
-                  <tr>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">event_note</i></a></td>
-                    <td>12-Julio-2017</td>
-                    <td>5:30 PM-9:30 PM</td>
-                    <td>Completo</td>
-                    <td>Sofia Perez</td>
-                    <td><a class="btn-floating deep-purple lighten-1 disabled"><i class="material-icons">edit</i></a></td>
-                    <td><a class="btn-floating deep-purple lighten-1 "><i class="material-icons">delete</i></a></td>
-                  </tr>
-                  <tr>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">event_note</i></a></td>
-                    <td>12-Julio-2017</td>
-                    <td>5:30 PM-9:30 PM</td>
-                    <td>Completo</td>
-                    <td class="disabled">Cecilia Carolina</td>
-                    <td><a class="btn-floating deep-purple lighten-1 disabled"><i class="material-icons">edit</i></a></td>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">delete</i></a></td>
-                  </tr>
-                </tbody>
-              </table>
-          </div>
-          <div class="col s1"></div>
-        </div>
-      </div>
-<!-- User Profile -->
-      <div id="MiPerfil" class="container">
-        <div class="row">
-          <div class="col s10">
-            <br/>
-            <h5>Datos Personales</h5>
-          </div>
-          <div class="col s2">
-            <br/>
-            <a id="editPerfil" class="btn-floating deep-purple lighten-1 btn-large"><i class="material-icons">edit</i></a>
-          </div>
-        </div>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col s1"></div>
+			</div>
+		</div>
+		<!-- User Profile -->
+		<div id="MiPerfil" class="container">
+			<div class="row">
+				<div class="col s10">
+					<br />
+					<h5>Datos Personales</h5>
+				</div>
+				<div class="col s2">
+					<br /> <a id="editPerfil"
+						class="btn-floating deep-purple lighten-1 btn-large"><i
+						class="material-icons">edit</i></a>
+				</div>
+			</div>
 
-        <div class="row">
-            <form class="col s12 white">
-                <div class="row">
-                  <div class="input-field col s6">
-                    <input id="nombre" type="text" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="first_name">Nombre</label>
-                  </div>
-                  <div class="input-field col s6">
-                    <input id="last_name" type="text" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="last_name">Apellidos</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="input-field col s3">
-                    <input id="street_num" type="text" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="street_num">Calle - Numero</label>
-                  </div>
-                  <div class="input-field col s3">
-                    <input id="neighborhood" type="text" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="neighborhood">Colonia</label>
-                  </div>
-                  <div class="input-field col s3">
-                    <input id="city" type="text" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="city">Municipio</label>
-                  </div>
-                  <div class="input-field col s3">
-                    <input id="stage" type="text" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="stage">Estado</label>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="input-field col s4">
-                    <input id="Municipio" type="text" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="Municipio">Ocupación</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input id="Telefono" type="number" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="Telefono">Telefono</label>
-                  </div>
-                  <div class="input-field col s4">
-                    <input id="email" type="email" class="validate black-text" required="required" disabled="disabled" />
-                    <label for="email">Email</label>
-                  </div>
-                </div>
-                <div class="row rigth-align">
-                    <button id="cancel" class="btn waves-effect waves-light deep-purple lighten-1 blk">Cancelar</button>
-                    <button id="save" class="btn waves-effect waves-light deep-purple lighten-1 blk" type="submit" name="action">Guardar</button>
-                </div>
-            </form>
-        </div>
-      </div>
-<!-- mi perfil fin  -->
-   </div>
-   
-      <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-      <script src="../js/materialize.js"></script>
-      <script src="../js/init.js"></script>
-  </body>
+			<div class="row">
+				<form class="col s12 white">
+					<div class="row">
+						<div class="input-field col s6">
+							<input id="nombre" type="text" class="validate black-text"
+								required="required" disabled="disabled" /> <label
+								for="first_name">Nombre</label>
+						</div>
+						<div class="input-field col s6">
+							<input id="last_name" type="text" class="validate black-text"
+								required="required" disabled="disabled" /> <label
+								for="last_name">Apellidos</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s3">
+							<input id="street_num" type="text" class="validate black-text"
+								required="required" disabled="disabled" /> <label
+								for="street_num">Calle - Numero</label>
+						</div>
+						<div class="input-field col s3">
+							<input id="neighborhood" type="text" class="validate black-text"
+								required="required" disabled="disabled" /> <label
+								for="neighborhood">Colonia</label>
+						</div>
+						<div class="input-field col s3">
+							<input id="city" type="text" class="validate black-text"
+								required="required" disabled="disabled" /> <label for="city">Municipio</label>
+						</div>
+						<div class="input-field col s3">
+							<input id="stage" type="text" class="validate black-text"
+								required="required" disabled="disabled" /> <label for="stage">Estado</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="input-field col s4">
+							<input id="Municipio" type="text" class="validate black-text"
+								required="required" disabled="disabled" /> <label
+								for="Municipio">Ocupación</label>
+						</div>
+						<div class="input-field col s4">
+							<input id="Telefono" type="number" class="validate black-text"
+								required="required" disabled="disabled" /> <label
+								for="Telefono">Telefono</label>
+						</div>
+						<div class="input-field col s4">
+							<input id="email" type="email" class="validate black-text"
+								required="required" disabled="disabled" /> <label for="email">Email</label>
+						</div>
+					</div>
+					<div class="row rigth-align">
+						<button id="cancel"
+							class="btn waves-effect waves-light deep-purple lighten-1 blk">Cancelar</button>
+						<button id="save"
+							class="btn waves-effect waves-light deep-purple lighten-1 blk"
+							type="submit" name="action">Guardar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- mi perfil fin  -->
+	</div>
+	
+	<script src="../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script src="../static/js/materialize.js"
+		th:src="@{/js/materialize.js}"></script>
+	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	
+</body>
 </html>
