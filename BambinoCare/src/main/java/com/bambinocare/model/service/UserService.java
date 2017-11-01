@@ -12,5 +12,7 @@ public interface UserService {
 	void removeUser(Integer idUser);
 	UserEntity createUser(UserEntity user);
 	UserEntity editUser(UserEntity user);
+	boolean userExist(String email);
+	UserEntity updatePassword(String email, String password);
 	
 }

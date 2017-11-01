@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bambinocare.constants.ViewConstants;
 import com.bambinocare.model.entity.BookingEntity;
+import com.bambinocare.model.entity.BookingStatusEntity;
+import com.bambinocare.model.entity.BookingTypeEntity;
 import com.bambinocare.model.service.BookingService;
+import com.bambinocare.model.service.BookingStatusService;
+import com.bambinocare.model.service.BookingTypeService;
 
 @Controller
 @RequestMapping("/users")
@@ -23,6 +28,14 @@ public class UserController {
 	@Autowired
 	@Qualifier("bookingService")
 	private BookingService bookingService;
+
+	@Autowired
+	@Qualifier("bookingTypeService")
+	private BookingTypeService bookingTypeService;
+	
+	@Autowired
+	@Qualifier("bookingStatusService")
+	private BookingStatusService bookingStatusService;
 	
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings() {
@@ -34,17 +47,22 @@ public class UserController {
 		return mav;
 	}
 	
-	@GetMapping("/usercreateform")
+	@GetMapping("/bookingcreateform")
 	public String showUserCreate(Model model){
 		BookingEntity booking = new BookingEntity();
 		
+		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+		List<BookingStatusEntity> bookingStatuses = bookingStatusService.findAllBookingStatus();
+		
 		model.addAttribute("booking",booking);
+		model.addAttribute("bookingStatuses", bookingStatuses);
+		model.addAttribute("bookingTypes", bookingTypes);
 		
 		return ViewConstants.BOOKING_CREATE;
 	}
 	
-	@PostMapping("/createbooking")
-	public String createUser(@ModelAttribute(name="booking") BookingEntity booking, Model model){
+	@GetMapping("/createbooking")
+	public String createUser(@ModelAttribute(name="booking") BookingEntity booking, BindingResult bindingResult, Model model){
 		if(bookingService.createBooking(booking)!=null){
 			model.addAttribute("result",1);
 		}else{

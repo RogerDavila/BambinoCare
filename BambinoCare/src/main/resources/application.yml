@@ -5,7 +5,6 @@ spring:
     password: root
   jpa:
     generate-ddl: true
-    
     show-sql: true
     hibernate:
       ddl-auto: create
@@ -16,3 +15,17 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
   thymeleaf:
     cache: false
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: rog.davila94@gmail.com
+    password: davila15127079115
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+   

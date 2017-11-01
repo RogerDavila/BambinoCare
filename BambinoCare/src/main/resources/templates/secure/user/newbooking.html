@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1"
-	http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
+	http-equiv="Content-Type" />
 <title>Bambino</title>
 
 <!-- CSS  -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-	rel="stylesheet">
+	rel="stylesheet" />
 
 <link type="text/css" rel="stylesheet"
 	href="../static/css/materialize.min.css"
@@ -37,14 +37,14 @@
 			</div>
 		</nav>
 	</header>
-	<br>
+	
+	<br />
+	
 	<div class="row container">
 		<form class="white pad" action="#" th:action="@{/users/createbooking}"
 			th:object="${booking}" method="post">
 			<div class="center grey-text text-darken-3">
-				<p>
 				<h5>Nueva Reservación</h5>
-				</p>
 			</div>
 
 			<div class="row">
@@ -52,45 +52,42 @@
 					<label for="user" class="black-text">Usuario</label> <input
 						id="user" type="text" class="validate black-text"
 						th:field="*{user.idUser}"
-						th:value="${user == null ? '' : user.idUser }" required="required">
+						th:value="${user == null ? '' : user.idUser }" required="required" />
 				</div>
 				<div class="col s6">
-					<label for="bookingType" class="black-text">Tipo de
-						Reservación</label> <input id="bookingType" type="text"
-						class="validate black-text"
-						th:field="*{bookingType.idBookingType}"
-						th:value="${bookingType == null ? '' : bookingType.idBookingType }"
-						required="required">
+					<select id="bookingtype" th:field="*{bookingType.idBookingType}">
+						<option th:each="bookingType : ${bookingTypes}" th:value="${bookingType.idBookingType}"
+						th:text="${bookingType.bookingTypeDesc}" value="${nametype}" th:async="true"></option>
+					</select> <label class="black-text" for="bookingtype">Tipo de Reservación</label>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col s6">
 					<label for="Date" class="black-text">Fecha</label> <input id="Date"
-						type="text" class="datepicker" th:field="*{date}"
-						th:value="${date}" required="required">
+						type="date" th:field="*{date}"
+						th:value="${date}" required="required" />
 				</div>
 				<div class="col s6">
 					<label for="duration" class="black-text">Duracion</label> <input
 						id="duration" type="text" class="validate black-text"
-						th:field="*{duration}" th:value="${duration}" required="required">
+						th:field="*{duration}" th:value="${duration}" required="required" />
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col s6">
-					<label for="bookingstatus" class="black-text">Estatus</label> <input
-						id="bookingstatus" type="text" class="validate black-text"
-						th:field="*{bookingStatus.idBookingStatus}"
-						th:value="${bookingStatus == null ? '' : bookingStatus.idBookingStatus }"
-						required="required">
+					<select id="bookingstatus" th:field="*{bookingStatus.idBookingStatus}">
+						<option th:each="bookingStatus : ${bookingStatuses}" th:value="${bookingStatus.idBookingStatus}"
+						th:text="${bookingStatus.bookingStatusDesc}" ></option>
+					</select> <label for="bookingstatus" class="black-text">Estatus</label>
 				</div>
 				<div class="col s6">
 					<label for="nanny" class="black-text">Nanny</label> <input
 						id="nanny" type="text" class="validate black-text"
 						th:field="*{nanny.idNanny}"
 						th:value="${nanny == null ? '' : nanny.idNanny }"
-						required="required">
+						required="required" />
 				</div>
 			</div>
 
@@ -98,108 +95,27 @@
 				<div class="col s6">
 					<label for="cost" class="black-text">Costo</label> <input id="cost"
 						type="text" class="validate black-text" th:field="*{cost}"
-						th:value="${cost}" required="required">
+						th:value="${cost}" required="required" />
 				</div>
-				<div class="col s6">
+				<!-- div class="col s6">
 					<label for="tutory" class="black-text">Tutoria</label> <input
 						id="tutory" type="text" class="validate black-text"
 						th:field="*{tutory.idTutory}"
-						th:value="${tutory == null ? '' : tutory.idTutory }">
-				</div>
+						th:value="${tutory == null ? '' : tutory.idTutory }" />
+				</div -->
 			</div>
 
-			<div class="row">
+			<!-- div class="row">
 				<div class="col s6">
 					<label for="event" class="black-text">Evento</label> <input
 						id="event" type="text" class="validate black-text"
 						th:field="*{event.idEvent}"
-						th:value="${event == null ? '' : event.idEvent }">
+						th:value="${event == null ? '' : event.idEvent }" />
 				</div>
-			</div>
-
-			<!--  
-			<div class="row">
-				<div class="input-field col s6">
-					<select id="tipoPago|">
-						<option value="" selected></option>
-						<option value="1">Tarjeta de Credito/Debito</option>
-						<option value="2">Paypal</option>
-						<option value="3">Oxxo</option>
-					</select> <label class="black-text">Tipo de Pago</label>
-				</div>
-				<div class="input-field col s6">
-					<select id="tipoServicio">
-						<option value="" selected></option>
-						<option value="1">Bambino Care</option>
-						<option value="2">Eventos</option>
-						<option value="3">Tutorias</option>
-					</select> <label class="black-text">Tipo de Servicio</label>
-				</div>
-			</div>
-			<div class="divider"></div>
-
-			<div id="Tutorias">
-				<div class="row">
-					<div class="input-field col s6">
-						<input id="Materia" type="text" class="validate black-text"
-							required> <label for="Materia">Materia</label>
-					</div>
-					<div class="input-field col s6">
-						<input id="Tema" type="text" class="validate black-text" required>
-						<label for="Tema">Tema</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s12">
-						<textarea id="Observaciones" class="materialize-textarea"
-							data-length="120"></textarea>
-						<label for="Observaciones">Observaciones</label>
-					</div>
-				</div>
-			</div>
-			<div id="Evento">
-				<div class="row">
-					<div class="input-field col s4">
-						<input id="TipoEvento" type="text" class="validate black-text"
-							required> <label for="TipoEvento">Tipo de Evento</label>
-					</div>
-					<div class="input-field col s4">
-						<input id="NoBambino" type="text" class="validate black-text"
-							required> <label for="NoBambino">Numero de
-							Bambinos</label>
-					</div>
-					<div class="input-field col s4">
-						<input id="edades" type="text" class="validate black-text"
-							required> <label for="edades">Edades</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s3">
-						<input id="street_num" type="text" class="validate black-text"
-							required> <label for="street_num">Calle - Numero</label>
-					</div>
-					<div class="input-field col s3">
-						<input id="neighborhood" type="text" class="validate black-text"
-							required> <label for="neighborhood">Colonia</label>
-					</div>
-					<div class="input-field col s3">
-						<input id="city" type="text" class="validate black-text" required>
-						<label for="city">Municipio</label>
-					</div>
-					<div class="input-field col s3">
-						<input id="stage" type="text" class="validate black-text" required>
-						<label for="stage">Estado</label>
-					</div>
-				</div>
-				<div class="row">
-					<div class="input-field col s12">
-						<textarea id="Observaciones" class="materialize-textarea"
-							data-length="120"></textarea>
-						<label for="Observaciones">Observaciones</label>
-					</div>
-				</div>
-			</div>
-			-->
+			</div -->
+			
+			<div th:include="/secure/user/fragments/bookingforms :: (${nametype == null}? tutoryform : eventform)"></div>
+			<!-- ${bookingType == 2}?  -->
 			<div class="row">
 				<div class="right-align" style="">
 					<a href="user.html"

@@ -82,4 +82,18 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 		return userRepository.findByIdUser(idUser);
 	}
 
+	@Override
+	public boolean userExist(String email) {
+		return findUserByEmail(email) != null ? true : false;
+	}
+	
+	@Override
+	public UserEntity updatePassword(String email, String password) {
+		
+		UserEntity user = findUserByEmail(email);
+		user.setPassword(password);
+		UserEntity newUser = createUser(user);
+		
+		return newUser;
+	}
 }

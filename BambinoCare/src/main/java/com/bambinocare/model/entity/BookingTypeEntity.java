@@ -17,14 +17,13 @@ public class BookingTypeEntity {
 	@Column(name="id_booking_type",unique=true,nullable = false)
 	private Integer idBookingType;
 	
-	@Column(name="booking_desc", nullable=false)
-	private String bookingDesc;
+	@Column(name="booking_type_desc", nullable=false)
+	private String bookingTypeDesc;
 
-	
-	public BookingTypeEntity(Integer idBookingType, String bookingDesc) {
+	public BookingTypeEntity(Integer idBookingType, String bookingTypeDesc) {
 		super();
 		this.idBookingType = idBookingType;
-		this.bookingDesc = bookingDesc;
+		this.bookingTypeDesc = bookingTypeDesc;
 	}
 
 	public BookingTypeEntity() {
@@ -38,12 +37,12 @@ public class BookingTypeEntity {
 		this.idBookingType = idBookingType;
 	}
 
-	public String getBookingDesc() {
-		return bookingDesc;
+	public String getBookingTypeDesc() {
+		return bookingTypeDesc;
 	}
 
-	public void setBookingDesc(String bookingDesc) {
-		this.bookingDesc = bookingDesc;
+	public void setBookingTypeDesc(String bookingTypeDesc) {
+		this.bookingTypeDesc = bookingTypeDesc;
 	}
-	
+
 }
