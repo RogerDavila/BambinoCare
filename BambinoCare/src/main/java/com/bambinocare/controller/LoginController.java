@@ -63,9 +63,13 @@ public class LoginController {
 		}else {
 			RandomPassword rp = new RandomPassword();
 			user.setPassword(rp.nextString());
-			userService.updatePassword(user.getEmail(), user.getPassword());
-			emailService.sendSimpleMessage("rog.davila94@gmail.com", "Cambio de contraseña BambinoCare", "Hola!,\n\r "
-					+ "Te enviamos tu nueva contraseña: " + user.getPassword());
+			UserEntity newUser = userService.updatePassword(user.getEmail(), user.getPassword());
+			if(newUser != null) {
+				emailService.sendSimpleMessage(user.getEmail(), "Cambio de contraseña BambinoCare", "Hola " + newUser.getName() + "!,\n\r "
+						+ "Te enviamos tu nueva contraseña: " + user.getPassword());
+			}else {
+				//Arrojar error
+			}
 		}
 		
 		return new ModelAndView(ViewConstants.RECOVERYPASSWORD_FORM);

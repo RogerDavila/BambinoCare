@@ -4,6 +4,8 @@ INSERT INTO rol(id_rol,rol_desc) VALUES (3,'Cliente');
 
 INSERT INTO user(id_user,email,password,id_rol,enabled,name,lastname,telephone)VALUES(1,'roger.davila@stech.com','$2a$10$4/gq4pJ45ymHDb43HNDuU.AC8RgiE.6gQZPzMmXbMIOTwR9Shq5WC',1,true,'Roger Ivan', 'Dávila Reyna', '8120658867');
 INSERT INTO user(id_user,email,password,id_rol,enabled,name,lastname,telephone)VALUES(2,'david.cruz@stech.com','$2a$10$4/gq4pJ45ymHDb43HNDuU.AC8RgiE.6gQZPzMmXbMIOTwR9Shq5WC',1,true,'David Fernando', 'Cruz Florencia', '8120658867');
+INSERT INTO user(id_user,email,password,id_rol,enabled,name,lastname,telephone)VALUES(3,'rog.davila94@gmail.com','$2a$10$4/gq4pJ45ymHDb43HNDuU.AC8RgiE.6gQZPzMmXbMIOTwR9Shq5WC',1,true,'Roger Ivan', 'Dávila Reyna', '8120658867');
+
 
 INSERT INTO booking_type (id_booking_type, booking_type_desc) VALUES (1, 'Bambino Care');
 INSERT INTO booking_type (id_booking_type, booking_type_desc) VALUES (2, 'Bambino Tutory');
