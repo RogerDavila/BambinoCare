@@ -1,55 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="viewport" content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
+	http-equiv="Content-Type"/>
   <title>Bambino</title>
 
-  <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+<!-- CSS  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+<link href="../static/css/materialize.css"
+	th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet"
+	media="screen,projection" />
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
 <body>
-  <div class="">
-    <nav class="pushpin-demo-nav pinned deep-purple accent-1 posi" role="navigation">
-      <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo">Logo</a>
-        <ul class="right hide-on-med-and-down">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#Servicios">Servicios</a></li>
-          <li><a href="#Nosotros">Nosotros</a></li>
-          <li><a href="#Footer">Contacto</a></li>
-          <li><a href="htm/Registrarse.html">Registrarse</a></li>
-          <li><a href="htm/IniciarSesion.html">Iniciar Sesion</a></li>
-        </ul>
 
-        <ul id="nav-mobile" class="side-nav white">
-          <li><a href="#">Inicio</a></li>
-          <li><a href="#Servicios">Servicios</a></li>
-          <li><a href="#Nosotros">Nosotros</a></li>
-          <li><a href="#Footer">Contacto</a></li>
-          <li><a href="#">Registrarse</a></li>
-          <li><a href="htm/IniciarSesion.html">Iniciar Sesion</a></li>
-        </ul>
-        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
-      </div>
-    </nav>
-  </div>
+  <div th:include="/unsecure/fragments/header :: header"></div>
+  
   <div id="index-banner" class="parallax-container">
     <div class="section no-pad-bot">
       <div class="container">
-        <br><br><br><br><br><br><br><br>
+        <br/><br/><br/><br/><br/><br/><br/><br/>
         <h1 class="header center">¿Por qué escoger Bambino Care?</h1>
         <div class="row center">
           <h5 class="header col s12 light">Bambino Care y Bambino Events cuenta con especialistas en educación y
             cuidado infantil altamente capacitadas</h5>
         </div>
-        <br><br>
+        <br/><br/>
 
       </div>
     </div>
-    <div class="parallax"><img src="img/home2.jpg" alt="Unsplashed background img 1"></div>
+    <div class="parallax"><img src="img/home2.jpg" alt="Unsplashed background img 1" /></div>
   </div>
 
 <div id="Servicios" class="hr row transparent"></div>
@@ -104,7 +86,7 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="img/home.jpg" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="img/home.jpg" alt="Unsplashed background img 2" /></div>
   </div>
   <div id="Nosotros" class="hr row transparent"></div>
   <div class="container">
@@ -160,8 +142,8 @@
         <div class="col l6 s12">
           <h5 class="white-text">Contactanos</h5>
           <p class="grey-text text-lighten-4">Para cualquier duda o sugerencias pudes contactarnos:</p>
-          <p><i class="material-icons">email</i><br>bambino_mail@gmail.com</p>
-          <p><i class="material-icons">call</i><br>8182-8384</p>
+          <p><i class="material-icons">email</i><br/>bambino_mail@gmail.com</p>
+          <p><i class="material-icons">call</i><br/>8182-8384</p>
 
         </div>
         <div class="col l3 offset-l2 s12">
@@ -181,10 +163,12 @@
   </footer>
 
 
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="js/materialize.js"></script>
-  <script src="js/init.js"></script>
+	<!--  Scripts-->
+	<script src="../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script src="../static/js/materialize.js"
+		th:src="@{/js/materialize.js}"></script>
+	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
 
   </body>
 </html>

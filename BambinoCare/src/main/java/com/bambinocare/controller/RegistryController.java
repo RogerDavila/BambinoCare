@@ -43,10 +43,6 @@ public class RegistryController {
 	
 	@PostMapping("/createuserclient")
 	public String createUserClient(@ModelAttribute(name="client") ClientEntity client, Model model){
-		RolEntity rolEntity = new RolEntity(3, "Cliente");
-		
-		client.getUser().setRol(rolEntity);
-		client.getUser().setEnabled(true);
 		
 		if(clientService.createClient(client)!=null){
 			model.addAttribute("result",1);

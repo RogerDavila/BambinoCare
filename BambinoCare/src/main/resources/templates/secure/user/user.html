@@ -25,11 +25,19 @@
 						href="#modal1"> <i class="material-icons flo">person</i>
 
 					</a> David Cruz</li>
-					<li><a href="../index.html">Cerrar Sesion</a></li>
+					<li>
+						<form th:action="@{/logout}" method="POST">
+							<button type="submit">Cerrar Sesion</button> 
+						</form>
+					</li>
 				</ul>
 				<ul class="side-nav" id="mobile-demo">
 					<li><a href="#">David Cruz</a></li>
-					<li><a href="#">Cerrar Sesion</a></li>
+					<li>
+						<form th:action="@{/logout}" method="POST">
+							<button type="submit">Cerrar Sesion</button> 
+						</form>
+					</li>
 				</ul>
 			</div>
 			<div class="nav-content">

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
+<meta name="viewport"
+	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
 	http-equiv="Content-Type" />
 <title>Bambino</title>
 
@@ -15,6 +16,7 @@
 
 <link href="../static/css/style.css" th:href="@{/css/style.css}"
 	type="text/css" rel="stylesheet" media="screen,projection" />
+
 </head>
 <body>
 	<header>
@@ -28,18 +30,26 @@
 							class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
 							href="#modal1"> <i class="material-icons flo">person</i>
 						</a> David Cruz </a></li>
-					<li><a href="../index.html">Cerrar Sesion</a></li>
+					<li>
+						<form th:action="@{/logout}" method="POST">
+							<button type="submit">Cerrar Sesion</button>
+						</form>
+					</li>
 				</ul>
 				<ul class="side-nav" id="mobile-demo">
 					<li><a href="#">David Cruz</a></li>
-					<li><a href="#">Cerrar Sesion</a></li>
+					<li>
+						<form th:action="@{/logout}" method="POST">
+							<button type="submit">Cerrar Sesion</button>
+						</form>
+					</li>
 				</ul>
 			</div>
 		</nav>
 	</header>
-	
+
 	<br />
-	
+
 	<div class="row container">
 		<form class="white pad" action="#" th:action="@{/users/createbooking}"
 			th:object="${booking}" method="post">
@@ -56,17 +66,20 @@
 				</div>
 				<div class="col s6">
 					<select id="bookingtype" th:field="*{bookingType.idBookingType}">
-						<option th:each="bookingType : ${bookingTypes}" th:value="${bookingType.idBookingType}"
-						th:text="${bookingType.bookingTypeDesc}" value="${nametype}" th:async="true"></option>
-					</select> <label class="black-text" for="bookingtype">Tipo de Reservación</label>
+						<option th:each="bookingType : ${bookingTypes}"
+							th:value="${bookingType.idBookingType}"
+							th:text="${bookingType.bookingTypeDesc}" value="${nametype}"
+							th:async="true"></option>
+					</select> <label class="black-text" for="bookingtype">Tipo de
+						Reservación</label>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col s6">
 					<label for="Date" class="black-text">Fecha</label> <input id="Date"
-						type="date" th:field="*{date}"
-						th:value="${date}" required="required" />
+						type="date" th:field="*{date}" th:value="${date}"
+						required="required" />
 				</div>
 				<div class="col s6">
 					<label for="duration" class="black-text">Duracion</label> <input
@@ -77,9 +90,11 @@
 
 			<div class="row">
 				<div class="col s6">
-					<select id="bookingstatus" th:field="*{bookingStatus.idBookingStatus}">
-						<option th:each="bookingStatus : ${bookingStatuses}" th:value="${bookingStatus.idBookingStatus}"
-						th:text="${bookingStatus.bookingStatusDesc}" ></option>
+					<select id="bookingstatus"
+						th:field="*{bookingStatus.idBookingStatus}">
+						<option th:each="bookingStatus : ${bookingStatuses}"
+							th:value="${bookingStatus.idBookingStatus}"
+							th:text="${bookingStatus.bookingStatusDesc}"></option>
 					</select> <label for="bookingstatus" class="black-text">Estatus</label>
 				</div>
 				<div class="col s6">
@@ -113,9 +128,12 @@
 						th:value="${event == null ? '' : event.idEvent }" />
 				</div>
 			</div -->
-			
-			<div th:include="/secure/user/fragments/bookingforms :: (${nametype == null}? tutoryform : eventform)"></div>
+
+			<!-- div
+				th:include="/secure/user/fragments/bookingforms :: (${nametype == null}? tutoryform : eventform)"></div-->
 			<!-- ${bookingType == 2}?  -->
+
+			<div th:fragment="tutoryform" id="model"></div>
 			<div class="row">
 				<div class="right-align" style="">
 					<a href="user.html"
@@ -133,6 +151,18 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+
+	<script th:inline="javascript">
+
+			$(function() {
+				$('#bookingtype').on('change', function() {
+					$("#model").load('/users/ajax/bookingtype', $("#bookingtype").serialize());
+				});
+			});
+		
+
+	</script>
 
 </body>
 </html>

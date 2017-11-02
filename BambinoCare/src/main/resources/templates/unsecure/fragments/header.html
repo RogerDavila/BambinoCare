@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="header">
+		<div class="">
+			<nav class="pushpin-demo-nav pinned deep-purple accent-1 posi"
+				role="navigation">
+				<div class="nav-wrapper container">
+					<a id="logo-container" href="#" class="brand-logo">Logo</a>
+					<ul class="right hide-on-med-and-down">
+						<li><a href="#">Inicio</a></li>
+						<li><a href="#Servicios">Servicios</a></li>
+						<li><a href="#Nosotros">Nosotros</a></li>
+						<li><a href="#Footer">Contacto</a></li>
+						<li><a href="#" th:href="@{/registry/registryform}">Registrarse</a></li>
+						<li><a href="#" th:href="@{/login}">Iniciar Sesion</a></li>
+					</ul>
+
+					<ul id="nav-mobile" class="side-nav white">
+						<li><a href="#">Inicio</a></li>
+						<li><a href="#Servicios">Servicios</a></li>
+						<li><a href="#Nosotros">Nosotros</a></li>
+						<li><a href="#Footer">Contacto</a></li>
+						<li><a href="#" th:href="@{/registry/registryform}">Registrarse</a></li>
+						<li><a href="#" th:href="@{/login}">Iniciar Sesion</a></li>
+					</ul>
+					<a href="#" data-activates="nav-mobile" class="button-collapse"><i
+						class="material-icons">menu</i></a>
+				</div>
+			</nav>
+		</div>
+	</div>
+</body>
+</html>

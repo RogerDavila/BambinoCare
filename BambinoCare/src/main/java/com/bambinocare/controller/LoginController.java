@@ -37,7 +37,7 @@ public class LoginController {
 		return ViewConstants.LOGIN_FORM;
 	}
 	
-	@GetMapping({"/loginsuccess","/"})
+	@GetMapping("/loginsuccess")
 	public String loginCheck(){
 		return "redirect:/users/showbookings";
 	}

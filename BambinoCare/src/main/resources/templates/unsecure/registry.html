@@ -1,45 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
-	http-equiv="Content-Type"/>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
+	http-equiv="Content-Type" />
 <title>Bambino</title>
 
 <!-- CSS  -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
-<link href="../static/css/materialize.css" th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet"
+<link href="../static/css/materialize.css"
+	th:href="@{/css/materialize.css}" type="text/css" rel="stylesheet"
 	media="screen,projection" />
-<link href="../static/css/style.css" th:href="@{/css/style.css}" type="text/css" rel="stylesheet"
-	media="screen,projection" />
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
 <body>
-	<div class="">
-		<nav class="deep-purple accent-1" role="navigation">
-			<div class="nav-wrapper container">
-				<a id="logo-container" href="#" class="brand-logo">Logo</a>
-				<ul class="right hide-on-med-and-down">
-					<li><a href="../index.html">Inicio</a></li>
-					<li><a href="../index.html#Servicios">Servicios</a></li>
-					<li><a href="../index.html#Nosotros">Nosotros</a></li>
-					<li><a href="../index.html#Footer">Contacto</a></li>
-					<li><a href="">Registrarse</a></li>
-					<li><a href="IniciarSesion.html">Iniciar Sesion</a></li>
-				</ul>
 
-				<ul id="nav-mobile" class="side-nav white">
-					<li><a href="#">Inicio</a></li>
-					<li><a href="#Servicios">Servicios</a></li>
-					<li><a href="#Nosotros">Nosotros</a></li>
-					<li><a href="#Footer">Contacto</a></li>
-					<li><a href="">Registrarse</a></li>
-					<li><a href="IniciarSesion.html">Iniciar Sesion</a></li>
-				</ul>
-				<a href="#" data-activates="nav-mobile" class="button-collapse"><i
-					class="material-icons">menu</i></a>
-			</div>
-		</nav>
-	</div>
+	<div th:include="/unsecure/fragments/header :: header"></div>
+	
 	<div id="index-banner" class="parallax-container">
 		<div class="section no-pad-bot">
 			<div class="row container">
@@ -130,15 +109,18 @@
 				</form>
 			</div>
 		</div>
-	
+
 		<div class="parallax">
-			<img src="../static/img/home2.jpg" th:src="@{/img/home2.jpg}" alt="Unsplashed background img 1" />
+			<img src="../static/img/home2.jpg" th:src="@{/img/home2.jpg}"
+				alt="Unsplashed background img 1" />
 		</div>
 	</div>
 
 	<!--  Scripts-->
-	<script src="../static/js/jquery-3.2.1.min.js" th:src="@{/js/jquery-3.2.1.min.js}"></script>
-	<script src="../static/js/materialize.js" th:src="@{/js/materialize.js}"></script>
+	<script src="../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script src="../static/js/materialize.js"
+		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
 
 </body>

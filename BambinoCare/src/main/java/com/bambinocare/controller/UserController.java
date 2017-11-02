@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bambinocare.constants.ViewConstants;
@@ -70,6 +71,18 @@ public class UserController {
 		}
 		
 		 return "redirect:/users/showbookings";
+	}
+	
+	@GetMapping("/ajax/bookingtype")
+	public String ajaxBrands(@RequestParam("bookingType.idBookingType") int bookingtype, Model model) {
+		
+		if(bookingtype == 2)
+			return "/secure/user/fragments/bookingforms :: tutoryform";
+		else if (bookingtype == 3)
+			return "/secure/user/fragments/bookingforms :: eventform";
+		else
+			return "/secure/user/fragments/bookingforms :: sinform";
+		
 	}
 	
 }
