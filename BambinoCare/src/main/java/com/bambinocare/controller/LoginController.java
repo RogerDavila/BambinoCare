@@ -59,7 +59,7 @@ public class LoginController {
 		System.out.println("User: "+user.getEmail());
 		
 		if(!userService.userExist(user.getEmail())) {
-			//Arrojar mensaje de error
+			//Arrojar mensaje de error TEST
 		}else {
 			RandomPassword rp = new RandomPassword();
 			user.setPassword(rp.nextString());
