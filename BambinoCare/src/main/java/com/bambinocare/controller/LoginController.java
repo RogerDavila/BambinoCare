@@ -68,7 +68,7 @@ public class LoginController {
 				emailService.sendSimpleMessage(user.getEmail(), "Cambio de contraseña BambinoCare", "Hola " + newUser.getName() + "!,\n\r "
 						+ "Te enviamos tu nueva contraseña: " + user.getPassword());
 			}else {
-				//Arrojar error
+				//Arrojar error Test3
 			}
 		}
 		
