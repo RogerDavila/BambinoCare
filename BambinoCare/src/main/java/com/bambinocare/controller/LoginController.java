@@ -59,7 +59,7 @@ public class LoginController {
 		System.out.println("User: "+user.getEmail());
 		
 		if(!userService.userExist(user.getEmail())) {
-			//Arrojar mensaje de error
+			//Arrojar mensaje de error TEST2
 		}else {
 			RandomPassword rp = new RandomPassword();
 			user.setPassword(rp.nextString());
@@ -68,7 +68,7 @@ public class LoginController {
 				emailService.sendSimpleMessage(user.getEmail(), "Cambio de contraseña BambinoCare", "Hola " + newUser.getName() + "!,\n\r "
 						+ "Te enviamos tu nueva contraseña: " + user.getPassword());
 			}else {
-				//Arrojar error
+				//Arrojar error Test3
 			}
 		}
 		
