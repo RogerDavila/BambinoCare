@@ -22,4 +22,9 @@ public class BookingStatusServiceImpl implements BookingStatusService{
 		return bookingStatusRepository.findAll();
 	}
 
+	@Override
+	public BookingStatusEntity findByBookingStatusDesc(String bookingStatusDesc) {
+		return bookingStatusRepository.findByBookingStatusDesc(bookingStatusDesc);
+	}
+
 }

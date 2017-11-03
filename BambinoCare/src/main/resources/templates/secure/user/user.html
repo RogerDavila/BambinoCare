@@ -3,11 +3,11 @@
 <head>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
-	
+
 <link type="text/css" rel="stylesheet"
 	href="../static/css/materialize.min.css"
 	th:href="@{/css/materialize.min.css}" media="screen,projection" />
-	
+
 <meta charset="UTF-8" name="viewport"
 	content="width=device-width, initial-scale=1.0" />
 </head>
@@ -15,31 +15,7 @@
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div class="nav-wrapper">
-				<a href="#" class="brand-logo center">BambinoCare</a> <a href="#"
-					data-activates="mobile-demo" class="button-collapse"><i
-					class="material-icons">menu</i></a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a
-						class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
-						href="#modal1"> <i class="material-icons flo">person</i>
-
-					</a> David Cruz</li>
-					<li>
-						<form th:action="@{/logout}" method="POST">
-							<button type="submit">Cerrar Sesion</button> 
-						</form>
-					</li>
-				</ul>
-				<ul class="side-nav" id="mobile-demo">
-					<li><a href="#">David Cruz</a></li>
-					<li>
-						<form th:action="@{/logout}" method="POST">
-							<button type="submit">Cerrar Sesion</button> 
-						</form>
-					</li>
-				</ul>
-			</div>
+			<div th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
 			<div class="nav-content">
 				<ul class="tabs tabs-transparent">
 					<li class="tab"><a class="active" href="#Reservaciones">Mis
@@ -90,16 +66,18 @@
 							<tr th:each="booking : ${bookings}">
 								<td><a class="btn-floating deep-purple lighten-1"><i
 										class="material-icons">event_note</i></a></td>
-								<td th:text="${idBooking}"></td>
-								<td th:text="${user.idUser}"></td>
-								<td th:text="${reservationType.idReservationType}"></td>
-								<td th:text="${date}"></td>
-								<td th:text="${duration}"></td>
-								<td th:text="${status.idStatus}"></td>
-								<td th:text="${nanny.idNanny}"></td>
-								<td th:text="${cost}"></td>
-								<td th:text="${tutory.idTutory}"></td>
-								<td th:text="${event.idEvent}"></td>
+								<td th:text="${booking.user == null ? '' : booking.user.name} "></td>
+								<td
+									th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
+								<td th:text="${booking.date}"></td>
+								<td th:text="${booking.duration}"></td>
+								<td
+									th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
+								<td
+									th:text="${booking.nanny == null ? '' : booking.nanny.user.name}"></td>
+								<td th:text="${booking.cost}"></td>
+								<td th:text="${booking.tutory}"></td>
+								<td th:text="${booking.event}"></td>
 								<td></td>
 								<td><a class="btn-floating deep-purple lighten-1"><i
 										class="material-icons">edit</i></a></td>
@@ -189,12 +167,12 @@
 		</div>
 		<!-- mi perfil fin  -->
 	</div>
-	
+
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
-	
+
 </body>
 </html>

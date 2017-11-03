@@ -50,7 +50,7 @@ public class RegistryController {
 			model.addAttribute("result",0);
 		}
 		
-		 return "/secure/user/user";
+		 return "redirect:/registry/registryform";
 	}
 	
 	@GetMapping("/cancel")

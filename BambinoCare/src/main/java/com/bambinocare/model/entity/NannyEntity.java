@@ -62,13 +62,13 @@ public class NannyEntity {
 	@Column(name="observation", nullable=false)
 	private String observation;
 	
-	@Column(name="ife", nullable=false)
+	@Column(name="ife", nullable=true)
 	private byte[] ife;
 	
-	@Column(name="curp", nullable=false)
+	@Column(name="curp", nullable=true)
 	private byte[] curp;
 	
-	@Column(name="college_degree", nullable=false)
+	@Column(name="college_degree", nullable=true)
 	private byte[] collegeDegree;
 
 	

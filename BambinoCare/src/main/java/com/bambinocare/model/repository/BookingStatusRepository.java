@@ -12,5 +12,5 @@ import com.bambinocare.model.entity.BookingStatusEntity;
 public interface BookingStatusRepository extends JpaRepository<BookingStatusEntity, Serializable>{
 
 	List<BookingStatusEntity> findAll();
-	
+	BookingStatusEntity findByBookingStatusDesc(String bookingStatusDesc);
 }

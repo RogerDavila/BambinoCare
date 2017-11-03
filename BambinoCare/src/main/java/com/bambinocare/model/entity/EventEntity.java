@@ -37,7 +37,7 @@ public class EventEntity {
 	@Column(name="age", nullable=false)
 	private Integer age;
 	
-	@Column(name="observations", nullable=false)
+	@Column(name="observations", nullable=true)
 	private String observations;
 
 	public EventEntity(Integer idEvent, String eventType, String street, String suburb, String town, String state,

@@ -1,7 +1,14 @@
 package com.bambinocare.controller;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +46,21 @@ public class LoginController {
 	
 	@GetMapping("/loginsuccess")
 	public String loginCheck(){
-		return "redirect:/users/showbookings";
+		Optional <SimpleGrantedAuthority>  rol = (Optional<SimpleGrantedAuthority> ) SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst();
+		
+		if(rol.isPresent()) {
+			String rolStr = rol.get().getAuthority();
+			
+			if(rolStr.equals("Cliente")) {
+				return "redirect:/users/showbookings";
+			}else if(rolStr.equals("Administrador")){
+				return "redirect:/nannies/shownannies";
+			}else {
+				return "redirect:/login";
+			}
+		}
+		
+		return "redirect:/";
 	}
 	
 	@GetMapping("/recoverypasswordform")

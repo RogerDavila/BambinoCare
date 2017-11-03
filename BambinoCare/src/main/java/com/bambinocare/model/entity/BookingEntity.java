@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -48,7 +49,7 @@ public class BookingEntity {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private BookingStatusEntity bookingStatus;
 
-	@JoinColumn(name = "id_nanny", nullable = false)
+	@JoinColumn(name = "id_nanny", nullable = true)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private NannyEntity nanny;
 	
@@ -56,11 +57,13 @@ public class BookingEntity {
 	private Double cost;
 	
 	@JoinColumn(name = "id_tutory", nullable = true)
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, optional=true)
+	@Transient
 	private TutoryEntity tutory;
 
 	@JoinColumn(name = "id_event", nullable = true)
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.EAGER, optional=true)
+	@Transient
 	private EventEntity event;
 	
 	public BookingEntity(Integer idBooking, UserEntity user, BookingTypeEntity bookingType, Date date, Double duration,

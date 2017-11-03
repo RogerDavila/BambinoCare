@@ -7,5 +7,6 @@ import com.bambinocare.model.entity.BookingStatusEntity;
 public interface BookingStatusService {
 
 	List<BookingStatusEntity> findAllBookingStatus();
+	BookingStatusEntity findByBookingStatusDesc(String bookingStatusDesc);
 	
 }

@@ -7,5 +7,7 @@ public class ViewConstants {
 	public static final String BOOKING_CREATE = "/secure/user/newbooking";
 	public static final String RECOVERYPASSWORD_FORM = "/unsecure/recoverypassword";
 	public static final String HOME = "/unsecure/index";
-	
+	public static final String NANNY_SHOW = "/secure/adminnanny/nannies";
+	public static final String NANNY_EDIT = "/secure/eadminnanny/nannyedit";
+	public static final String NANNY_CREATE = "/secure/adminnanny/nannycreate";
 }

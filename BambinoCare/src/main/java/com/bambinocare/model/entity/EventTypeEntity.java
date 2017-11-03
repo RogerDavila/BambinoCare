@@ -16,13 +16,13 @@ public class EventTypeEntity {
 	@Column(name = "id_event_type", unique = true, nullable = false)
 	private Integer idEventType;
 
-	@Column(name = "event_desc", nullable = false)
-	private String eventDesc;
+	@Column(name = "event_type_desc", nullable = false)
+	private String eventTypeDesc;
 
-	public EventTypeEntity(Integer idEventType, String eventDesc) {
+	public EventTypeEntity(Integer idEventType, String eventTypeDesc) {
 		super();
 		this.idEventType = idEventType;
-		this.eventDesc = eventDesc;
+		this.eventTypeDesc = eventTypeDesc;
 	}
 
 	public EventTypeEntity() {
@@ -36,12 +36,13 @@ public class EventTypeEntity {
 		this.idEventType = idEventType;
 	}
 
-	public String getEventDesc() {
-		return eventDesc;
+	public String getEventTypeDesc() {
+		return eventTypeDesc;
 	}
 
-	public void setEventDesc(String eventDesc) {
-		this.eventDesc = eventDesc;
+	public void setEventTypeDesc(String eventTypeDesc) {
+		this.eventTypeDesc = eventTypeDesc;
 	}
-
+	
+	
 }

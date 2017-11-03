@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.bambinocare.model.entity.BookingEntity;
+import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.BookingRepository;
 import com.bambinocare.model.service.BookingService;
 
@@ -25,6 +26,11 @@ public class BookingServiceImpl implements BookingService{
 	@Override
 	public BookingEntity createBooking(BookingEntity booking){
 		return bookingRepository.save(booking);
+	}
+
+	@Override
+	public List<BookingEntity> findByUser(UserEntity user) {
+		return bookingRepository.findByUser(user);
 	}
 	
 }
