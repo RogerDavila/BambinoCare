@@ -41,6 +41,9 @@ public class BookingEntity {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(iso = ISO.DATE)
 	private Date date;
+	
+	@Column(name = "hour", nullable = false)
+	private String hour;
 
 	@Column(name = "duration", nullable = false)
 	private Double duration;
@@ -65,14 +68,16 @@ public class BookingEntity {
 	@OneToOne(fetch = FetchType.EAGER, optional=true)
 	@Transient
 	private EventEntity event;
-	
-	public BookingEntity(Integer idBooking, UserEntity user, BookingTypeEntity bookingType, Date date, Double duration,
-			BookingStatusEntity bookingStatus, NannyEntity nanny, Double cost, TutoryEntity tutory, EventEntity event) {
+
+	public BookingEntity(Integer idBooking, UserEntity user, BookingTypeEntity bookingType, Date date, String hour,
+			Double duration, BookingStatusEntity bookingStatus, NannyEntity nanny, Double cost, TutoryEntity tutory,
+			EventEntity event) {
 		super();
 		this.idBooking = idBooking;
 		this.user = user;
 		this.bookingType = bookingType;
 		this.date = date;
+		this.hour = hour;
 		this.duration = duration;
 		this.bookingStatus = bookingStatus;
 		this.nanny = nanny;
@@ -82,6 +87,14 @@ public class BookingEntity {
 	}
 
 	public BookingEntity() {
+	}
+
+	public String getHour() {
+		return hour;
+	}
+
+	public void setHour(String hour) {
+		this.hour = hour;
 	}
 
 	public Integer getIdBooking() {

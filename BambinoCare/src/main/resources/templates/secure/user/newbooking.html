@@ -4,7 +4,8 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
 	http-equiv="Content-Type" />
-<title>Bambino</title>
+	
+<title>BambinoCare</title>
 
 <!-- CSS  -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -49,10 +50,15 @@
 						id="duration" type="text" class="validate black-text"
 						th:field="*{duration}" th:value="${duration}" required="required" />
 				</div>
-				<div class="col s6">
+				<div class="col s3">
 					<label for="Date" class="black-text">Fecha</label> <input id="Date"
-						type="date" th:field="*{date}" th:value="${date}"
+						type="date" th:field="*{date}" th:value="${date}" class="datepicker"
 						required="required" />
+				</div>
+				<div class="col s3">
+					<label for="Date" class="black-text">Hora</label> <input id="Hour"
+						type="text" pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}" th:field="*{hour}" th:value="${hour}"
+						class="timepicker" required="required" />
 				</div>
 			</div>
 
@@ -162,18 +168,6 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
-
-
-	<script th:inline="javascript">
-
-			/*$(function() {
-				$('#bookingtype').on('change', function() {
-					$("#model").load('/users/ajax/bookingtype', $("#bookingtype").serialize());
-				});
-			});*/
-		
-
-	</script>
 
 </body>
 </html>

@@ -51,6 +51,7 @@
 								<th>Usuario</th>
 								<th>Tipo de Reservación</th>
 								<th>Fecha</th>
+								<th>Hora</th>
 								<th>Duración</th>
 								<th>Estatus</th>
 								<th>Nanny</th>
@@ -70,6 +71,7 @@
 								<td
 									th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
 								<td th:text="${booking.date}"></td>
+								<td th:text="${booking.hour}"></td>
 								<td th:text="${booking.duration}"></td>
 								<td
 									th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
@@ -82,7 +84,7 @@
 								<td><a class="btn-floating deep-purple lighten-1"><i
 										class="material-icons">edit</i></a></td>
 								<td><a class="btn-floating deep-purple lighten-1"><i
-										class="material-icons">delete</i></a></td>
+										class="material-icons">delete<form><button class="btn-flat"></button></form></i></a></td>
 
 							</tr>
 						</tbody>
@@ -173,6 +175,5 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
-
 </body>
 </html>

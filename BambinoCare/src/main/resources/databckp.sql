@@ -8,6 +8,9 @@ INSERT INTO user(id_user,email,password,id_rol,enabled,name,lastname,telephone)V
 
 
 INSERT INTO booking_type (id_booking_type, booking_type_desc) VALUES (1, 'Bambino Care');
+INSERT INTO booking_type (id_booking_type, booking_type_desc) VALUES (2, 'Bambino Tutory');
+INSERT INTO booking_type (id_booking_type, booking_type_desc) VALUES (3, 'Bambino Events');
+INSERT INTO booking_type (id_booking_type, booking_type_desc) VALUES (4, 'Bambino ASAP');
 
 INSERT INTO booking_status (id_booking_status, booking_status_desc) VALUES (1, 'Abierta');
 INSERT INTO booking_status (id_booking_status, booking_status_desc) VALUES (2, 'Agendada');
