@@ -40,87 +40,96 @@ public class UserController {
 	@Autowired
 	@Qualifier("bookingTypeService")
 	private BookingTypeService bookingTypeService;
-	
+
 	@Autowired
 	@Qualifier("bookingStatusService")
 	private BookingStatusService bookingStatusService;
-	
+
 	@Autowired
 	@Qualifier("eventTypeService")
 	private EventTypeService eventTypeService;
-	
+
 	@Autowired
 	@Qualifier("userService")
 	private UserService userService;
-	
+
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings() {
-		
+
 		ModelAndView mav = new ModelAndView(ViewConstants.USER_SHOW);
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userLogged = userService.findUserByEmail(user.getUsername());
-		
+
 		mav.addObject("usernameLogged", userLogged.getName());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
-		
+
 		return mav;
 	}
-	
+
 	@GetMapping("/bookingcreateform")
-	public String showBookingCreate(Model model){
+	public String showBookingCreate(Model model) {
 		BookingEntity booking = new BookingEntity();
-		
+
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
 		model.addAttribute("usernameLogged", userEntity.getName());
-		
-		model.addAttribute("booking",booking);
+
+		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
 		model.addAttribute("eventTypes", eventTypes);
-		
+
 		return ViewConstants.BOOKING_CREATE;
 	}
-	
+
 	@PostMapping("/createbooking")
-	public String createBooking(@ModelAttribute(name="booking") BookingEntity booking, BindingResult bindingResult, Model model){
-		
+	public String createBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
+			Model model) {
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
 		booking.setUser(userEntity);
-		
+
 		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
 		booking.setBookingStatus(bookingStatus);
-		
+
 		booking.setCost(booking.getDuration() * 200);
-		
-		if(bookingService.createBooking(booking)!=null){
-			model.addAttribute("result",1);
-		}else{
-			model.addAttribute("result",0);
+
+		if (bookingService.createBooking(booking) != null) {
+			model.addAttribute("result", 1);
+		} else {
+			model.addAttribute("result", 0);
 		}
-		
-		 return "redirect:/users/showbookings";
+
+		return "redirect:/users/showbookings";
 	}
-	
+
+	@PostMapping("/cancelbooking")
+	public String cancelBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
+			Model model) {
+
+		System.out.println(booking);
+		return "redirect:/users/showbookings";
+	}
+
 	@GetMapping("/ajax/bookingtype")
-	public String ajaxBrands(@RequestParam("bookingType.idBookingType") int bookingtype, Model model ) {
-		
-		if(bookingtype == 2)
+	public String ajaxBrands(@RequestParam("bookingType.idBookingType") int bookingtype, Model model) {
+
+		if (bookingtype == 2)
 			return "/secure/user/fragments/bookingforms :: tutoryform";
 		else if (bookingtype == 3)
 			return "/secure/user/fragments/bookingforms :: eventform";
 		else
 			return "/secure/user/fragments/bookingforms :: sinform";
-		
+
 	}
-	
+
 	@GetMapping("/cancel")
-	public String cancel(){
+	public String cancel() {
 		return "redirect:/users/showbookings";
 	}
-	
+
 }
