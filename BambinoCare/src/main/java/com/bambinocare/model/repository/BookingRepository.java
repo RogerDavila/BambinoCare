@@ -14,5 +14,8 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Serializ
 
 	List<BookingEntity> findAll();
 	List<BookingEntity> findByUser(UserEntity user);
+	BookingEntity findByIdBooking(Integer idBooking);
+	BookingEntity findByIdBookingAndUser(Integer idBooking, UserEntity user);
+	BookingEntity findByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking, UserEntity user,String bookingStatusDesc);
 	
 }

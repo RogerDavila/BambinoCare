@@ -1,10 +1,11 @@
 package com.bambinocare.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
 import com.bambinocare.model.service.BookingTypeService;
+import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EventTypeService;
 import com.bambinocare.model.service.UserService;
 
@@ -53,8 +55,12 @@ public class UserController {
 	@Qualifier("userService")
 	private UserService userService;
 
+	@Autowired
+	@Qualifier("emailService")
+	private EmailService emailService;
+
 	@GetMapping("/showbookings")
-	public ModelAndView showBookings() {
+	public ModelAndView showBookings(@RequestParam(required=false) String error, @RequestParam(required=false) String result) {
 
 		ModelAndView mav = new ModelAndView(ViewConstants.USER_SHOW);
 
@@ -63,12 +69,15 @@ public class UserController {
 
 		mav.addObject("usernameLogged", userLogged.getName());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
+		mav.addObject("error", error);
+		mav.addObject("result", result);
 
 		return mav;
 	}
 
-	@GetMapping("/bookingcreateform")
-	public String showBookingCreate(Model model) {
+	@GetMapping("/createbookingform")
+	public String showCreateBooking(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, Model model) {
 		BookingEntity booking = new BookingEntity();
 
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
@@ -82,7 +91,39 @@ public class UserController {
 		model.addAttribute("bookingTypes", bookingTypes);
 		model.addAttribute("eventTypes", eventTypes);
 
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
 		return ViewConstants.BOOKING_CREATE;
+	}
+
+	@GetMapping("/editbookingform")
+	public String showEditBooking(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBooking, Model model) {
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		
+		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, userEntity,"Cancelada");
+
+		if (booking == null) {
+			model.addAttribute("error", "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada");
+			return ViewConstants.USER_SHOW;
+		}
+
+		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+
+		model.addAttribute("usernameLogged", userEntity.getName());
+
+		model.addAttribute("booking", booking);
+		model.addAttribute("bookingTypes", bookingTypes);
+		model.addAttribute("eventTypes", eventTypes);
+
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
+		return ViewConstants.BOOKING_EDIT;
 	}
 
 	@PostMapping("/createbooking")
@@ -97,39 +138,113 @@ public class UserController {
 		booking.setBookingStatus(bookingStatus);
 
 		booking.setCost(booking.getDuration() * 200);
+		
+		booking.setDate(getDate(booking.getDate()));
 
 		if (bookingService.createBooking(booking) != null) {
-			model.addAttribute("result", 1);
+			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Nueva reservación",
+					"El usuario " + booking.getUser().getEmail() + " ha agendado una nueva cita el día "
+							+ booking.getDate() + ". Puedes revisar el detalle en"
+							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
 		} else {
 			model.addAttribute("result", 0);
 		}
 
 		return "redirect:/users/showbookings";
 	}
-
-	@PostMapping("/cancelbooking")
-	public String cancelBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
+	
+	@PostMapping("/editbooking")
+	public String editBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
 			Model model) {
 
-		System.out.println(booking);
-		return "redirect:/users/showbookings";
+		String error = "";
+		String result = "";
+		
+		if(booking.getDuration() == null || booking.getDuration() == 0) {
+			error = "Favor de verificar el campo Duración";
+			return "redirect:/users/showbookings?error=" + error;
+		}
+		
+		if(booking.getDate() == null) {
+			error = "Favor de verificar el campo Fecha";
+			return "redirect:/users/showbookings?error=" + error;
+		}
+		
+		if(booking.getHour() == null || booking.getHour().equals("")) {
+			error = "Favor de verificar el campo Hora";
+			return "redirect:/users/showbookings?error=" + error;
+		}
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		
+		BookingEntity oldBooking = bookingService.findBookingByIdBookingAndUser(booking.getIdBooking(), userEntity);
+		
+		oldBooking.setDuration(booking.getDuration());
+		oldBooking.setDate(getDate(booking.getDate()));
+		oldBooking.setHour(booking.getHour());
+		oldBooking.setCost(booking.getDuration() * 200);
+		
+		if (bookingService.createBooking(oldBooking) != null) {
+			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
+					"El usuario " + oldBooking.getUser().getEmail() + " ha modificado la reservación del día "
+							+ oldBooking.getDate() + ". Puedes revisar el detalle en"
+							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+			result="La reservación fue modificada con éxito!";
+		} else {
+			result="Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
+		} 
+
+		return "redirect:/users/showbookings?error="+error+"&result="+result;
 	}
 
-	@GetMapping("/ajax/bookingtype")
-	public String ajaxBrands(@RequestParam("bookingType.idBookingType") int bookingtype, Model model) {
+	@PostMapping("/cancelbooking")
+	public String cancelBooking(@RequestParam(name = "idbooking") Integer idBooking,
+			Model model) {
 
-		if (bookingtype == 2)
-			return "/secure/user/fragments/bookingforms :: tutoryform";
-		else if (bookingtype == 3)
-			return "/secure/user/fragments/bookingforms :: eventform";
-		else
-			return "/secure/user/fragments/bookingforms :: sinform";
+		String error = "";
+		String result = "";
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		
+		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, userEntity, "Cancelada");
+		
+		if (booking != null) {
+			BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Cancelada");
 
+			if (bookingStatus != null) {
+				booking.setBookingStatus(bookingStatus);
+				bookingService.createBooking(booking);
+				result = "La cita ha sido cancelada";
+
+				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
+						"El usuario " + booking.getUser().getEmail() + " ha cancelado su reservación del día "
+								+ booking.getDate() + " Puedes revisar el detalle en"
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+
+			} else {
+				error = "No se permiten cancelaciones de reservación";
+			}
+		} else {
+			error = "No se puede cancelar la reservación solicitada";
+		}
+
+		return "redirect:/users/showbookings?error=" + error + "&result=" + result;
 	}
 
 	@GetMapping("/cancel")
 	public String cancel() {
 		return "redirect:/users/showbookings";
+	}
+	
+	public static Date getDate(Date date) {
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date); // Configuramos la fecha que se recibe
+		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		
+		return calendar.getTime();
 	}
 
 }

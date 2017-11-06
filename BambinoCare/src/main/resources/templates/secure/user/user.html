@@ -15,7 +15,8 @@
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
+			<div
+				th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
 			<div class="nav-content">
 				<ul class="tabs tabs-transparent">
 					<li class="tab"><a class="active" href="#Reservaciones">Mis
@@ -34,7 +35,7 @@
 					<h4>Mis Reservaciones</h4>
 				</div>
 				<div class="col s2">
-					<br /> <a href="#" th:href="@{/users/bookingcreateform}"
+					<br /> <a href="#" th:href="@{/users/createbookingform}"
 						class="btn-floating deep-purple lighten-1 btn-large"><i
 						class="material-icons">add</i></a>
 				</div>
@@ -44,10 +45,10 @@
 				<div class="col s1"></div>
 				<div class="col s10">
 					<table
-						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 table">
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
 						<thead>
 							<tr>
-								<th>Id Reservación</th>
+								<th></th>
 								<th>Usuario</th>
 								<th>Tipo de Reservación</th>
 								<th>Fecha</th>
@@ -58,8 +59,7 @@
 								<th>Costo</th>
 								<th>Tutorias</th>
 								<th>Eventos</th>
-								<th>Editar</th>
-								<th>Borrar</th>
+								<th colspan="2" align="left">Acciones</th>
 							</tr>
 						</thead>
 
@@ -80,17 +80,27 @@
 								<td th:text="${booking.cost}"></td>
 								<td th:text="${booking.tutory}"></td>
 								<td th:text="${booking.event}"></td>
-								<td></td>
-								<td><a class="btn-floating deep-purple lighten-1"><i
-										class="material-icons">edit</i></a></td>
-								<td><form th:action="@{/users/cancelbooking}"  method="post"><button class="btn-floating deep-purple lighten-1"><i
-										class="material-icons">delete</i></button></form></td>
+								<td><a href="#" class="btn-floating deep-purple lighten-1"
+									th:href="@{/users/editbookingform?idBooking=__${booking.idBooking}__}">
+										<i class="material-icons">edit</i>
+								</a></td>
+								<td><form th:action="@{/users/cancelbooking}" method="post">
+										<input type="hidden" name="idbooking" th:value = "${booking.idBooking}"/>
+										<button type="submit" class="btn-floating deep-purple lighten-1">
+											<i class="material-icons">delete</i>
+										</button>
+									</form></td>
 
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="col s1"></div>
+				<div class="col s10 red-text" th:if="${error != null}"
+					th:text="${error}"></div>
+
+				<div class="col s10 blue-text" th:if="${result != null}"
+					th:text="${result}"></div>
 			</div>
 		</div>
 		<!-- User Profile -->
@@ -167,11 +177,12 @@
 				</form>
 			</div>
 		</div>
-		<!-- mi perfil fin  -->
 	</div>
 
-	<script src="../static/js/jquery-3.2.1.min.js"
-		th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script src="
+				../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}">
+				</script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>

@@ -32,5 +32,31 @@ public class BookingServiceImpl implements BookingService{
 	public List<BookingEntity> findByUser(UserEntity user) {
 		return bookingRepository.findByUser(user);
 	}
+
+	@Override
+	public BookingEntity findBookingByIdBooking(Integer idBooking) {
+		return bookingRepository.findByIdBooking(idBooking);
+	}
+
+	@Override
+	public boolean bookingExist(BookingEntity booking) {
+
+		if(findBookingByIdBooking(booking.getIdBooking()) != null) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	@Override
+	public BookingEntity findBookingByIdBookingAndUser(Integer idBooking, UserEntity user) {
+		return bookingRepository.findByIdBookingAndUser(idBooking, user);
+	}
+
+	@Override
+	public BookingEntity findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking,
+			UserEntity user, String bookingStatusDesc) {
+		return bookingRepository.findByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, user, bookingStatusDesc);
+	}
 	
 }
