@@ -50,8 +50,11 @@ public class LoginController {
 			
 			if(rolStr.equals("Cliente")) {
 				return "redirect:/users/showbookings";
-			}else if(rolStr.equals("Administrador")){
+			}else if(rolStr.equals("Nanny")){
 				return "redirect:/nannies/shownannies";
+			}else if(rolStr.equals("Administrador")){
+				System.out.println("admin");
+				return "redirect:/admin/showbookings";
 			}else {
 				return "redirect:/login";
 			}
