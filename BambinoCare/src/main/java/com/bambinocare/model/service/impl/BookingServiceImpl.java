@@ -58,5 +58,11 @@ public class BookingServiceImpl implements BookingService{
 			UserEntity user, String bookingStatusDesc) {
 		return bookingRepository.findByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, user, bookingStatusDesc);
 	}
+
+	@Override
+	public BookingEntity findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(Integer idBooking,
+			String... bookingStatusDesc) {
+		return bookingRepository.findByIdBookingAndBookingStatusBookingStatusDescNotIn(idBooking, bookingStatusDesc);
+	}
 	
 }

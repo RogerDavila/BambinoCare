@@ -4,54 +4,26 @@
 <meta charset="UTF-8" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet" />
-<link type="text/css" rel="stylesheet" href="../css/materialize.min.css"
-	media="screen,projection" />
+
+<link type="text/css" rel="stylesheet"
+	href="../static/css/materialize.min.css"
+	th:href="@{/css/materialize.min.css}" media="screen,projection" />
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
-	<script type="text/javascript"
-		src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script type="text/javascript" src="../js/materialize.min.js"></script>
-	<script type="text/javascript">
-     $(document).ready(function(){
-       $('.modal').modal();
-     });
-     </script>
-
 	<header>
-		<nav class="nav-extended light-blue darken-3">
-			<div class="nav-wrapper">
-				<a href="#" class="brand-logo center">Bambino</a> <a href="#"
-					data-activates="mobile-demo" class="button-collapse"><i
-					class="material-icons">menu</i></a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					<li><a href="#"><a
-							class="btn-floating btn-medium waves-effect waves-light light-blue accent-4 modal-trigger"
-							href="#modal1"> <i class="material-icons flo">person</i>
-						</a> David Cruz </a></li>
-					<li><a href="#">Cerrar Sesion</a></li>
-				</ul>
-				<ul class="side-nav" id="mobile-demo">
-					<li><a href="#">David Cruz</a></li>
-					<li><a href="#">Cerrar Sesion</a></li>
-				</ul>
-			</div>
-			<div class="nav-content">
-				<ul class="tabs tabs-transparent">
-					<li class="tab"><a class="active" href="#Reservaciones">Mis
-							Reservaciones</a></li>
-					<li class="tab"><a href="#Usuarios">Usuarios</a></li>
-					<li class="tab"><a href="#Nannies">Nannies</a></li>
-				</ul>
-			</div>
+		<nav class="nav-extended deep-purple accent-1">
+			<div
+				th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
 		</nav>
 	</header>
 
 	<div id="Reservaciones" class="col s12">
 		<div class="row">
 			<div class="col s12 center">
-				<h4>Mis Reservaciones</h4>
+				<h4>Administrar Reservaciones</h4>
 			</div>
 		</div>
 
@@ -66,16 +38,73 @@
 							<th>Cliente</th>
 							<th>Fecha</th>
 							<th>Hora</th>
+							<th>Tipo</th>
 							<th>Estatus</th>
-							<th>Aprobar/Rechazar</th>
+							<th colspan="2">Aprobar/Rechazar</th>
 							<th>Nanny</th>
+							<th>Duración</th>
+							<th>Costo</th>
 							<th>Editar</th>
 							<th>Borrar</th>
 						</tr>
 					</thead>
 
 					<tbody>
-						<tr>
+
+						<tr th:each="booking : ${bookings}">
+							<td><a class="btn-floating deep-purple lighten-1"><i
+									class="material-icons">event_note</i></a></td>
+							<td th:text="${booking.user == null ? '' : booking.user.name} "></td>
+							<td th:text="${booking.date}"></td>
+							<td th:text="${booking.hour}"></td>
+							<td
+								th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
+							<td
+								th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
+							<td>
+
+								<form th:action="@{/admin/approvebooking}" method="post">
+									<input type="hidden" name="idbooking"
+										th:value="${booking.idBooking}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1"
+										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
+										<i class="material-icons">check</i>
+									</button>
+								</form>
+							</td>
+							<td>
+
+								<form th:action="@{/admin/rejectbooking}" method="post">
+									<input type="hidden" name="idbooking"
+										th:value="${booking.idBooking}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1"
+										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
+										<i class="material-icons">clear</i>
+									</button>
+								</form>
+
+
+							</td>
+							<td
+								th:text="${booking.nanny == null ? '' : booking.nanny.user.name}"></td>
+							<td th:text="${booking.duration}"></td>
+							<td th:text="${booking.cost}"></td>
+							<td><a href="#" class="btn-floating deep-purple lighten-1"
+								th:href="@{/admin/editbookingform?idBooking=__${booking.idBooking}__}">
+									<i class="material-icons">edit</i>
+							</a></td>
+							<td><form th:action="@{/admin/cancelbooking}" method="post">
+									<input type="hidden" name="idbooking"
+										th:value="${booking.idBooking}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1">
+										<i class="material-icons">delete</i>
+									</button>
+								</form></td>
+						</tr>
+						<!-- tr>
 							<td><a class="btn-floating light-blue accent-4"><i
 									class="material-icons">event_note</i></a></td>
 							<td>Roger Davila</td>
@@ -148,11 +177,16 @@
 									class="material-icons">edit</i></a></td>
 							<td><a class="btn-floating light-blue accent-4 disabled"><i
 									class="material-icons">delete</i></a></td>
-						</tr>
+						</tr-->
 					</tbody>
 				</table>
 			</div>
 			<div class="col s1"></div>
+			<div class="col s10 red-text" th:if="${error != null}"
+				th:text="${error}"></div>
+
+			<div class="col s10 blue-text" th:if="${result != null}"
+				th:text="${result}"></div>
 		</div>
 	</div>
 	<!-- Usuarios inicio  -->
@@ -297,37 +331,37 @@
 				<form class="col s12 white">
 					<div class="row">
 						<div class="input-field col s6">
-							<input id="nombre" type="text" class="validate" value="David"/>
+							<input id="nombre" type="text" class="validate" value="David" />
 							<label for="first_name">Nombre</label>
 						</div>
 						<div class="input-field col s6">
-							<input id="apellidos" type="text" class="validate" value="Cruz"/>
+							<input id="apellidos" type="text" class="validate" value="Cruz" />
 							<label for="Apellidos">Apellidos</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s6">
 							<input id="Calle" type="text" class="validate"
-								value="Av. Siempreviva #742"/> <label for="CalleNum">Calle
+								value="Av. Siempreviva #742" /> <label for="CalleNum">Calle
 								- Numero</label>
 						</div>
 						<div class="input-field col s6">
 							<input id="Colonia" type="text" class="validate"
-								value="Arboledas "/> <label for="Colonia">Colonia</label>
+								value="Arboledas " /> <label for="Colonia">Colonia</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s4">
 							<input id="Municipio" type="text" class="validate"
-								value="Santa Catarina"/> <label for="Municipio">Municipio</label>
+								value="Santa Catarina" /> <label for="Municipio">Municipio</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="Telefono" type="tel" class="validate"
-								value="811 233 2354"/> <label for="Telefono">Telefono</label>
+								value="811 233 2354" /> <label for="Telefono">Telefono</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="email" type="email" class="validate"
-								value="david.cruz@gmail.com"/> <label for="email">Email</label>
+								value="david.cruz@gmail.com" /> <label for="email">Email</label>
 						</div>
 					</div>
 				</form>
@@ -342,5 +376,18 @@
 				class="modal-action modal-close waves-effect waves-green btn-flat">Cancelar</a>
 		</div>
 	</div>
+	<script src="
+				../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}">
+				</script>
+	<script src="../static/js/materialize.js"
+		th:src="@{/js/materialize.js}"></script>
+	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	<script type="text/javascript">
+     $(document).ready(function(){
+       $('.modal').modal();
+     });
+     </script>
+
 </body>
 </html>

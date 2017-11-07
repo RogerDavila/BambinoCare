@@ -14,5 +14,6 @@ public interface BookingService {
 	boolean bookingExist(BookingEntity booking);
 	BookingEntity findBookingByIdBookingAndUser(Integer idBooking, UserEntity user);
 	BookingEntity findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking, UserEntity user, String bookingStatusDesc);
+	BookingEntity findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(Integer idBooking,String... bookingStatusDesc);
 	
 }
