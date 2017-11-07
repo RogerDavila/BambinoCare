@@ -160,6 +160,11 @@
 				</div>
 			</div>
 		</form>
+		<div class="col s10 red-text" th:if="${error != null}"
+			th:text="${error}"></div>
+
+		<div class="col s10 blue-text" th:if="${result != null}"
+			th:text="${result}"></div>
 	</div>
 
 	<!--  Scripts-->

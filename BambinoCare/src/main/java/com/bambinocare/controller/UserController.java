@@ -97,6 +97,58 @@ public class UserController {
 		return ViewConstants.BOOKING_CREATE;
 	}
 
+
+	@PostMapping("/createbooking")
+	public String createBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
+			Model model) {
+
+		String error = "";
+		String result = "";
+		
+		if(booking.getDuration() == null || booking.getDuration() == 0) {
+			error = "Favor de verificar el campo Duración";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+		
+		if(booking.getDate() == null) {
+			error = "Favor de verificar el campo Fecha";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(getDate(booking.getDate(),1).before(getDate(Calendar.getInstance().getTime(),0))){
+			error = "No puedes reservar en fechas pasadas";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+		
+		if(booking.getHour() == null || booking.getHour().equals("")) {
+			error = "Favor de verificar el campo Hora";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		booking.setUser(userEntity);
+
+		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
+		booking.setBookingStatus(bookingStatus);
+
+		booking.setCost(booking.getDuration() * 200);
+		
+		booking.setDate(getDate(booking.getDate(),1));
+
+		if (bookingService.createBooking(booking) != null) {
+			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Nueva reservación",
+					"El usuario " + booking.getUser().getEmail() + " ha agendado una nueva cita el día "
+							+ booking.getDate() + ". Puedes revisar el detalle en"
+							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+			
+			result = "La reservación se ha realizado exitosamente.";
+		} else {
+			error = "No se ha podido realizar la reservación, intente nuevamente";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+
+		return "redirect:/users/showbookings?result=" + result;
+	}
+	
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBooking, Model model) {
@@ -107,8 +159,8 @@ public class UserController {
 		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, userEntity,"Cancelada");
 
 		if (booking == null) {
-			model.addAttribute("error", "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada");
-			return ViewConstants.USER_SHOW;
+			error = "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
+			return "redirect:/users/showbookings?error="+ error;
 		}
 
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
@@ -124,33 +176,6 @@ public class UserController {
 		model.addAttribute("error", error);
 
 		return ViewConstants.BOOKING_EDIT;
-	}
-
-	@PostMapping("/createbooking")
-	public String createBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
-			Model model) {
-
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		booking.setUser(userEntity);
-
-		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
-		booking.setBookingStatus(bookingStatus);
-
-		booking.setCost(booking.getDuration() * 200);
-		
-		booking.setDate(getDate(booking.getDate()));
-
-		if (bookingService.createBooking(booking) != null) {
-			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Nueva reservación",
-					"El usuario " + booking.getUser().getEmail() + " ha agendado una nueva cita el día "
-							+ booking.getDate() + ". Puedes revisar el detalle en"
-							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
-		} else {
-			model.addAttribute("result", 0);
-		}
-
-		return "redirect:/users/showbookings";
 	}
 	
 	@PostMapping("/editbooking")
@@ -168,6 +193,9 @@ public class UserController {
 		if(booking.getDate() == null) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
+		}else if(getDate(booking.getDate(),1).before(getDate(Calendar.getInstance().getTime(),0))){
+			error = "No puedes reservar en fechas pasadas";
+			return "redirect:/users/showbookings?error=" + error;
 		}
 		
 		if(booking.getHour() == null || booking.getHour().equals("")) {
@@ -181,7 +209,7 @@ public class UserController {
 		BookingEntity oldBooking = bookingService.findBookingByIdBookingAndUser(booking.getIdBooking(), userEntity);
 		
 		oldBooking.setDuration(booking.getDuration());
-		oldBooking.setDate(getDate(booking.getDate()));
+		oldBooking.setDate(getDate(booking.getDate(),1));
 		oldBooking.setHour(booking.getHour());
 		oldBooking.setCost(booking.getDuration() * 200);
 		
@@ -238,11 +266,11 @@ public class UserController {
 		return "redirect:/users/showbookings";
 	}
 	
-	public static Date getDate(Date date) {
+	public static Date getDate(Date date, int days) {
 		
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date); // Configuramos la fecha que se recibe
-		calendar.add(Calendar.DAY_OF_YEAR, 1);
+		calendar.setTime(date); 
+		calendar.add(Calendar.DAY_OF_YEAR, days);
 		
 		return calendar.getTime();
 	}

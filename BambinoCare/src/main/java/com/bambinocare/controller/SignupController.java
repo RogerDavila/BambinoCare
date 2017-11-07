@@ -21,7 +21,6 @@ import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.RolService;
 import com.bambinocare.model.service.UserService;
-import com.bambinocare.utils.RandomPassword;
 
 @Controller
 @RequestMapping("/signup")
@@ -106,6 +105,11 @@ public class SignupController {
 		}
 		if (client.getUser().getPassword() == null || client.getUser().getPassword().equals("")) {
 			error = "Favor de verificar el campo Contraseña";
+			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+		}
+		
+		if(!client.getUser().getPasswordConfirm().equals(client.getUser().getPassword())) {
+			error = "La contraseña y la confirmación de contraseña no coínciden";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
 

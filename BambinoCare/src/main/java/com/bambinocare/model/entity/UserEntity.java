@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name="user")
@@ -25,6 +26,9 @@ public class UserEntity {
 	@Column(name="password",nullable=false,length=200)
 	private String password;
 	
+	@Transient
+	private String passwordConfirm;
+	
 	@JoinColumn(name="id_rol", nullable=false)
 	@OneToOne(fetch = FetchType.EAGER)
 	private RolEntity rol;
@@ -40,7 +44,7 @@ public class UserEntity {
 	
 	@Column(name="telephone", nullable=false)
 	private String telephone;
-
+	
 	public UserEntity(Integer idUser, String email, String password, RolEntity rol, boolean enabled, String name,
 			String lastname, String telephone) {
 		this.idUser = idUser;
@@ -120,6 +124,14 @@ public class UserEntity {
 
 	public void setTelephone(String telephone) {
 		this.telephone = telephone;
+	}
+	
+	public String getPasswordConfirm() {
+		return passwordConfirm;
+	}
+
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
 	}
 	
 }

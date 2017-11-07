@@ -45,28 +45,28 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="input-field col s3">
+						<div class="input-field col s4">
 							<input id="street_num" type="text" class="validate black-text"
 								th:field="*{street}" th:value="${street}" th:required="required" />
 							<label for="street_num">Calle - Numero</label>
 						</div>
-						<div class="input-field col s3">
+						<div class="input-field col s4">
 							<input id="neighborhood" type="text" class="validate black-text"
 								th:field="*{suburb}" th:value="${suburb}" th:required="required" />
 							<label for="neighborhood">Colonia</label>
 						</div>
-						<div class="input-field col s3">
+						<div class="input-field col s4">
 							<input id="city" type="text" class="validate black-text"
 								th:field="*{town}" th:value="${town}" th:required="required" />
 							<label for="city">Municipio</label>
 						</div>
-						<div class="input-field col s3">
+					</div>
+					<div class="row">
+						<div class="input-field col s4">
 							<input id="state" type="text" class="validate black-text"
 								th:field="*{state}" th:value="${state}" th:required="required" />
 							<label for="state">Estado</label>
 						</div>
-					</div>
-					<div class="row">
 						<div class="input-field col s4">
 							<input id="Municipio" type="text" class="validate black-text"
 								th:field="*{employment}" th:value="${employment}"
@@ -78,19 +78,28 @@
 								th:value="${user == null ? '' : user.telephone}"
 								th:required="required" /> <label for="Telefono">Telefono</label>
 						</div>
+					</div>
+					<div class = "row">
 						<div class="input-field col s4">
 							<input id="email" type="email" class="validate black-text"
 								th:field="*{user.email}"
 								th:value="${user == null ? '' : user.email}"
 								th:required="required" /> <label for="email">Email</label>
 						</div>
+						<div class="input-field col s4">
+							<input id="password" type="password" class="validate black-text"
+								th:field="*{user.password}"
+								th:value="${user == null ? '' : user.password}"
+								th:required="required" /> <label for="password">Contraseña</label>
+						</div>
+						<div class="input-field col s4">
+							<input id="passwordconfirm" type="password" class="validate black-text"
+								th:field="*{user.passwordConfirm}"
+								th:value="${user == null ? '' : user.passwordConfirm}"
+								th:required="required" /> <label for="password">Confirmar Contraseña</label>
+						</div>
 					</div>
-					<div class="input-field col s4">
-						<input id="password" type="password" class="validate black-text"
-							th:field="*{user.password}"
-							th:value="${user == null ? '' : user.password}"
-							th:required="required" /> <label for="password">Contraseña</label>
-					</div>
+
 					<!-- div class="input-field col s4">
                   <input id="password2" type="password" class="validate black-text" required>
                   <label for="password2">Confirmar Contraseña</label>
@@ -98,18 +107,20 @@
 
 					<div class="row">
 
-						<div class="col s10 red-text" th:if="${error != null}" role="alert" th:text="${error}">Error</div>
+						<div class="col s10 red-text" th:if="${error != null}"
+							role="alert" th:text="${error}">Error</div>
 						<div th:if="${result == '1'}">
-							<div class="col s10 blue-text" >Registrado exitosamente!</div>
-							
+							<div class="col s10 blue-text">Registrado exitosamente!</div>
+
 							<div class="col s10 black-text">
-							<p>*Tu perfil sera validado, una vez que se haya aprobado te
-								llegara un correo electronico y podras iniciar sesion.</p>
+								<p>*Tu perfil sera validado, una vez que se haya aprobado te
+									llegara un correo electronico y podras iniciar sesion.</p>
 							</div>
 						</div>
-						<div class="col s10 red-text" th:if="${result == '0'}">No se pudo registrar el usuario</div>
+						<div class="col s10 red-text" th:if="${result == '0'}">No se
+							pudo registrar el usuario</div>
 
-						
+
 						<div class="col offset-s10 s2 right-align ">
 							<button
 								class="btn waves-effect waves-light right-align deep-purple accent-2"
