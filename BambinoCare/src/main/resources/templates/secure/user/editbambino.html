@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
+	http-equiv="Content-Type" />
+
+<title>BambinoCare</title>
+
+<!-- CSS  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+
+<link type="text/css" rel="stylesheet"
+	href="../static/css/materialize.min.css"
+	th:href="@{/css/materialize.min.css}" media="screen,projection" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	type="text/css" rel="stylesheet" media="screen,projection" />
+
+</head>
+<body>
+	<header>
+		<nav class="nav-extended deep-purple accent-1">
+			<div
+				th:include="/secure/user/fragments/header :: header(${usernameLogged})">
+			</div>
+		</nav>
+	</header>
+	<div class="row container">
+		<div class="center grey-text text-darken-3">
+			<h5>Editar Bambino</h5>
+		</div>	
+		<form class="white pad" action="#" th:action="@{/users/editBambino}"
+			method="post" name="bookingform">
+			<div class="row">
+				<div class="input-field col s4">
+					<input id="nombre" type="text" class="validate black-text" required="required" disabled="disabled"/> 
+					<label for="first_name">Nombre</label>
+				</div>
+				<div class="input-field col s4">
+					<input id="last_name" type="text" class="validate black-text"
+					required="required" disabled="disabled"/> 
+					<label for="last_name">Apellidos</label>
+				</div>
+				<div class="input-field col s4">
+					<input id="age" type="text" class="validate black-text"
+					required="required" disabled="disabled"/> 
+					<label for="age">Edad</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s4">
+					<input id="grade" type="text" class="validate black-text" required="required" disabled="disabled"/> 
+					<label for="grade">Grado Escolar</label>
+				</div>
+				<div class="input-field col s4">
+					<input id="medical_situation" type="text" class="validate black-text"
+					required="required" disabled="disabled"/> 
+					<label for="medical_situation">Situacion Medica</label>
+				</div>
+				<div class="input-field col s4">
+					<input id="comments" type="text" class="validate black-text"
+					required="required" disabled="disabled"/> 
+					<label for="comments">Observaciones</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="right-align" style="">
+					<a th:href="@{/users/cancel}" class="waves-effect waves-light btn deep-purple accent-2"> Cancelar </a>
+					<button class="btn waves-effect waves-light deep-purple accent-2" type="submit" name="action">Enviar</button>
+				</div>
+			</div>
+		</form>
+		<div class="col s10 red-text" th:if="${error != null}"
+			th:text="${error}"></div>
+
+		<div class="col s10 blue-text" th:if="${result != null}"
+			th:text="${result}"></div>
+	</div>
+
+	<!--  Scripts-->
+	<script src="../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script src="../static/js/materialize.js"
+		th:src="@{/js/materialize.js}"></script>
+	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+</body>
+</html>

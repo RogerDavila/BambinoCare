@@ -85,3 +85,8 @@ footer.page-footer {
 .pinned {
   position: fixed;
 }
+
+
+.listcare {
+	list-style-type: square;
+	}

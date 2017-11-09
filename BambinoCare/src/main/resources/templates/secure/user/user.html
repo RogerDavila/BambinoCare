@@ -19,9 +19,10 @@
 				th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
 			<div class="nav-content">
 				<ul class="tabs tabs-transparent">
-					<li class="tab"><a class="active" href="#Reservaciones">Mis
-							Reservaciones</a></li>
+					<li class="tab"><a class="active" href="#Reservaciones">Mis Reservaciones</a></li>
 					<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
+					<li class="tab"><a href="#MisBambinos">Mis Bambinos</a></li>
+					<li class="tab"><a href="#Contactos">Contactos</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -32,7 +33,7 @@
 			<div class="row">
 				<div class="col s2"></div>
 				<div class="col s8 center">
-					<h4>Mis Reservaciones</h4>
+					<h5>Mis Reservaciones</h5>
 				</div>
 				<div class="col s2">
 					<br /> <a href="#" th:href="@{/users/createbookingform}"
@@ -118,64 +119,172 @@
 			</div>
 
 			<div class="row">
-				<form class="col s12 white">
+				<form class="col s12 white" th:action="@{/users/edituser}"
+				method="post" name="bookingform">
 					<div class="row">
 						<div class="input-field col s6">
 							<input id="nombre" type="text" class="validate black-text"
-								required="required" disabled="disabled" /> <label
-								for="first_name">Nombre</label>
+								required="required" disabled="disabled" th:value="${client.user.name}" /> 
+								<label for="first_name">Nombre</label>
 						</div>
 						<div class="input-field col s6">
 							<input id="last_name" type="text" class="validate black-text"
-								required="required" disabled="disabled" /> <label
-								for="last_name">Apellidos</label>
+								required="required" disabled="disabled" th:value="${client.user.lastname}" /> 
+								<label for="last_name">Apellidos</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s3">
 							<input id="street_num" type="text" class="validate black-text"
-								required="required" disabled="disabled" /> <label
-								for="street_num">Calle - Numero</label>
+								required="required" disabled="disabled" th:value="${client.street}" /> 
+								<label for="street_num">Calle - Numero</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="neighborhood" type="text" class="validate black-text"
-								required="required" disabled="disabled" /> <label
-								for="neighborhood">Colonia</label>
+								required="required" disabled="disabled" th:value="${client.suburb}" /> 
+								<label for="neighborhood">Colonia</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="city" type="text" class="validate black-text"
-								required="required" disabled="disabled" /> <label for="city">Municipio</label>
+								required="required" disabled="disabled" th:value="${client.town}" /> 
+								<label for="city">Municipio</label>
 						</div>
 						<div class="input-field col s3">
-							<input id="stage" type="text" class="validate black-text"
-								required="required" disabled="disabled" /> <label for="stage">Estado</label>
+							<input id="state" type="text" class="validate black-text"
+								required="required" disabled="disabled" th:value="${client.state}" /> 
+								<label for="state">Estado</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s4">
-							<input id="Municipio" type="text" class="validate black-text"
-								required="required" disabled="disabled" /> <label
-								for="Municipio">Ocupación</label>
+							<input id="job" type="text" class="validate black-text"
+								required="required" disabled="disabled" th:value="${client.employment}" /> 
+								<label for="job">Ocupación</label>
 						</div>
 						<div class="input-field col s4">
-							<input id="Telefono" type="number" class="validate black-text"
-								required="required" disabled="disabled" /> <label
-								for="Telefono">Telefono</label>
+							<input id="telephone" type="number" class="validate black-text"
+								required="required" disabled="disabled" th:value="${client.user.telephone}" /> 
+								<label for="telephone">Telefono</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="email" type="email" class="validate black-text"
-								required="required" disabled="disabled" /> <label for="email">Email</label>
+								required="required" disabled="disabled" th:value="${client.user.email}" /> 
+								<label for="email">Email</label>
 						</div>
 					</div>
-					<div class="row rigth-align">
-						<button id="cancel"
-							class="btn waves-effect waves-light deep-purple lighten-1 blk">Cancelar</button>
-						<button id="save"
-							class="btn waves-effect waves-light deep-purple lighten-1 blk"
-							type="submit" name="action">Guardar</button>
+					<div class="row">
+						<div class="input-field col s3">
+							<input id="nombre" type="password" class="validate black-text"
+								required="required" disabled="disabled" th:value="${client.user.password}" /> 
+								<label for="password">Contraseña</label>
+						</div>
+						<div class="input-field col s3">
+							<input id="last_name" type="password" class="validate black-text"
+								required="required" disabled="disabled" th:value="${client.user.password}" /> 
+								<label for="password">Confirmar Contraseña</label>
+						</div>
+						<div class="input-field col s6 rigth-align">
+							<button id="cancel"
+								class="btn waves-effect waves-light deep-purple lighten-1 blk">Cancelar</button>
+							<button id="save"
+								class="btn waves-effect waves-light deep-purple lighten-1 blk"
+								type="submit" name="action">Guardar</button>
+						</div>
 					</div>
 				</form>
 			</div>
+			
+		</div>
+		<!-- MisBambinos -->
+		<div id="MisBambinos" class="container">
+			<div class="row">
+				<div class="col s10">
+					<br />
+					<h5>Mis Bambinos</h5>
+				</div>
+				<div class="col s2">
+					<br /> 
+					<a id="editPerfil" class="btn-floating deep-purple lighten-1 btn-large">
+						<i class="material-icons">add</i>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+			<table class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+                <thead>
+                  <tr>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Edad</th>
+                      <th>Situacion Medica</th>
+                      <th>Grado Escolar</th>
+                      <th>Observaciones</th>
+                      <th>Editar</th>
+                      <th>Borrar</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>Pedro</td>
+                    <td>Perez</td>
+                    <td>12</td>
+                    <td>Test</td>
+                    <td>1</td>
+                    <td>test</td>
+                    <td><a href="#" class="btn-floating deep-purple lighten-1" th:href="@{/users/editBambinoForm}" ><i class="material-icons">edit</i></a></td>
+                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">delete</i></a></td>
+                  </tr>
+                </tbody>
+              </table>
+			</div>
+			
+		</div>
+		<div id="Contactos" class="container">
+			<div class="row">
+				<div class="col s10">
+					<br />
+					<h5>Contactos de emergencia</h5>
+				</div>
+				<div class="col s2">
+					<br /> 
+					<a id="editPerfil" class="btn-floating deep-purple lighten-1 btn-large">
+						<i class="material-icons">add</i>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+			<table class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+                <thead>
+                  <tr>
+                      <th>Nombre</th>
+                      <th>Apellido</th>
+                      <th>Telefono</th>
+                      <th>Calle</th>
+                      <th>Colonia</th>
+                      <th>Estado</th>
+                      <th>Parentesco</th>
+                      <th>Editar</th>
+                      <th>Borrar</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td>Pedro</td>
+                    <td>Perez</td>
+                    <td>12</td>
+                    <td>Test</td>
+                    <td>1</td>
+                    <td>test</td>
+                    <td>test</td>
+                    <td><a href="#" class="btn-floating deep-purple lighten-1" th:href="@{/users/editBambinoForm}" ><i class="material-icons">edit</i></a></td>
+                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">delete</i></a></td>
+                  </tr>
+                </tbody>
+              </table>
+			</div>			
+			
 		</div>
 	</div>
 

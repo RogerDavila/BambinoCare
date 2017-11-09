@@ -6,6 +6,7 @@ public class ViewConstants {
 	public static final String USER_SHOW = "/secure/user/user";
 	public static final String ADMIN_VIEW = "/secure/admin/admin";
 	public static final String BOOKING_ADMIN_EDIT = "/secure/admin/bookingedit";
+	public static final String EDIT_USER_BAMBINO = "/secure/user/editbambino";
 	public static final String BOOKING_CREATE = "/secure/user/newbooking";
 	public static final String BOOKING_EDIT = "/secure/user/bookingedit";
 	public static final String RECOVERYPASSWORD_FORM = "/unsecure/recoverypassword";
