@@ -90,3 +90,7 @@ footer.page-footer {
 .listcare {
 	list-style-type: square;
 	}
+
+#pcenter {
+	text-align: center;
+}

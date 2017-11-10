@@ -22,12 +22,16 @@
 	<div id="index-banner" class="parallax-container">
 		<div class="section no-pad-bot">
 			<div class="row container">
-				<form class="white pad" action="#" id="form"
+				<form class="white pad z-depth-5" action="#" id="form"
 					th:action="@{/signup/createuserclient}" th:object="${client}"
 					method="post">
-					<div class="center grey-text text-darken-3">
-						<p>
-						<h5>Registro</h5>
+					<div class="row center grey-text text-darken-3">
+						<p id="pcenter"><b>¡BIENVENIDOS!</b></p>
+						<p id="pcenter">
+							Gracias por darnos la oportunidad de atenderte, así como de unirte a nuestra
+							comunidad Bambino Care, a continuación se desplegará una serie de preguntas
+							como rutina de registro, con el objetivo de validar la información para la seguridad
+							e integridad tanto de tus Bambinos, como de nuestras Bambinaias.
 						</p>
 					</div>
 					<div class="row">

@@ -142,10 +142,14 @@ public class UserController {
 		booking.setDate(getDate(booking.getDate(),1));
 
 		if (bookingService.createBooking(booking) != null) {
-			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Nueva reservación",
+			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
 					"El usuario " + booking.getUser().getEmail() + " ha agendado una nueva cita el día "
 							+ booking.getDate() + ". Puedes revisar el detalle en"
 							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+			
+			emailService.sendSimpleMessage(booking.getUser().getEmail(), "BambinoCare - Nueva reservación", "Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n" + 
+					"recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n" + 
+					"a tu hogar.");
 			
 			result = "La reservación se ha realizado exitosamente.";
 		} else {

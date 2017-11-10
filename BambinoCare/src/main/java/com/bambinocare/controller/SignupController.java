@@ -2,6 +2,8 @@ package com.bambinocare.controller;
 
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -126,9 +128,19 @@ public class SignupController {
 			if (!userService.userExist(user.getEmail())) {
 				// Arrojar mensaje de error TEST2
 			} else {
-				emailService.sendSimpleMessage(user.getEmail(), "Alta de cuenta BambinoCare", "Hola "
-						+ user.getName() + "!,\n\r " + "Tu cuenta ha sido dada de alta, por favor ingresa al siguiente enlace"
-								+ " para activarla: \n\r \n\r www.bambinocare.com");
+				try {
+					emailService.sendHTMLMessage(user.getEmail(), "BambinoCare - Registro Exitoso", "<html><body><div style='text-align:center'><b>Agradecemos tu preferencia</b></div><br />" + 
+							"<div style='text-align:center'>" + 
+							"Te agradecemos por habernos seleccionado como tus Bambinaias para el cuidado<br />" + 
+							"e integridad de tus Bambinos. A partir de ahora formas parte de la comunidad<br />" + 
+							"Bambino Care y podrás tener acceso a nuestro sistema y conocer todos nuestros<br />" + 
+							"servicios, así como hacer reservaciones y contar con atención personalizada.<br />"
+							+ "</div>" + 
+							"<br />" + 
+							"<div style='text-align:center'><b>¡GRACIAS!</b></div></body></html>");
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
 			}
 		} else {
 			result = "0";
