@@ -139,7 +139,7 @@ public class AdminController {
 		oldBooking.setCost(booking.getDuration() * 200);
 
 		if (bookingService.createBooking(oldBooking) != null) {
-			emailService.sendSimpleMessage(oldBooking.getUser().getEmail(), "rogerdavila.stech@gmail.com",
+			emailService.sendSimpleMessage(oldBooking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
 					"Reservación Modificada",
 					"Su reservación del día " + oldBooking.getDate()
 							+ "ha sido modificada. Puedes revisar el detalle en"
@@ -169,7 +169,7 @@ public class AdminController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido cancelada";
 
-				emailService.sendSimpleMessage(booking.getUser().getEmail(), "rogerdavila.stech@gmail.com",
+				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
 						"Reservación Cancelada",
 						"Su reservación del día del día " + booking.getDate()
 								+ "  ha sido cancelada. Puedes revisar el detalle en"
@@ -207,7 +207,7 @@ public class AdminController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido agendada";
 
-				emailService.sendSimpleMessage(booking.getUser().getEmail(), "rogerdavila.stech@gmail.com",
+				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
 						"Reservación Agendada",
 						"Su reservación del día del día " + booking.getDate()
 								+ "  ha sido agendada. Puedes revisar el detalle en"
@@ -240,7 +240,7 @@ public class AdminController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido rechazada";
 
-				emailService.sendSimpleMessage(booking.getUser().getEmail(), "rogerdavila.stech@gmail.com",
+				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
 						"Reservación Rechazada",
 						"Su reservación del día " + booking.getDate()
 								+ "  ha sido rechazada. Puedes revisar el detalle en"

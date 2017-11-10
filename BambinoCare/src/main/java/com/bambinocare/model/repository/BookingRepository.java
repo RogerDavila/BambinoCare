@@ -13,10 +13,10 @@ import com.bambinocare.model.entity.UserEntity;
 public interface BookingRepository extends JpaRepository<BookingEntity, Serializable>{
 
 	List<BookingEntity> findAll();
-	List<BookingEntity> findByUser(UserEntity user);
+	List<BookingEntity> findByClientUser(UserEntity user);
 	BookingEntity findByIdBooking(Integer idBooking);
-	BookingEntity findByIdBookingAndUser(Integer idBooking, UserEntity user);
-	BookingEntity findByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking, UserEntity user,String bookingStatusDesc);
+	BookingEntity findByIdBookingAndClientUser(Integer idBooking, UserEntity user);
+	BookingEntity findByIdBookingAndClientUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking, UserEntity user,String bookingStatusDesc);
 	BookingEntity findByIdBookingAndBookingStatusBookingStatusDescNotIn(Integer idBooking,String... bookingStatusDesc);
 	
 }

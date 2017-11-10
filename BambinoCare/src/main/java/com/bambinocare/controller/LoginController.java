@@ -46,7 +46,6 @@ public class LoginController {
 		Optional <SimpleGrantedAuthority> rol = (Optional<SimpleGrantedAuthority> ) SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst();
 		if(rol.isPresent()) {
 			String rolStr = rol.get().getAuthority();
-			System.out.println(rolStr);
 			if(rolStr.equals("Cliente")) {
 				return "redirect:/users/showbookings";
 			}else if(rolStr.equals("Nanny")){
@@ -74,8 +73,6 @@ public class LoginController {
 	
 	@PostMapping("/recoverypassword")
 	public ModelAndView recoverypassword(@ModelAttribute(name="user") UserEntity user, Model model) {
-		
-		System.out.println("User: "+user.getEmail());
 		
 		if(!userService.userExist(user.getEmail())) {
 			//Arrojar mensaje de error TEST2

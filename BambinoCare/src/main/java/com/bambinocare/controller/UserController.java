@@ -22,13 +22,16 @@ import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
 import com.bambinocare.model.entity.ClientEntity;
+import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.UserEntity;
+import com.bambinocare.model.service.BambinoService;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
 import com.bambinocare.model.service.BookingTypeService;
 import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.EmailService;
+import com.bambinocare.model.service.EmergencyContactService;
 import com.bambinocare.model.service.EventTypeService;
 import com.bambinocare.model.service.UserService;
 
@@ -64,6 +67,14 @@ public class UserController {
 	@Autowired
 	@Qualifier("emailService")
 	private EmailService emailService;
+	
+	@Autowired
+	@Qualifier("bambinoService")
+	private BambinoService bambinoService;
+	
+	@Autowired
+	@Qualifier("emergencyContactService")
+	private EmergencyContactService emergencyContactService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required=false) String error, @RequestParam(required=false) String result) {
@@ -131,8 +142,21 @@ public class UserController {
 		}
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		booking.setUser(userEntity);
+		ClientEntity client = clientService.findByUserEmail(user.getUsername());
+		
+		booking.setClient(client);
+		
+		if(bambinoService.findByClient(client).isEmpty()) {
+			error = "Favor dar de alta a sus bambinos";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+		
+		List<EmergencyContactEntity> emergencyContacts = emergencyContactService.findByClient(client);
+		
+		if( emergencyContacts.isEmpty() || emergencyContacts.size() < 2) {
+			error = "Favor dar de alta al menos 2 contactos de emergencia";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
 
 		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
 		booking.setBookingStatus(bookingStatus);
@@ -143,11 +167,11 @@ public class UserController {
 
 		if (bookingService.createBooking(booking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
-					"El usuario " + booking.getUser().getEmail() + " ha agendado una nueva cita el día "
+					"El usuario " + booking.getClient().getUser().getEmail() + " ha agendado una nueva cita el día "
 							+ booking.getDate() + ". Puedes revisar el detalle en"
 							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
 			
-			emailService.sendSimpleMessage(booking.getUser().getEmail(), "BambinoCare - Nueva reservación", "Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n" + 
+			emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación", "Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n" + 
 					"recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n" + 
 					"a tu hogar.");
 			
@@ -226,7 +250,7 @@ public class UserController {
 		
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
-					"El usuario " + oldBooking.getUser().getEmail() + " ha modificado la reservación del día "
+					"El usuario " + oldBooking.getClient().getUser().getEmail() + " ha modificado la reservación del día "
 							+ oldBooking.getDate() + ". Puedes revisar el detalle en"
 							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
 			result="La reservación fue modificada con éxito!";
@@ -330,7 +354,7 @@ public class UserController {
 				result = "La cita ha sido cancelada";
 
 				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
-						"El usuario " + booking.getUser().getEmail() + " ha cancelado su reservación del día "
+						"El usuario " + booking.getClient().getUser().getEmail() + " ha cancelado su reservación del día "
 								+ booking.getDate() + " Puedes revisar el detalle en"
 								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
 

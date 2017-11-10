@@ -10,4 +10,6 @@ import com.bambinocare.model.entity.UserEntity;
 public interface ClientRepository extends JpaRepository<ClientEntity, Serializable>{
 
 	ClientEntity findByUser(UserEntity user);
+	ClientEntity findByUserEmail(String email);
+	
 }

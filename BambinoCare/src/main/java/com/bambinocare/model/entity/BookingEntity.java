@@ -28,9 +28,9 @@ public class BookingEntity {
 	@Column(name = "id_booking")
 	private Integer idBooking;
 
-	@JoinColumn(name="id_user", nullable=false)
+	@JoinColumn(name="id_client", nullable=false)
 	@ManyToOne(fetch = FetchType.EAGER)
-	private UserEntity user;
+	private ClientEntity client;
 
 	@JoinColumn(name = "id_booking_type", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -68,12 +68,12 @@ public class BookingEntity {
 	@Transient
 	private EventEntity event;
 
-	public BookingEntity(Integer idBooking, UserEntity user, BookingTypeEntity bookingType, Date date, String hour,
+	public BookingEntity(Integer idBooking, ClientEntity client, BookingTypeEntity bookingType, Date date, String hour,
 			Double duration, BookingStatusEntity bookingStatus, NannyEntity nanny, Double cost, TutoryEntity tutory,
 			EventEntity event) {
 		super();
 		this.idBooking = idBooking;
-		this.user = user;
+		this.client = client;
 		this.bookingType = bookingType;
 		this.date = date;
 		this.hour = hour;
@@ -102,14 +102,6 @@ public class BookingEntity {
 
 	public void setIdBooking(Integer idBooking) {
 		this.idBooking = idBooking;
-	}
-
-	public UserEntity getUser() {
-		return user;
-	}
-
-	public void setUser(UserEntity user) {
-		this.user = user;
 	}
 
 	public BookingTypeEntity getBookingType() {
@@ -174,6 +166,14 @@ public class BookingEntity {
 
 	public void setEvent(EventEntity event) {
 		this.event = event;
+	}
+
+	public ClientEntity getClient() {
+		return client;
+	}
+
+	public void setClient(ClientEntity client) {
+		this.client = client;
 	}
 	
 }

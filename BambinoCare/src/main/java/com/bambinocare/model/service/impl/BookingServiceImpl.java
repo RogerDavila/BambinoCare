@@ -30,7 +30,7 @@ public class BookingServiceImpl implements BookingService{
 
 	@Override
 	public List<BookingEntity> findByUser(UserEntity user) {
-		return bookingRepository.findByUser(user);
+		return bookingRepository.findByClientUser(user);
 	}
 
 	@Override
@@ -50,13 +50,13 @@ public class BookingServiceImpl implements BookingService{
 
 	@Override
 	public BookingEntity findBookingByIdBookingAndUser(Integer idBooking, UserEntity user) {
-		return bookingRepository.findByIdBookingAndUser(idBooking, user);
+		return bookingRepository.findByIdBookingAndClientUser(idBooking, user);
 	}
 
 	@Override
 	public BookingEntity findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking,
 			UserEntity user, String bookingStatusDesc) {
-		return bookingRepository.findByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, user, bookingStatusDesc);
+		return bookingRepository.findByIdBookingAndClientUserAndBookingStatusBookingStatusDescNotIn(idBooking, user, bookingStatusDesc);
 	}
 
 	@Override

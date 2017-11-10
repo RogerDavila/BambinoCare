@@ -54,7 +54,7 @@
 						<tr th:each="booking : ${bookings}">
 							<td><a class="btn-floating deep-purple lighten-1"><i
 									class="material-icons">event_note</i></a></td>
-							<td th:text="${booking.user == null ? '' : booking.user.name} "></td>
+							<td th:text="${booking.client == null ? '' : booking.client.user.name} "></td>
 							<td th:text="${booking.date}"></td>
 							<td th:text="${booking.hour}"></td>
 							<td

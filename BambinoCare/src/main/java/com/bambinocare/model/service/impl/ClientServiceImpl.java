@@ -24,6 +24,8 @@ public class ClientServiceImpl implements ClientService{
 	@Override
 	public ClientEntity createClient(ClientEntity client) {
 		
+		if(client == null) return null;
+		
 		RolEntity rolEntity = new RolEntity(3, "Cliente");
 		
 		client.getUser().setRol(rolEntity);
@@ -40,7 +42,18 @@ public class ClientServiceImpl implements ClientService{
 	
 	@Override
 	public ClientEntity findByUser(UserEntity user) {
+		
+		if(user == null) return null;
+		
 		return clientRepository.findByUser(user);
+	}
+
+	@Override
+	public ClientEntity findByUserEmail(String email) {
+		
+		if(email == "" || email == null) return null;
+		
+		return clientRepository.findByUserEmail(email);
 	}
 	
 
