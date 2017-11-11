@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport"
-	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
+	content="width=device-width, initial-scale=1"
 	http-equiv="Content-Type" />
-	
+
 <title>BambinoCare</title>
 
 <!-- CSS  -->
@@ -22,11 +22,12 @@
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
+			<div
+				th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
 		</nav>
 	</header>
 	<div class="row container">
-		<form class="white pad" action="#" th:action="@{/users/createbooking}"
+		<form id="bookingform" class="white pad" action="#" th:action="@{/users/createbooking}"
 			th:object="${booking}" method="post" name="bookingform">
 			<div class="center grey-text text-darken-3">
 				<h5>Nueva Reservación</h5>
@@ -52,13 +53,14 @@
 				</div>
 				<div class="col s3">
 					<label for="Date" class="black-text">Fecha</label> <input id="Date"
-						type="date" th:field="*{date}" th:value="${date}" class="datepicker"
-						required="required" />
+						type="date" th:field="*{date}" th:value="${date}"
+						class="datepicker" required="required" />
 				</div>
 				<div class="col s3">
 					<label for="Date" class="black-text">Hora</label> <input id="Hour"
-						type="text" pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}" th:field="*{hour}" th:value="${hour}"
-						class="timepicker" required="required" />
+						type="text" pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}"
+						th:field="*{hour}" th:value="${hour}" class="timepicker"
+						required="required" />
 				</div>
 			</div>
 
@@ -151,20 +153,17 @@
 			<div class="row">
 				<div class="right-align" style="">
 					<a th:href="@{/users/cancel}"
-						class="waves-effect waves-light btn deep-purple accent-2">
+						class="waves-effect waves-light btn deep-purple accent-2" id="cancelbutton">
 						Cancelar </a>
 
 
 					<button class="btn waves-effect waves-light deep-purple accent-2"
-						type="submit" name="action">Enviar</button>
+						type="submit" name="action" id="sendbutton">Enviar</button>
 				</div>
 			</div>
 		</form>
-		<div class="col s10 red-text" th:if="${error != null}"
-			th:text="${error}"></div>
-
-		<div class="col s10 blue-text" th:if="${result != null}"
-			th:text="${result}"></div>
+		<div th:if="${error != null}" id="error"></div>
+		<div th:if="${result != null}" id="result"></div>
 	</div>
 
 	<!--  Scripts-->
@@ -173,6 +172,32 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast('Usuario registrado con éxito!',4000,'rounded waves-effect');
+		    });
+		  $('#failed')
+		    .show(1000, function() {
+		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
+		    });
+
+		  $('#bookingform').bind('submit', function (e) {
+			  	console.log('Entra');
+			    var sendbutton = $('#sendbutton');
+			    var cancelbutton = $('#cancelbutton');
+
+			    sendbutton.prop('disabled', true);
+			    cancelbutton.addClass('disabled');
+			});
+		});
+	</script>
 
 </body>
 </html>

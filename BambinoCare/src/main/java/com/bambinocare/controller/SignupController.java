@@ -1,5 +1,7 @@
 package com.bambinocare.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.mail.MessagingException;
@@ -112,7 +114,7 @@ public class SignupController {
 		
 		if(!client.getUser().getPasswordConfirm().equals(client.getUser().getPassword())) {
 			error = "La contraseña y la confirmación de contraseña no coínciden";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+				return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
 
 		if (userService.userExist(client.getUser().getEmail())) {
