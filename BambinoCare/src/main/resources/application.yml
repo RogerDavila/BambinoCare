@@ -2,12 +2,13 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/bambino?useSSL=false
     username: root
-    password: root
+    password: avi381v.
   jpa:
     generate-ddl: true
     show-sql: true
     hibernate:
-      ddl-auto: create
+      #ddl-auto: create
+      ddl-auto: validate
       naming:
         strategy: org.hibernate.cfg.ImprovedNamingStrategy
     properties:
