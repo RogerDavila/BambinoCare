@@ -44,6 +44,7 @@
 					<input id="last_name" type="text" class="validate black-text"
 						required="required"  th:value="${lastname}" th:field = "*{lastname}" /> 
 						<label for="last_name">Apellidos</label>
+
 				</div>
 				<div class="input-field col s3">
 					<input id="street_num" type="text" class="validate black-text"
@@ -58,7 +59,7 @@
 			</div>
 			<div class="row">
 				<div class="input-field col s4">
-					<textarea id="Observaciones" class="materialize-textarea"
+					<textarea id="medicalSituation" class="materialize-textarea"
 						th:field="*{medicalSituation}" th:value="${medicalSituation}" data-length="120"></textarea>
 					<label for="job">Situacion Medica</label>
 				</div>

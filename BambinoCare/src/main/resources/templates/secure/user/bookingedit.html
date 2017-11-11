@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport"
-	content="width=device-width, initial-scale=1"
+	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
 	http-equiv="Content-Type" />
 
 <title>BambinoCare</title>
@@ -26,18 +26,18 @@
 				th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
 		</nav>
 	</header>
-	
-	<br/><br/><br/>
 	<div class="row container">
-		<form id="bookingform" class="white pad" action="#" th:action="@{/users/createbooking}"
-			th:object="${booking}" method="post" name="bookingform">
+		<form id="bookingform" class="white pad" action="#"
+			th:action="@{/users/editbooking}" th:object="${booking}"
+			method="post" name="bookingform">
 			<div class="center grey-text text-darken-3">
-				<h5>Nueva Reservación</h5>
+				<h5>Editar Reservación</h5>
 			</div>
-
+			<input type="hidden" th:value="${idBooking}" th:field="*{idBooking}" />
 			<div class="row">
 				<div class="col s6">
-					<select id="bookingtype" th:field="*{bookingType.idBookingType}">
+					<select id="bookingtype" th:field="*{bookingType.idBookingType}"
+						disabled="disabled">
 						<option th:each="bookingType : ${bookingTypes}"
 							th:value="${bookingType.idBookingType}"
 							th:text="${bookingType.bookingTypeDesc}" value="${nametype}"
@@ -63,6 +63,15 @@
 						type="text" pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}"
 						th:field="*{hour}" th:value="${hour}" class="timepicker"
 						required="required" />
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col s12">
+					<label for="nanny" class="black-text">Nombre de la Bambinaia</label> <input
+						id="nanny" type="text" class="validate black-text"
+						th:attr="value=*{nanny == null ? 'No hay Bambinaia asignada' : nanny.user.name + ' ' + nanny.user.lastname}"
+						disabled="disabled" />
 				</div>
 			</div>
 
@@ -154,13 +163,13 @@
 
 			<div class="row">
 				<div class="right-align" style="">
-					<a th:href="@{/users/cancel}"
-						class="waves-effect waves-light btn deep-purple accent-2" id="cancelbutton">
+					<a id="cancelbutton" th:href="@{/users/cancel}"
+						class="waves-effect waves-light btn deep-purple accent-2">
 						Cancelar </a>
 
 
-					<button class="btn waves-effect waves-light deep-purple accent-2"
-						type="submit" name="action" id="sendbutton">Enviar</button>
+					<button id="sendbutton" class="btn waves-effect waves-light deep-purple accent-2"
+						type="submit" name="action">Enviar</button>
 				</div>
 			</div>
 		</form>
@@ -183,9 +192,8 @@
 		    });
 		  $('#success')
 		    .show(1000, function() {
-		      Materialize.toast('[[${result}]]',4000,'rounded waves-effect');
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
 		    });
-
 		  $('#bookingform').bind('submit', function (e) {
 			  	console.log('Entra');
 			    var sendbutton = $('#sendbutton');

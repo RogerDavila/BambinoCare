@@ -36,7 +36,7 @@
 							<br />
 						</p>
 						<p>
-						<h4>Inicio de Sesion</h4>
+							<h4>Inicio de Sesion</h4>
 						</p>
 					</div>
 
@@ -80,6 +80,14 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		});
+	</script>
 
 </body>
 </html>

@@ -306,48 +306,48 @@ public class UserController {
 
 		String error = "";
 		String result = "";
-		
-		if(client.getUser().getEmail() == null || client.getUser().getEmail().equals("")) {
+
+		if (client.getUser().getEmail() == null || client.getUser().getEmail().equals("")) {
 			error = "Favor de verificar el email";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getUser().getName() == null || client.getUser().getName().equals("")) {
+
+		if (client.getUser().getName() == null || client.getUser().getName().equals("")) {
 			error = "Favor de verificar el Nombre";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getUser().getLastname() == null || client.getUser().getLastname().equals("")) {
+
+		if (client.getUser().getLastname() == null || client.getUser().getLastname().equals("")) {
 			error = "Favor de verificar el Apellido";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getUser().getTelephone() == null || client.getUser().getTelephone().equals("")) {
+
+		if (client.getUser().getTelephone() == null || client.getUser().getTelephone().equals("")) {
 			error = "Favor de verificar el email";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getStreet() == null || client.getStreet().equals("")) {
+
+		if (client.getStreet() == null || client.getStreet().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getSuburb() == null || client.getSuburb().equals("")) {
+
+		if (client.getSuburb() == null || client.getSuburb().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getTown() == null || client.getTown().equals("")) {
+
+		if (client.getTown() == null || client.getTown().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getState() == null || client.getState().equals("")) {
+
+		if (client.getState() == null || client.getState().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(client.getEmployment() == null || client.getEmployment().equals("")) {
+
+		if (client.getEmployment() == null || client.getEmployment().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
@@ -355,13 +355,11 @@ public class UserController {
 			error = "La contraseña y la confirmación de contraseña no coínciden";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		
+
 		ClientEntity oldClient = clientService.findByUser(userEntity);
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
 		oldClient.setStreet(client.getStreet());
 		oldClient.setSuburb(client.getSuburb());
 		oldClient.setTown(client.getTown());
@@ -378,9 +376,15 @@ public class UserController {
 			result="Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
 		} 
 
-		return "redirect:/users/showbookings?error="+error+"&result="+result;
+		if (clientService.createClient(oldClient) != null) {
+			result = "Se ha modificado el perfil de usuario!";
+		} else {
+			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
+		}
+
+		return "redirect:/users/showbookings?error=" + error + "&result=" + result;
 	}
-	
+
 	@PostMapping("/cancelbooking")
 	public String cancelBooking(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
 
@@ -421,7 +425,6 @@ public class UserController {
 	public String cancel() {
 		return "redirect:/users/showbookings";
 	}
-
 	@PostMapping("/newbambino")
 	public String newbambino(@ModelAttribute(name = "bambino") BambinoEntity bambino, BindingResult bindingResult,
 			Model model) {
@@ -449,9 +452,9 @@ public class UserController {
 		bambino.setClient(client);
 
 		if (bambinoService.createBambino(bambino) != null) {					
-			result = "La reservación se ha realizado exitosamente.";
+			result = "Se ha agregado al Bambino exitosamente.";
 		} else {
-			error = "No se ha podido realizar la reservación, intente nuevamente";
+			error = "No se ha podido agregar al Bambino, intente nuevamente";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
 
