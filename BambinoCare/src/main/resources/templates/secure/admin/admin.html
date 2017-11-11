@@ -52,8 +52,16 @@
 					<tbody>
 
 						<tr th:each="booking : ${bookings}">
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">event_note</i></a></td>
+							<td>
+								<form th:action="@{/admin/showbookingdetail}" method="POST">
+									<input type="hidden" name="idbooking"
+										th:value="${booking.idBooking}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1">
+										<i class="material-icons">event_note</i>
+									</button>
+								</form>
+							</td>
 							<td
 								th:text="${booking.client == null ? '' : booking.client.user.name} "></td>
 							<td th:text="${booking.date}"></td>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
+	http-equiv="Content-Type" />
+
+<title>BambinoCare</title>
+
+<!-- CSS  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+
+<link type="text/css" rel="stylesheet"
+	href="../static/css/materialize.min.css"
+	th:href="@{/css/materialize.min.css}" media="screen,projection" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	type="text/css" rel="stylesheet" media="screen,projection" />
+
+</head>
+<body>
+	<header>
+		<nav class="nav-extended deep-purple accent-1">
+			<div
+				th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
+		</nav>
+	</header>
+	<div class="row container">
+		<form id="bookingform" class="white pad" action="#" th:action="@{/admin/approvebooking}"
+			th:object="${nanny}" method="post" name="bookingform">
+			<div class="center grey-text text-darken-3">
+				<h5>Asignar Bambinaia</h5>
+			</div>
+			<input type="hidden" th:atrr="value=*{idBooking}" value="1" th:name="idbooking"/>
+			<div class="row">
+				<div class="col s12">
+					<select id="nanny" th:field="*{idNanny}">
+						<option th:each="nanny : ${nannies}"
+							th:value="${nanny.idNanny}"
+							th:text="${nanny.user.name + ' ' + nanny.user.lastname}"
+							th:async="true"></option>
+					</select> <label class="black-text" for="bookingtype">Bambinaia</label>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="right-align" style="">
+					<a id="cancelbutton" th:href="@{/admin/cancel}"
+						class="waves-effect waves-light btn deep-purple accent-2">
+						Cancelar </a>
+
+
+					<button id="sendbutton" class="btn waves-effect waves-light deep-purple accent-2"
+						type="submit" name="action">Enviar</button>
+				</div>
+			</div>
+		</form>
+		<div th:if="${error != null}" id="error"></div>
+		<div th:if="${result != null}" id="result"></div>
+	</div>
+
+	<!--  Scripts-->
+	<script src="../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script src="../static/js/materialize.js"
+		th:src="@{/js/materialize.js}"></script>
+	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
+		    });
+
+		  $('#bookingform').bind('submit', function (e) {
+			  	console.log('Entra');
+			    var sendbutton = $('#sendbutton');
+			    var cancelbutton = $('#cancelbutton');
+
+			    sendbutton.prop('disabled', true);
+			    cancelbutton.addClass('disabled');
+			});
+		});
+	</script>
+
+</body>
+</html>
