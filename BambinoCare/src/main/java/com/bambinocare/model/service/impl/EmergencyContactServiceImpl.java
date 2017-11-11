@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
+import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.EmergencyContactRepository;
 import com.bambinocare.model.service.EmergencyContactService;
 
@@ -26,6 +26,20 @@ public class EmergencyContactServiceImpl implements EmergencyContactService{
 		
 		return emergencyContactRepository.findByClient(client);
 	}
+	
+	@Override
+	public List<EmergencyContactEntity> findByUser(UserEntity user) {
+		return emergencyContactRepository.findByClientUser(user);
+	}
 
+	@Override
+	public EmergencyContactEntity createContact(EmergencyContactEntity contact) {
+		return emergencyContactRepository.save(contact);
+	}
+	
+	@Override
+	public EmergencyContactEntity findEmergencyContactByIdContactAndUser(Integer idContact, UserEntity user) {
+		return emergencyContactRepository.findByidContactoAndClientUser(idContact, user);
+	}
 	
 }

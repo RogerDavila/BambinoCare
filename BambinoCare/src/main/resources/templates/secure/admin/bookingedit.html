@@ -27,16 +27,16 @@
 		</nav>
 	</header>
 	<div class="row container">
-		<form class="white pad" action="#" th:action="@{/admin/editbooking}"
+		<form id="bookingform" class="white pad" action="#" th:action="@{/admin/editbooking}"
 			th:object="${booking}" method="post" name="bookingform">
 			<div class="center grey-text text-darken-3">
 				<h5>Editar Reservación</h5>
 			</div>
-			<input type="hidden" th:value="${idBooking}" th:field = "*{idBooking}"/>
+			<input type="hidden" th:value="${idBooking}" th:field="*{idBooking}" />
 			<div class="row">
 				<div class="col s6">
-					<select id="bookingtype"
-						th:field="*{bookingType.idBookingType}" disabled="disabled">
+					<select id="bookingtype" th:field="*{bookingType.idBookingType}"
+						disabled="disabled">
 						<option th:each="bookingType : ${bookingTypes}"
 							th:value="${bookingType.idBookingType}"
 							th:text="${bookingType.bookingTypeDesc}" value="${nametype}"
@@ -153,21 +153,18 @@
 
 			<div class="row">
 				<div class="right-align" style="">
-					<a th:href="@{/admin/cancel}"
+					<a id="cancelbutton" th:href="@{/admin/cancel}"
 						class="waves-effect waves-light btn deep-purple accent-2">
 						Cancelar </a>
 
 
-					<button class="btn waves-effect waves-light deep-purple accent-2"
+					<button id="sendbutton" class="btn waves-effect waves-light deep-purple accent-2"
 						type="submit" name="action">Enviar</button>
 				</div>
 			</div>
 		</form>
-		<div class="col s10 red-text" th:if="${error != null}"
-			th:text="${error}"></div>
-
-		<div class="col s10 blue-text" th:if="${result != null}"
-			th:text="${result}"></div>
+		<div th:if="${error != null}" id="error"></div>
+		<div th:if="${result != null}" id="result"></div>
 	</div>
 
 	<!--  Scripts-->
@@ -176,6 +173,32 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
+		    });
+		  $('#failed')
+		    .show(1000, function() {
+		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
+		    });
+
+		  $('#bookingform').bind('submit', function (e) {
+			  	console.log('Entra');
+			    var sendbutton = $('#sendbutton');
+			    var cancelbutton = $('#cancelbutton');
+
+			    sendbutton.prop('disabled', true);
+			    cancelbutton.addClass('disabled');
+			});
+		});
+	</script>
 
 </body>
 </html>

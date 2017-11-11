@@ -20,9 +20,10 @@
       $("#save").show();
       $("#cancel").show();
     });
-    $("#cancel").click(function(){
-      location.reload(true);
-    });
+    //$("#save").click(function(){
+    	//$("#save").prop("disabled", true);
+    	//$("#cancel").prop("disabled", true);
+    //});
 
     $('.datepicker').pickadate({
       selectMonths: true, // Creates a dropdown to control month

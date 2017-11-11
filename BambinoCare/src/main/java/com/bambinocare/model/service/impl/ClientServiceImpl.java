@@ -1,13 +1,11 @@
 package com.bambinocare.model.service.impl;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.RolEntity;
 import com.bambinocare.model.entity.UserEntity;
@@ -54,6 +52,12 @@ public class ClientServiceImpl implements ClientService{
 		if(email == "" || email == null) return null;
 		
 		return clientRepository.findByUserEmail(email);
+	}
+
+	@Override
+	public ClientEntity saveClient(ClientEntity client) {
+		// TODO Auto-generated method stub
+		return clientRepository.save(client);
 	}
 	
 

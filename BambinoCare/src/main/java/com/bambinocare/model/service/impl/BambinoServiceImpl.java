@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.ClientEntity;
+import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.BambinoRepository;
 import com.bambinocare.model.service.BambinoService;
 
@@ -27,6 +28,19 @@ public class BambinoServiceImpl implements BambinoService{
 		return bambinoRepository.findByClient(client);
 	}
 
+	@Override
+	public BambinoEntity createBambino(BambinoEntity bambino){
+		return bambinoRepository.save(bambino);
+	}
 	
+	@Override
+	public List<BambinoEntity> findByUser(UserEntity user) {
+		return bambinoRepository.findByClientUser(user);
+	}
+	
+	@Override
+	public BambinoEntity findBambinoByIdBambinoAndUser(Integer idBambino, UserEntity user) {
+		return bambinoRepository.findByIdBambinoAndClientUser(idBambino, user);
+	}
 	
 }

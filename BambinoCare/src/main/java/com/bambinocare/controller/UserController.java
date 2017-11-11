@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import com.bambinocare.constants.ViewConstants;
+import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
@@ -42,11 +44,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("bookingService")
 	private BookingService bookingService;
-	
+
 	@Autowired
 	@Qualifier("clientService")
 	private ClientService clientService;
-	
 
 	@Autowired
 	@Qualifier("bookingTypeService")
@@ -67,30 +68,66 @@ public class UserController {
 	@Autowired
 	@Qualifier("emailService")
 	private EmailService emailService;
-	
+
 	@Autowired
 	@Qualifier("bambinoService")
 	private BambinoService bambinoService;
-	
+
 	@Autowired
 	@Qualifier("emergencyContactService")
 	private EmergencyContactService emergencyContactService;
 
 	@GetMapping("/showbookings")
-	public ModelAndView showBookings(@RequestParam(required=false) String error, @RequestParam(required=false) String result) {
+	public ModelAndView showBookings(@RequestParam(required = false) String error,
+			@RequestParam(required = false) String result) {
 
 		ModelAndView mav = new ModelAndView(ViewConstants.USER_SHOW);
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userLogged = userService.findUserByEmail(user.getUsername());
 
 		mav.addObject("usernameLogged", userLogged.getName());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
+		mav.addObject("bambinos", bambinoService.findByUser(userLogged));
+		mav.addObject("contacts", emergencyContactService.findByUser(userLogged));
 		mav.addObject("client", clientService.findByUser(userLogged));
 		mav.addObject("error", error);
 		mav.addObject("result", result);
 
 		return mav;
+	}
+
+	@PostMapping("/showbookingdetail")
+	public String showBookingDetail(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+
+		String error = "";
+		String result = "";
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+
+		BookingEntity booking = bookingService.findBookingByIdBookingAndUser(idBooking, userEntity);
+
+		if (booking != null) {
+			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+
+			model.addAttribute("usernameLogged", userEntity.getName());
+
+			model.addAttribute("booking", booking);
+			model.addAttribute("bookingTypes", bookingTypes);
+			model.addAttribute("eventTypes", eventTypes);
+
+			model.addAttribute("result", result);
+			model.addAttribute("error", error);
+
+			return ViewConstants.BOOKING_DETAIL_SHOW;
+		} else {
+			error = "No se encontró la reservación solicitada o no tiene permisos para verla";
+		}
+
+		return "redirect:/users/showbookings?error=" + error + "&result=" + result;
+
 	}
 
 	@GetMapping("/createbookingform")
@@ -115,45 +152,44 @@ public class UserController {
 		return ViewConstants.BOOKING_CREATE;
 	}
 
-
 	@PostMapping("/createbooking")
 	public String createBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
 			Model model) {
 
 		String error = "";
 		String result = "";
-		
-		if(booking.getDuration() == null || booking.getDuration() == 0) {
+
+		if (booking.getDuration() == null || booking.getDuration() == 0) {
 			error = "Favor de verificar el campo Duración";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
-		
-		if(booking.getDate() == null) {
+
+		if (booking.getDate() == null) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(getDate(booking.getDate(),1).before(getDate(Calendar.getInstance().getTime(),0))){
-			error = "No puedes reservar en fechas pasadas";
+		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
+			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
-		
-		if(booking.getHour() == null || booking.getHour().equals("")) {
+
+		if (booking.getHour() == null || booking.getHour().equals("")) {
 			error = "Favor de verificar el campo Hora";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		ClientEntity client = clientService.findByUserEmail(user.getUsername());
-		
+
 		booking.setClient(client);
-		
-		if(bambinoService.findByClient(client).isEmpty()) {
+
+		if (bambinoService.findByClient(client).isEmpty()) {
 			error = "Favor dar de alta a sus bambinos";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
-		
+
 		List<EmergencyContactEntity> emergencyContacts = emergencyContactService.findByClient(client);
-		
-		if( emergencyContacts.isEmpty() || emergencyContacts.size() < 2) {
+
+		if (emergencyContacts.isEmpty() || emergencyContacts.size() < 2) {
 			error = "Favor dar de alta al menos 2 contactos de emergencia";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
@@ -162,19 +198,20 @@ public class UserController {
 		booking.setBookingStatus(bookingStatus);
 
 		booking.setCost(booking.getDuration() * 200);
-		
-		booking.setDate(getDate(booking.getDate(),1));
+
+		booking.setDate(getDate(booking.getDate(), 1));
 
 		if (bookingService.createBooking(booking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
 					"El usuario " + booking.getClient().getUser().getEmail() + " ha agendado una nueva cita el día "
 							+ booking.getDate() + ". Puedes revisar el detalle en"
 							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
-			
-			emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación", "Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n" + 
-					"recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n" + 
-					"a tu hogar.");
-			
+
+			emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación",
+					"Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
+							+ "recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n"
+							+ "a tu hogar.");
+
 			result = "La reservación se ha realizado exitosamente.";
 		} else {
 			error = "No se ha podido realizar la reservación, intente nuevamente";
@@ -183,19 +220,21 @@ public class UserController {
 
 		return "redirect:/users/showbookings?result=" + result;
 	}
-	
+
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBooking, Model model) {
+			@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBooking,
+			Model model) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		
-		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, userEntity,"Cancelada");
+
+		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(
+				idBooking, userEntity, "Cancelada");
 
 		if (booking == null) {
 			error = "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
-			return "redirect:/users/showbookings?error="+ error;
+			return "redirect:/users/showbookings?error=" + error;
 		}
 
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
@@ -212,53 +251,53 @@ public class UserController {
 
 		return ViewConstants.BOOKING_EDIT;
 	}
-	
+
 	@PostMapping("/editbooking")
 	public String editBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
 			Model model) {
 
 		String error = "";
 		String result = "";
-		
-		if(booking.getDuration() == null || booking.getDuration() == 0) {
+
+		if (booking.getDuration() == null || booking.getDuration() == 0) {
 			error = "Favor de verificar el campo Duración";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(booking.getDate() == null) {
+
+		if (booking.getDate() == null) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(getDate(booking.getDate(),1).before(getDate(Calendar.getInstance().getTime(),0))){
-			error = "No puedes reservar en fechas pasadas";
+		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
+			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
-		if(booking.getHour() == null || booking.getHour().equals("")) {
+
+		if (booking.getHour() == null || booking.getHour().equals("")) {
 			error = "Favor de verificar el campo Hora";
 			return "redirect:/users/showbookings?error=" + error;
 		}
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		
+
 		BookingEntity oldBooking = bookingService.findBookingByIdBookingAndUser(booking.getIdBooking(), userEntity);
-		
+
 		oldBooking.setDuration(booking.getDuration());
-		oldBooking.setDate(getDate(booking.getDate(),1));
+		oldBooking.setDate(getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
 		oldBooking.setCost(booking.getDuration() * 200);
-		
+
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
-					"El usuario " + oldBooking.getClient().getUser().getEmail() + " ha modificado la reservación del día "
-							+ oldBooking.getDate() + ". Puedes revisar el detalle en"
-							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
-			result="La reservación fue modificada con éxito!";
+					"El usuario " + oldBooking.getClient().getUser().getEmail()
+							+ " ha modificado la reservación del día " + oldBooking.getDate()
+							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com");
+			result = "La reservación fue modificada con éxito!";
 		} else {
-			result="Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
-		} 
+			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
+		}
 
-		return "redirect:/users/showbookings?error="+error+"&result="+result;
+		return "redirect:/users/showbookings?error=" + error + "&result=" + result;
 	}
 
 	@PostMapping("/edituser")
@@ -312,19 +351,28 @@ public class UserController {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
+		if(!client.getUser().getPasswordConfirm().equals(client.getUser().getPassword())) {
+			error = "La contraseña y la confirmación de contraseña no coínciden";
+			return "redirect:/users/showbookings?error=" + error;
+		}
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
 		
 		ClientEntity oldClient = clientService.findByUser(userEntity);
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		oldClient.setStreet(client.getStreet());
 		oldClient.setSuburb(client.getSuburb());
 		oldClient.setTown(client.getTown());
 		oldClient.setState(client.getState());
-		oldClient.setUser(client.getUser());
+		oldClient.getUser().setName(client.getUser().getName());
+		oldClient.getUser().setLastname(client.getUser().getLastname());
+		oldClient.getUser().setEmail(client.getUser().getEmail());
+		oldClient.getUser().setTelephone(client.getUser().getTelephone());
+		oldClient.getUser().setPassword(passwordEncoder.encode(client.getUser().getPassword()));
 		
-		if (clientService.createClient(oldClient) != null) {
+		if (clientService.saveClient(oldClient) != null) {
 			result="Se ha modificado el perfil de usuario!";
 		} else {
 			result="Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
@@ -334,17 +382,17 @@ public class UserController {
 	}
 	
 	@PostMapping("/cancelbooking")
-	public String cancelBooking(@RequestParam(name = "idbooking") Integer idBooking,
-			Model model) {
+	public String cancelBooking(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
 
 		String error = "";
 		String result = "";
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		
-		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(idBooking, userEntity, "Cancelada");
-		
+
+		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(
+				idBooking, userEntity, "Cancelada");
+
 		if (booking != null) {
 			BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Cancelada");
 
@@ -354,8 +402,9 @@ public class UserController {
 				result = "La cita ha sido cancelada";
 
 				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
-						"El usuario " + booking.getClient().getUser().getEmail() + " ha cancelado su reservación del día "
-								+ booking.getDate() + " Puedes revisar el detalle en"
+						"El usuario " + booking.getClient().getUser().getEmail()
+								+ " ha cancelado su reservación del día " + booking.getDate()
+								+ " Puedes revisar el detalle en"
 								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
 
 			} else {
@@ -372,18 +421,266 @@ public class UserController {
 	public String cancel() {
 		return "redirect:/users/showbookings";
 	}
-	
-	@GetMapping("/editBambinoForm")
-	public String editBambinoForm() {
-		return ViewConstants.EDIT_USER_BAMBINO;
+
+	@PostMapping("/newbambino")
+	public String newbambino(@ModelAttribute(name = "bambino") BambinoEntity bambino, BindingResult bindingResult,
+			Model model) {
+
+		String error = "";
+		String result = "";
+		
+		if(bambino.getName() == null || bambino.getName().equalsIgnoreCase("")) {
+			error = "Favor de verificar el Nombre";
+			return "redirect:/users/createbookingform?error=" + error;
+		}else if(bambino.getLastname() == null || bambino.getLastname().equalsIgnoreCase("")) {
+			error = "Favor de verificar Apellido";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(bambino.getAge() == null){
+			error = "No puedes reservar en fechas pasadas";
+			return "redirect:/users/createbookingform?error=" + error;
+		}else if(bambino.getDegree() == null || bambino.getDegree().equals("")) {
+			error = "Favor de verificar el campo Hora";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		ClientEntity client = clientService.findByUserEmail(user.getUsername());
+		
+		bambino.setClient(client);
+
+		if (bambinoService.createBambino(bambino) != null) {					
+			result = "La reservación se ha realizado exitosamente.";
+		} else {
+			error = "No se ha podido realizar la reservación, intente nuevamente";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+
+		return "redirect:/users/showbookings?result=" + result;
 	}
 	
+	@GetMapping("/createbambinoform")
+	public String createbambinoform(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, Model model) {
+		BambinoEntity bambino = new BambinoEntity();
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		model.addAttribute("usernameLogged", userEntity.getName());
+
+		model.addAttribute("bambino", bambino);
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
+		return ViewConstants.CREATE_BAMBINO;
+	}
+	
+	@GetMapping("/editBambinoForm")
+	public String editBambinoForm(@RequestParam(required = false) String result,
+		@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBambino, Model model) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		
+		BambinoEntity bambino = bambinoService.findBambinoByIdBambinoAndUser(idBambino, userEntity);
+
+		model.addAttribute("usernameLogged", userEntity.getName());
+
+		model.addAttribute("bambino", bambino);
+
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
+		return ViewConstants.EDIT_BAMBINO;
+	}
+	
+	@PostMapping("/editBambino")
+	public String editbambino(@ModelAttribute(name = "bambino") BambinoEntity bambino, BindingResult bindingResult,
+			Model model) {
+
+		String error = "";
+		String result = "";
+		
+		if(bambino.getName() == null || bambino.getName().equals("")) {
+			error = "Favor de verificar el nombre";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(bambino.getLastname() == null || bambino.getLastname().equals("")) {
+			error = "Favor de verificar el apellido";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(bambino.getAge() == null){
+			error = "Favor de verificar la edad";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(bambino.getDegree() == null || bambino.getDegree().equals("")) {
+			error = "Favor de verificar el grado escolar";
+			return "redirect:/users/showbookings?error=" + error;
+		}
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		
+		BambinoEntity oldbambino = bambinoService.findBambinoByIdBambinoAndUser(bambino.getIdBambino(), userEntity);
+		
+		oldbambino.setName(bambino.getName());
+		oldbambino.setLastname(bambino.getLastname());
+		oldbambino.setAge(bambino.getAge());
+		oldbambino.setDegree(bambino.getDegree());
+		oldbambino.setMedicalSituation(bambino.getMedicalSituation());
+		oldbambino.setObservation(bambino.getObservation());
+		
+		if (bambinoService.createBambino(oldbambino) != null) {
+			result="El bambino fue modificado con éxito!";
+		} else {
+			result="Ocurrió un error al intentar editar el bambino, vuelva a intentarlo";
+		} 
+
+		return "redirect:/users/showbookings?error="+error+"&result="+result;
+	}
+	
+	
+	//contactos
+	
+	@GetMapping("/createcontactform")
+	public String createcontactform(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, Model model) {
+		EmergencyContactEntity contact = new EmergencyContactEntity();
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		model.addAttribute("usernameLogged", userEntity.getName());
+
+		model.addAttribute("contact", contact);
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
+		return ViewConstants.CREATE_CONTACT;
+	}
+	
+	@PostMapping("/newcontact")
+	public String newcontact(@ModelAttribute(name = "contact") EmergencyContactEntity contact, BindingResult bindingResult,
+			Model model) {
+
+		String error = "";
+		String result = "";
+		
+		if(contact.getName() == null || contact.getName().equals("")) {
+			error = "Favor de verificar el Nombre";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getLastname() == null || contact.getLastname().equals("")) {
+			error = "Favor de verificar el Apellido";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getTelephone() == null || contact.getTelephone().equals("")) {
+			error = "Favor de verificar el email";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getStreet() == null || contact.getStreet().equals("")) {
+			error = "Favor de verificar la calle";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getSuburb() == null || contact.getSuburb().equals("")) {
+			error = "Favor de verificar la colonia";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getTown() == null || contact.getTown().equals("")) {
+			error = "Favor de verificar el Municipio";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getState() == null || contact.getState().equals("")) {
+			error = "Favor de verificar el Estado";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getRelationship() == null || contact.getRelationship().equals("")) {
+			error = "Favor de verificar el parentesco";
+			return "redirect:/users/showbookings?error=" + error;
+		}
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		ClientEntity client = clientService.findByUserEmail(user.getUsername());
+		
+		contact.setClient(client);
+
+		if (emergencyContactService.createContact(contact) != null) {					
+			result = "El contacto se ha creado exitosamente.";
+		} else {
+			error = "No se ha podido crear el contacto, intente nuevamente";
+			return "redirect:/users/createbookingform?error=" + error;
+		}
+
+		return "redirect:/users/showbookings?result=" + result;
+	}
+	
+	@GetMapping("/editcontactForm")
+	public String editContactForm(@RequestParam(required = false) String result,
+		@RequestParam(required = false) String error, @RequestParam(required = true) Integer idContacto, Model model) {
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		
+		EmergencyContactEntity contact = emergencyContactService.findEmergencyContactByIdContactAndUser(idContacto, userEntity);
+
+		model.addAttribute("usernameLogged", userEntity.getName());
+
+		model.addAttribute("contact", contact);
+
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
+		return ViewConstants.EDIT_CONTACT;
+	}
+	
+	@PostMapping("/editContact")
+	public String editcontact(@ModelAttribute(name = "bambino") EmergencyContactEntity contact, BindingResult bindingResult,
+			Model model) {
+
+		String error = "";
+		String result = "";
+		
+		if(contact.getName() == null || contact.getName().equals("")) {
+			error = "Favor de verificar el Nombre";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getLastname() == null || contact.getLastname().equals("")) {
+			error = "Favor de verificar el Apellido";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getTelephone() == null || contact.getTelephone().equals("")) {
+			error = "Favor de verificar el email";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getStreet() == null || contact.getStreet().equals("")) {
+			error = "Favor de verificar la calle";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getSuburb() == null || contact.getSuburb().equals("")) {
+			error = "Favor de verificar la colonia";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getTown() == null || contact.getTown().equals("")) {
+			error = "Favor de verificar el Municipio";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getState() == null || contact.getState().equals("")) {
+			error = "Favor de verificar el Estado";
+			return "redirect:/users/showbookings?error=" + error;
+		}else if(contact.getRelationship() == null || contact.getRelationship().equals("")) {
+			error = "Favor de verificar el parentesco";
+			return "redirect:/users/showbookings?error=" + error;
+		}
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		
+		EmergencyContactEntity oldcontact = emergencyContactService.findEmergencyContactByIdContactAndUser(contact.getIdContacto(), userEntity);
+		
+		oldcontact.setName(contact.getName());
+		oldcontact.setLastname(contact.getLastname());
+		oldcontact.setTelephone(contact.getTelephone());
+		oldcontact.setStreet(contact.getStreet());
+		oldcontact.setSuburb(contact.getSuburb());
+		oldcontact.setTown(contact.getTown());
+		oldcontact.setState(contact.getState());
+		oldcontact.setRelationship(contact.getRelationship());
+		
+		if (emergencyContactService.createContact(oldcontact) != null) {
+			result="El contacto fue modificado con éxito!";
+		} else {
+			result="Ocurrió un error al intentar editar el contacto, vuelva a intentarlo";
+		} 
+
+		return "redirect:/users/showbookings?error="+error+"&result="+result;
+	}
+
 	public static Date getDate(Date date, int days) {
-		
+
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date); 
+		calendar.setTime(date);
 		calendar.add(Calendar.DAY_OF_YEAR, days);
-		
+
 		return calendar.getTime();
 	}
 

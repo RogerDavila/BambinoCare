@@ -6,6 +6,7 @@ import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +48,11 @@ public class SignupController {
 	@GetMapping("/signupform")
 	public String showSignupForm(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, Model model) {
+		
+		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().getAuthority().equals("ROLE_ANONYMOUS")) {
+			return "redirect:/loginsuccess";
+		}
+		
 		ClientEntity client = new ClientEntity();
 
 		List<RolEntity> roles = rolService.findAllRoles();
@@ -112,7 +118,7 @@ public class SignupController {
 		
 		if(!client.getUser().getPasswordConfirm().equals(client.getUser().getPassword())) {
 			error = "La contraseña y la confirmación de contraseña no coínciden";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+				return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
 
 		if (userService.userExist(client.getUser().getEmail())) {

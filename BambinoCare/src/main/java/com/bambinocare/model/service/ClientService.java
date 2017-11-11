@@ -8,5 +8,6 @@ public interface ClientService {
 	ClientEntity createClient(ClientEntity client);
 	ClientEntity findByUser(UserEntity user);
 	ClientEntity findByUserEmail(String email);
+	ClientEntity saveClient(ClientEntity client);
 	
 }

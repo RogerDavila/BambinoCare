@@ -22,17 +22,19 @@
 	<div id="index-banner" class="parallax-container">
 		<div class="section no-pad-bot">
 			<div class="row container">
-				<form class="white pad z-depth-5" action="#" id="form"
+				<form class="white pad z-depth-5" action="#" id="signupform"
 					th:action="@{/signup/createuserclient}" th:object="${client}"
 					method="post">
 					<div class="row center grey-text text-darken-3">
-						<p id="pcenter"><b>¡BIENVENIDOS!</b></p>
 						<p id="pcenter">
-							Gracias por darnos la oportunidad de atenderte, así como de unirte a nuestra
-							comunidad Bambino Care, a continuación se desplegará una serie de preguntas
-							como rutina de registro, con el objetivo de validar la información para la seguridad
-							e integridad tanto de tus Bambinos, como de nuestras Bambinaias.
+							<b>¡BIENVENIDOS!</b>
 						</p>
+						<p id="pcenter">Gracias por darnos la oportunidad de
+							atenderte, así como de unirte a nuestra comunidad Bambino Care, a
+							continuación se desplegará una serie de preguntas como rutina de
+							registro, con el objetivo de validar la información para la
+							seguridad e integridad tanto de tus Bambinos, como de nuestras
+							Bambinaias.</p>
 					</div>
 					<div class="row">
 						<div class="input-field col s6">
@@ -83,7 +85,7 @@
 								th:required="required" /> <label for="Telefono">Telefono</label>
 						</div>
 					</div>
-					<div class = "row">
+					<div class="row">
 						<div class="input-field col s4">
 							<input id="email" type="email" class="validate black-text"
 								th:field="*{user.email}"
@@ -97,10 +99,11 @@
 								th:required="required" /> <label for="password">Contraseña</label>
 						</div>
 						<div class="input-field col s4">
-							<input id="passwordconfirm" type="password" class="validate black-text"
-								th:field="*{user.passwordConfirm}"
+							<input id="passwordconfirm" type="password"
+								class="validate black-text" th:field="*{user.passwordConfirm}"
 								th:value="${user == null ? '' : user.passwordConfirm}"
-								th:required="required" /> <label for="password">Confirmar Contraseña</label>
+								th:required="required" /> <label for="password">Confirmar
+								Contraseña</label>
 						</div>
 					</div>
 
@@ -111,22 +114,13 @@
 
 					<div class="row">
 
-						<div class="col s10 red-text" th:if="${error != null}"
-							role="alert" th:text="${error}">Error</div>
-						<div th:if="${result == '1'}">
-							<div class="col s10 blue-text">Registrado exitosamente!</div>
-
-							<div class="col s10 black-text">
-								<p>*Tu perfil sera validado, una vez que se haya aprobado te
-									llegara un correo electronico y podras iniciar sesion.</p>
-							</div>
-						</div>
-						<div class="col s10 red-text" th:if="${result == '0'}">No se
-							pudo registrar el usuario</div>
+						<div th:if="${error != null}" id="error"></div>
+						<div th:if="${result == '1'}" id="success"></div>
+						<div th:if="${result == '0'}" id="failed"></div>
 
 
 						<div class="col offset-s10 s2 right-align ">
-							<button
+							<button id="sendbutton"
 								class="btn waves-effect waves-light right-align deep-purple accent-2"
 								type="submit" name="action">Enviar</button>
 						</div>
@@ -147,6 +141,30 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast('Usuario registrado con éxito!',4000,'rounded waves-effect');
+		    });
+		  $('#failed')
+		    .show(1000, function() {
+		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
+		    });
+
+		  $('#signupform').bind('submit', function (e) {
+			  	console.log('Entra');
+			    var sendbutton = $('#sendbutton');
+
+			    sendbutton.prop('disabled', true);
+			});
+		});
+	</script>
 
 </body>
 </html>

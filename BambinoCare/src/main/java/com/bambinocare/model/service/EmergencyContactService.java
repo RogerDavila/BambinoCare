@@ -2,13 +2,15 @@ package com.bambinocare.model.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
+import com.bambinocare.model.entity.UserEntity;
 
 public interface EmergencyContactService {
 
 	List<EmergencyContactEntity> findByClient(ClientEntity client);
+	List<EmergencyContactEntity> findByUser(UserEntity user);
+	EmergencyContactEntity createContact(EmergencyContactEntity contact);
+	EmergencyContactEntity findEmergencyContactByIdContactAndUser(Integer idContact, UserEntity user);
 	
 }

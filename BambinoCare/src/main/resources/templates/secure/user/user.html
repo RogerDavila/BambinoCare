@@ -66,9 +66,18 @@
 
 						<tbody>
 							<tr th:each="booking : ${bookings}">
-								<td><a class="btn-floating deep-purple lighten-1"><i
-										class="material-icons">event_note</i></a></td>
-								<td th:text="${booking.client == null ? '' : booking.client.user.name} "></td>
+								<td>
+									<form th:action="@{/users/showbookingdetail}" method="POST">
+										<input type="hidden" name="idbooking"
+											th:value="${booking.idBooking}" /> 
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1" >
+											<i class="material-icons">event_note</i>
+										</button>
+									</form>
+								</td>
+								<td
+									th:text="${booking.client == null ? '' : booking.client.user.name} "></td>
 								<td
 									th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
 								<td th:text="${booking.date}"></td>
@@ -86,8 +95,10 @@
 										<i class="material-icons">edit</i>
 								</a></td>
 								<td><form th:action="@{/users/cancelbooking}" method="post">
-										<input type="hidden" name="idbooking" th:value = "${booking.idBooking}"/>
-										<button type="submit" class="btn-floating deep-purple lighten-1">
+										<input type="hidden" name="idbooking"
+											th:value="${booking.idBooking}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1">
 											<i class="material-icons">delete</i>
 										</button>
 									</form></td>
@@ -97,11 +108,8 @@
 					</table>
 				</div>
 				<div class="col s1"></div>
-				<div class="col s10 red-text" th:if="${error != null}"
-					th:text="${error}"></div>
-
-				<div class="col s10 blue-text" th:if="${result != null}"
-					th:text="${result}"></div>
+				<div id="error" th:if="${error != null}"></div>
+				<div id="success" th:if="${result != null}"></div>
 			</div>
 		</div>
 		<!-- User Profile -->
@@ -120,72 +128,73 @@
 
 			<div class="row">
 				<form class="col s12 white" th:action="@{/users/edituser}"
-				method="post" name="bookingform">
+				th:object="${client}" method="post" name="clientform">
 					<div class="row">
 						<div class="input-field col s6">
+						<input type="hidden" th:value="${idClient}" th:field = "*{idClient}"/>
 							<input id="nombre" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.name}" /> 
+								required="required" disabled="disabled" th:value="${client.user.name}" th:field = "*{user.name}"/> 
 								<label for="first_name">Nombre</label>
 						</div>
 						<div class="input-field col s6">
 							<input id="last_name" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.lastname}" /> 
+								required="required" disabled="disabled" th:value="${client.user.lastname}" th:field = "*{user.lastname}" /> 
 								<label for="last_name">Apellidos</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s3">
 							<input id="street_num" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.street}" /> 
+								required="required" disabled="disabled" th:value="${street}" th:field = "*{street}" /> 
 								<label for="street_num">Calle - Numero</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="neighborhood" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.suburb}" /> 
+								required="required" disabled="disabled" th:value="${suburb}" th:field = "*{suburb}" /> 
 								<label for="neighborhood">Colonia</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="city" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.town}" /> 
+								required="required" disabled="disabled" th:value="${town}" th:field = "*{town}" /> 
 								<label for="city">Municipio</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="state" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.state}" /> 
+								required="required" disabled="disabled" th:value="${state}" th:field = "*{state}" /> 
 								<label for="state">Estado</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s4">
 							<input id="job" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.employment}" /> 
+								required="required" disabled="disabled" th:value="${employment}" th:field = "*{employment}" /> 
 								<label for="job">Ocupación</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="telephone" type="number" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.telephone}" /> 
+								required="required" disabled="disabled" th:value="${client.user.telephone}" th:field = "*{user.telephone}" /> 
 								<label for="telephone">Telefono</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="email" type="email" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.email}" /> 
+								required="required" disabled="disabled" th:value="${client.user.email}" th:field = "*{user.email}" /> 
 								<label for="email">Email</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s3">
 							<input id="nombre" type="password" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.password}" /> 
+								required="required" disabled="disabled" th:value="${client.user.password}" th:field = "*{user.password}" /> 
 								<label for="password">Contraseña</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="last_name" type="password" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.password}" /> 
+								required="required" disabled="disabled" th:value="${client.user.password}" th:field = "*{user.passwordConfirm}" /> 
 								<label for="password">Confirmar Contraseña</label>
 						</div>
 						<div class="input-field col s6 rigth-align">
-							<button id="cancel"
-								class="btn waves-effect waves-light deep-purple lighten-1 blk">Cancelar</button>
+							<a id="cancel" th:href="@{/users/cancel}"
+								class="btn waves-effect waves-light deep-purple lighten-1 blk">Cancelar</a>
 							<button id="save"
 								class="btn waves-effect waves-light deep-purple lighten-1 blk"
 								type="submit" name="action">Guardar</button>
@@ -204,7 +213,8 @@
 				</div>
 				<div class="col s2">
 					<br /> 
-					<a id="editPerfil" class="btn-floating deep-purple lighten-1 btn-large">
+					<a id="editPerfil" th:href="@{/users/createbambinoform}" 
+					class="btn-floating deep-purple lighten-1 btn-large">
 						<i class="material-icons">add</i>
 					</a>
 				</div>
@@ -216,8 +226,8 @@
                       <th>Nombre</th>
                       <th>Apellido</th>
                       <th>Edad</th>
-                      <th>Situacion Medica</th>
                       <th>Grado Escolar</th>
+                      <th>Situacion Medica</th>
                       <th>Observaciones</th>
                       <th>Editar</th>
                       <th>Borrar</th>
@@ -225,17 +235,29 @@
                 </thead>
 
                 <tbody>
-                  <tr>
-                    <td>Pedro</td>
-                    <td>Perez</td>
-                    <td>12</td>
-                    <td>Test</td>
-                    <td>1</td>
-                    <td>test</td>
-                    <td><a href="#" class="btn-floating deep-purple lighten-1" th:href="@{/users/editBambinoForm}" ><i class="material-icons">edit</i></a></td>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">delete</i></a></td>
-                  </tr>
-                </tbody>
+					<tr th:each="bambino : ${bambinos}">
+						<td th:text="${bambino.name}"></td>
+						<td th:text="${bambino.lastname}"></td>
+						<td th:text="${bambino.age}"></td>
+						<td th:text="${bambino.degree}"></td>
+						<td th:text="${bambino.medicalSituation}"></td>
+						<td th:text="${bambino.observation}"></td>
+						<td><a href="#" class="btn-floating deep-purple lighten-1"
+							th:href="@{/users/editBambinoForm?idBambino=__${bambino.idBambino}__}">
+							<i class="material-icons">edit</i>
+							</a>
+						</td>
+						<td>
+							<form method="post">
+								<input type="hidden" name="idBambino" th:value = "${bambino.idBambino}"/>
+								<button type="submit" class="btn-floating deep-purple lighten-1">
+									<i class="material-icons">delete</i>
+								</button>
+							</form>
+						</td>
+
+					</tr>
+				</tbody>
               </table>
 			</div>
 			
@@ -248,7 +270,8 @@
 				</div>
 				<div class="col s2">
 					<br /> 
-					<a id="editPerfil" class="btn-floating deep-purple lighten-1 btn-large">
+					<a id="editPerfil" th:href="@{/users/createcontactform}" 
+					class="btn-floating deep-purple lighten-1 btn-large">
 						<i class="material-icons">add</i>
 					</a>
 				</div>
@@ -269,19 +292,32 @@
                   </tr>
                 </thead>
 
-                <tbody>
-                  <tr>
-                    <td>Pedro</td>
-                    <td>Perez</td>
-                    <td>12</td>
-                    <td>Test</td>
-                    <td>1</td>
-                    <td>test</td>
-                    <td>test</td>
-                    <td><a href="#" class="btn-floating deep-purple lighten-1" th:href="@{/users/editBambinoForm}" ><i class="material-icons">edit</i></a></td>
-                    <td><a class="btn-floating deep-purple lighten-1"><i class="material-icons">delete</i></a></td>
-                  </tr>
-                </tbody>
+                 <tbody>
+					<tr th:each="contact : ${contacts}">
+						<td th:text="${contact.name}"></td>
+						<td th:text="${contact.lastname}"></td>
+						<td th:text="${contact.telephone}"></td>
+						<td th:text="${contact.street}"></td>
+						<td th:text="${contact.suburb}"></td>
+						<td th:text="${contact.town}"></td>
+						<td th:text="${contact.state}"></td>
+						<td th:text="${contact.relationship}"></td>
+						<td><a href="#" class="btn-floating deep-purple lighten-1"
+							th:href="@{/users/editcontactForm?idContacto=__${contact.idContacto}__}">
+							<i class="material-icons">edit</i>
+							</a>
+						</td>
+						<td>
+							<form method="post">
+								<input type="hidden" th:value = "${contact.idContacto}"/>
+								<button type="submit" class="btn-floating deep-purple lighten-1">
+									<i class="material-icons">delete</i>
+								</button>
+							</form>
+						</td>
+
+					</tr>
+				</tbody>
               </table>
 			</div>			
 			
@@ -295,5 +331,22 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
+		    });
+		  $('#failed')
+		    .show(1000, function() {
+		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
+		    });
+		});
+	</script>
 </body>
 </html>

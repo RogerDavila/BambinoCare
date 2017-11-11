@@ -27,7 +27,7 @@
 			</div>
 			<div class="row">
 				<div class="col s4"></div>
-				<form class="col white col s4" th:action="@{/logincheck}"
+				<form class="col white col s4 " th:action="@{/logincheck}"
 					method="POST">
 					<input type="hidden" name="${csrf.parametername}"
 						value="${_csrf.token}" />
@@ -61,15 +61,12 @@
 					</div>
 					<br />
 					<br />
+					<div class="row right-align">
+						<a href="#" class="black-text hoverable" th:href="@{/recoverypasswordform}">Se me olvidó mi contraseña</a>
+					</div>
 				</form>
 				<div class="col s1"></div>
 			</div>
-				<div class="row center black-text">
-					<p>
-					<a href="#" th:href="@{/recoverypasswordform}">Se me olvidó mi contraseña</a>
-					</p>
-				</div>
-
 		</div>
 		<div class="parallax">
 			<img src="../static/img/home2.jpg" th:src="@{/img/home2.jpg}"

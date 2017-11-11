@@ -32,52 +32,56 @@
 			<h5>Editar Bambino</h5>
 		</div>	
 		<form class="white pad" action="#" th:action="@{/users/editBambino}"
-			method="post" name="bookingform">
+			th:object="${bambino}" method="post" name="bookingform">
 			<div class="row">
-				<div class="input-field col s4">
-					<input id="nombre" type="text" class="validate black-text" required="required" disabled="disabled"/> 
+				<div class="input-field col s3">
+				<input type="hidden" th:value="${idBambino}" th:field = "*{idBambino}"/>
+					<input id="nombre" type="text" class="validate black-text"
+						required="required"  th:value="${name}" th:field = "*{name}"/> 
 					<label for="first_name">Nombre</label>
 				</div>
-				<div class="input-field col s4">
+				<div class="input-field col s3">
 					<input id="last_name" type="text" class="validate black-text"
-					required="required" disabled="disabled"/> 
-					<label for="last_name">Apellidos</label>
+						required="required"  th:value="${lastname}" th:field = "*{lastname}" /> 
+						<label for="last_name">Apellidos</label>
 				</div>
-				<div class="input-field col s4">
-					<input id="age" type="text" class="validate black-text"
-					required="required" disabled="disabled"/> 
-					<label for="age">Edad</label>
+				<div class="input-field col s3">
+					<input id="street_num" type="text" class="validate black-text"
+						required="required"  th:value="${age}" th:field = "*{age}" /> 
+					<label for="street_num">Edad</label>
+				</div>
+				<div class="input-field col s3">
+					<input id="neighborhood" type="text" class="validate black-text"
+						required="required"  th:value="${degree}" th:field = "*{degree}" /> 
+					<label for="neighborhood">Grado Escolar</label>
 				</div>
 			</div>
 			<div class="row">
 				<div class="input-field col s4">
-					<input id="grade" type="text" class="validate black-text" required="required" disabled="disabled"/> 
-					<label for="grade">Grado Escolar</label>
+					<textarea id="Observaciones" class="materialize-textarea"
+						th:field="*{medicalSituation}" th:value="${medicalSituation}" data-length="120"></textarea>
+					<label for="job">Situacion Medica</label>
 				</div>
 				<div class="input-field col s4">
-					<input id="medical_situation" type="text" class="validate black-text"
-					required="required" disabled="disabled"/> 
-					<label for="medical_situation">Situacion Medica</label>
-				</div>
-				<div class="input-field col s4">
-					<input id="comments" type="text" class="validate black-text"
-					required="required" disabled="disabled"/> 
-					<label for="comments">Observaciones</label>
+						<textarea id="Observaciones" class="materialize-textarea"
+							th:field="*{observation}" th:value="${observation}" data-length="120"></textarea>
+					<label for="email">Observaciones</label>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="right-align" style="">
-					<a th:href="@{/users/cancel}" class="waves-effect waves-light btn deep-purple accent-2"> Cancelar </a>
-					<button class="btn waves-effect waves-light deep-purple accent-2" type="submit" name="action">Enviar</button>
+					<a id="cancelbutton" th:href="@{/users/cancel}"
+						class="waves-effect waves-light btn deep-purple accent-2">
+						Cancelar </a>
+					<button id="sendbutton"
+						class="btn waves-effect waves-light deep-purple accent-2"
+						type="submit" name="action">Enviar</button>
 				</div>
 			</div>
 		</form>
-		<div class="col s10 red-text" th:if="${error != null}"
-			th:text="${error}"></div>
-
-		<div class="col s10 blue-text" th:if="${result != null}"
-			th:text="${result}"></div>
+		<div th:if="${error != null}" id="error"></div>
+		<div th:if="${result != null}" id="result"></div>
 	</div>
 
 	<!--  Scripts-->
@@ -86,6 +90,28 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
+		    });
+
+		  $('#bookingform').bind('submit', function (e) {
+			  	console.log('Entra');
+			    var sendbutton = $('#sendbutton');
+			    var cancelbutton = $('#cancelbutton');
+
+			    sendbutton.prop('disabled', true);
+			    cancelbutton.addClass('disabled');
+			});
+		});
+	</script>
 
 </body>
 </html>

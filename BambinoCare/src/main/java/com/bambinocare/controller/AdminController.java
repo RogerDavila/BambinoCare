@@ -22,12 +22,14 @@ import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
+import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
 import com.bambinocare.model.service.BookingTypeService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EventTypeService;
+import com.bambinocare.model.service.NannyService;
 import com.bambinocare.model.service.UserService;
 
 @Controller
@@ -45,6 +47,10 @@ public class AdminController {
 	@Autowired
 	@Qualifier("emailService")
 	private EmailService emailService;
+	
+	@Autowired
+	@Qualifier("nannyService")
+	private NannyService nannyService;
 
 	@Autowired
 	@Qualifier("bookingTypeService")
@@ -75,6 +81,39 @@ public class AdminController {
 		return mav;
 	}
 
+	@PostMapping("/showbookingdetail")
+	public String showBookingDetail(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+
+		String error = "";
+		String result = "";
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+
+		BookingEntity booking = bookingService.findBookingByIdBooking(idBooking);
+
+		if (booking != null) {
+			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+
+			model.addAttribute("usernameLogged", userEntity.getName());
+
+			model.addAttribute("booking", booking);
+			model.addAttribute("bookingTypes", bookingTypes);
+			model.addAttribute("eventTypes", eventTypes);
+
+			model.addAttribute("result", result);
+			model.addAttribute("error", error);
+
+			return ViewConstants.BOOKING_DETAIL_ADMIN_SHOW;
+		} else {
+			error = "No se encontró la reservación solicitada o no tiene permisos para verla";
+		}
+
+		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+
+	}
+	
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBooking,
@@ -122,7 +161,7 @@ public class AdminController {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/admin/showbookings?error=" + error;
 		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
-			error = "No puedes reservar en fechas pasadas";
+			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			return "redirect:/admin/showbookings?error=" + error;
 		}
 
@@ -191,7 +230,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/approvebooking")
-	public String approveBooking(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+	public String approveBooking(@RequestParam(name = "idbooking", required=false) Integer idBooking, @ModelAttribute(name = "nanny") NannyEntity nanny,BindingResult bindingResult, Model model) {
 
 		String error = "";
 		String result = "";
@@ -200,6 +239,19 @@ public class AdminController {
 				"Cancelada", "Agendada", "Rechazada");
 
 		if (booking != null) {
+			
+			if(nanny.getIdNanny() != null && booking.getNanny() == null) {
+				booking.setNanny(nanny);
+			} else if (booking.getNanny() == null) {
+				NannyEntity nannyToAssign = new NannyEntity();
+				List<NannyEntity> nannies = nannyService.findAllNannies();
+				model.addAttribute("nanny", nannyToAssign);
+				model.addAttribute("nannies", nannies);
+				model.addAttribute("idBooking", booking.getIdBooking());
+				return ViewConstants.NANNY_ASSIGN;
+			}
+			
+			bookingService.createBooking(booking);
 			BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Agendada");
 
 			if (bookingStatus != null) {
