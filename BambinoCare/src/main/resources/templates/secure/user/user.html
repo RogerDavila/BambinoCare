@@ -316,7 +316,7 @@
 		    });
 		  $('#success')
 		    .show(1000, function() {
-		      Materialize.toast('Usuario registrado con éxito!',4000,'rounded waves-effect');
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
 		    });
 		  $('#failed')
 		    .show(1000, function() {

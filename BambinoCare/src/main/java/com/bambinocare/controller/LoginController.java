@@ -36,6 +36,10 @@ public class LoginController {
 			@RequestParam(name="error", required=false) String error, 
 			@RequestParam(name="logout", required=false)String logout){
 		
+		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().getAuthority().equals("ROLE_ANONYMOUS")) {
+			return "redirect:/loginsuccess";
+		}
+		
 		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);
 		return ViewConstants.LOGIN_FORM;
@@ -43,6 +47,7 @@ public class LoginController {
 	
 	@GetMapping("/loginsuccess")
 	public String loginCheck(){
+		
 		Optional <SimpleGrantedAuthority> rol = (Optional<SimpleGrantedAuthority> ) SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst();
 		if(rol.isPresent()) {
 			String rolStr = rol.get().getAuthority();
@@ -61,11 +66,14 @@ public class LoginController {
 	}
 	
 	@GetMapping("/recoverypasswordform")
-	public ModelAndView recoverypasswordform() {
+	public ModelAndView recoverypasswordform(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error) {
 		ModelAndView mav = new ModelAndView(ViewConstants.RECOVERYPASSWORD_FORM);
 		
 		UserEntity user = new UserEntity();
 		
+		mav.addObject("error", error);
+		mav.addObject("result", result);
 		mav.addObject("user",user);
 		
 		return mav;
@@ -73,21 +81,24 @@ public class LoginController {
 	
 	@PostMapping("/recoverypassword")
 	public ModelAndView recoverypassword(@ModelAttribute(name="user") UserEntity user, Model model) {
-		
+		String error = null;
+		String result = null;
 		if(!userService.userExist(user.getEmail())) {
-			//Arrojar mensaje de error TEST2
+			error = "El email introducido no existe.";
+			return new ModelAndView("redirect:/recoverypasswordform?error="+error);
 		}else {
 			RandomPassword rp = new RandomPassword();
 			user.setPassword(rp.nextString());
 			UserEntity newUser = userService.updatePassword(user.getEmail(), user.getPassword());
 			if(newUser != null) {
-				emailService.sendSimpleMessage(user.getEmail(), "Cambio de contraseña BambinoCare", "Hola " + newUser.getName() + "!,\n\r "
+				emailService.sendSimpleMessage(user.getEmail(), "BambinoCare - Cambio de contraseña", "Hola " + newUser.getName() + "!,\n\r "
 						+ "Te enviamos tu nueva contraseña: " + user.getPassword());
+				result = "Tu nueva contraseña fue enviada a tu correo.";
+				return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 			}else {
-				//Arrojar error Test3
+				error = "Ocurrió un error al intentar reestablecer tu contraseña, por favor intentalo de nuevo.";
+				return new ModelAndView("redirect:/recoverypasswordform?error="+error);
 			}
 		}
-		
-		return new ModelAndView(ViewConstants.RECOVERYPASSWORD_FORM);
 	}
 }

@@ -110,7 +110,7 @@
 			</div>
 			<div class="col s1"></div>
 			<div th:if="${error != null}" id="error"></div>
-			<div th:if="${result != null}" id="result"></div>
+			<div th:if="${result != null}" id="success"></div>
 		</div>
 	</div>
 	<!-- Usuarios inicio  -->
@@ -346,11 +346,7 @@
 		    });
 		  $('#success')
 		    .show(1000, function() {
-		      Materialize.toast('Usuario registrado con éxito!',4000,'rounded waves-effect');
-		    });
-		  $('#failed')
-		    .show(1000, function() {
-		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
 		    });
 		});
      </script>

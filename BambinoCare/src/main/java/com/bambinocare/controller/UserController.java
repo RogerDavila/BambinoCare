@@ -132,7 +132,7 @@ public class UserController {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(getDate(booking.getDate(),1).before(getDate(Calendar.getInstance().getTime(),0))){
-			error = "No puedes reservar en fechas pasadas";
+			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
 		
@@ -229,7 +229,7 @@ public class UserController {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(getDate(booking.getDate(),1).before(getDate(Calendar.getInstance().getTime(),0))){
-			error = "No puedes reservar en fechas pasadas";
+			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 		

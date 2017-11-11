@@ -122,7 +122,7 @@ public class AdminController {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/admin/showbookings?error=" + error;
 		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
-			error = "No puedes reservar en fechas pasadas";
+			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			return "redirect:/admin/showbookings?error=" + error;
 		}
 

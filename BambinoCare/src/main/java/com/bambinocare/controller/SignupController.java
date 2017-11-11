@@ -1,13 +1,12 @@
 package com.bambinocare.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,6 +48,11 @@ public class SignupController {
 	@GetMapping("/signupform")
 	public String showSignupForm(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, Model model) {
+		
+		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().getAuthority().equals("ROLE_ANONYMOUS")) {
+			return "redirect:/loginsuccess";
+		}
+		
 		ClientEntity client = new ClientEntity();
 
 		List<RolEntity> roles = rolService.findAllRoles();
