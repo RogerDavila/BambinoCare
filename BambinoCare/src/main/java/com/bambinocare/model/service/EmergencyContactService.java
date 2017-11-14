@@ -11,6 +11,6 @@ public interface EmergencyContactService {
 	List<EmergencyContactEntity> findByClient(ClientEntity client);
 	List<EmergencyContactEntity> findByUser(UserEntity user);
 	EmergencyContactEntity createContact(EmergencyContactEntity contact);
-	EmergencyContactEntity findEmergencyContactByIdContactAndUser(Integer idContact, UserEntity user);
+	EmergencyContactEntity findByContactIdAndUser(Integer contactId, UserEntity user);
 	
 }

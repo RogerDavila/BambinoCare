@@ -10,10 +10,10 @@ public interface BookingService {
 	List<BookingEntity> findAllBookings();
 	BookingEntity createBooking(BookingEntity booking);
 	List<BookingEntity> findByUser(UserEntity user);
-	BookingEntity findBookingByIdBooking(Integer idBooking);
+	BookingEntity findByBookingId(Integer bookingId);
 	boolean bookingExist(BookingEntity booking);
-	BookingEntity findBookingByIdBookingAndUser(Integer idBooking, UserEntity user);
-	BookingEntity findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking, UserEntity user, String bookingStatusDesc);
-	BookingEntity findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(Integer idBooking,String... bookingStatusDesc);
+	BookingEntity findByBookingIdAndUser(Integer bookingId, UserEntity user);
+	BookingEntity findByBookingIdAndUserAndBookingStatusBookingStatusDescNotIn(Integer bookingId, UserEntity user, String bookingStatusDesc);
+	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescNotIn(Integer bookingId,String... bookingStatusDesc);
 	
 }

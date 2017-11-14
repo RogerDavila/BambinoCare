@@ -11,5 +11,5 @@ public interface BambinoService {
 	List<BambinoEntity> findByClient(ClientEntity client);
 	BambinoEntity createBambino(BambinoEntity bambino);
 	List<BambinoEntity> findByUser(UserEntity user);
-	BambinoEntity findBambinoByBambinoIdAndUser(Integer bambinoId, UserEntity user);
+	BambinoEntity findByBambinoIdAndUser(Integer bambinoId, UserEntity user);
 }

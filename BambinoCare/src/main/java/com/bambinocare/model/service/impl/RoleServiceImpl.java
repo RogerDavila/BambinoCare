@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.repository.RoleRepository;
-import com.bambinocare.model.service.RolService;
+import com.bambinocare.model.service.RoleService;
 
-@Service("rolService")
-public class RolServiceImpl implements RolService{
+@Service("roleService")
+public class RoleServiceImpl implements RoleService{
 
 	@Autowired
 	@Qualifier("roleRepository")

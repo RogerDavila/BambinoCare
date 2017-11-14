@@ -11,6 +11,6 @@ import com.bambinocare.model.entity.UserEntity;
 public interface UserRepository extends JpaRepository<UserEntity, Serializable> {
 	
 	UserEntity findByEmail(String email); 
-	UserEntity findByIdUser(Integer idUser);
+	UserEntity findByUserId(Integer userId);
 	
 }

@@ -18,7 +18,7 @@ import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.NannyService;
-import com.bambinocare.model.service.RolService;
+import com.bambinocare.model.service.RoleService;
 
 @Controller
 @RequestMapping("/nannies")
@@ -29,8 +29,8 @@ public class NannyController {
 	private NannyService nannyService;
 	
 	@Autowired
-	@Qualifier("rolService")
-	private RolService rolService;
+	@Qualifier("roleService")
+	private RoleService roleService;
 	
 	@GetMapping("/shownannies")
 	public ModelAndView showNannies(){
@@ -45,7 +45,7 @@ public class NannyController {
 	public String showNannyCreate(Model model){
 		NannyEntity nanny = new NannyEntity();
 		
-		List<RoleEntity> roles =  rolService.findAllRoles();
+		List<RoleEntity> roles =  roleService.findAllRoles();
 		
 		model.addAttribute("roles", roles);
 		model.addAttribute("nanny", nanny);
@@ -54,14 +54,14 @@ public class NannyController {
 	}
 	
 	@GetMapping("/nannyeditform")
-	public String showNannyEdit(@RequestParam(name="idNanny", required=true) Integer idNanny, Model model){
+	public String showNannyEdit(@RequestParam(name="nannyId", required=true) Integer nannyId, Model model){
 		NannyEntity nanny = new NannyEntity(new UserEntity());
 		
-		if(idNanny > 0 ){
-			nanny = nannyService.findNannyByIdNanny(idNanny);
+		if(nannyId > 0 ){
+			nanny = nannyService.findByNannyId(nannyId);
 		}
 		
-		List<RoleEntity> roles =  rolService.findAllRoles();
+		List<RoleEntity> roles =  roleService.findAllRoles();
 		
 		model.addAttribute("roles", roles);
 		model.addAttribute("nanny",nanny);
@@ -97,8 +97,8 @@ public class NannyController {
 	}
 	
 	@GetMapping("/removenanny")
-	public String removeUser(@RequestParam(name="idNanny", required=true) Integer idNanny){
-		nannyService.removeNanny(idNanny);
+	public String removeUser(@RequestParam(name="nannyId", required=true) Integer nannyId){
+		nannyService.removeNanny(nannyId);
 		return "redirect:/nannies/shownannies";
 	}
 }

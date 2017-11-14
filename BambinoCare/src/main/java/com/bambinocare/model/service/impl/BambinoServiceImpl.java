@@ -40,7 +40,7 @@ public class BambinoServiceImpl implements BambinoService {
 	}
 
 	@Override
-	public BambinoEntity findBambinoByBambinoIdAndUser(Integer bambinoId, UserEntity user) {
+	public BambinoEntity findByBambinoIdAndUser(Integer bambinoId, UserEntity user) {
 		return bambinoRepository.findByBambinoIdAndClientUser(bambinoId, user);
 	}
 

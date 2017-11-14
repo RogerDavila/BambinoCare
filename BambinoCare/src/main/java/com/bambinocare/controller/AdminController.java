@@ -71,7 +71,7 @@ public class AdminController {
 		ModelAndView mav = new ModelAndView(ViewConstants.ADMIN_VIEW);
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userLogged = userService.findUserByEmail(user.getUsername());
+		UserEntity userLogged = userService.findByEmail(user.getUsername());
 
 		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findAllBookings());
@@ -82,15 +82,15 @@ public class AdminController {
 	}
 
 	@PostMapping("/showbookingdetail")
-	public String showBookingDetail(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+	public String showBookingDetail(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
-		BookingEntity booking = bookingService.findBookingByIdBooking(idBooking);
+		BookingEntity booking = bookingService.findByBookingId(bookingId);
 
 		if (booking != null) {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
@@ -116,13 +116,13 @@ public class AdminController {
 	
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBooking,
+			@RequestParam(required = false) String error, @RequestParam(required = true) Integer bookingId,
 			Model model) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
-		BookingEntity booking = bookingService.findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(idBooking,
+		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId,
 				"Cancelada");
 
 		if (booking == null) {
@@ -170,7 +170,7 @@ public class AdminController {
 			return "redirect:/admin/showbookings?error=" + error;
 		}
 
-		BookingEntity oldBooking = bookingService.findBookingByIdBooking(booking.getBookingId());
+		BookingEntity oldBooking = bookingService.findByBookingId(booking.getBookingId());
 
 		oldBooking.setDuration(booking.getDuration());
 		oldBooking.setDate(getDate(booking.getDate(), 1));
@@ -192,12 +192,12 @@ public class AdminController {
 	}
 
 	@PostMapping("/cancelbooking")
-	public String cancelBooking(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+	public String cancelBooking(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
 
-		BookingEntity booking = bookingService.findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(idBooking,
+		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId,
 				"Cancelada");
 
 		if (booking != null) {
@@ -230,12 +230,12 @@ public class AdminController {
 	}
 	
 	@PostMapping("/approvebooking")
-	public String approveBooking(@RequestParam(name = "idbooking", required=false) Integer idBooking, @ModelAttribute(name = "nanny") NannyEntity nanny,BindingResult bindingResult, Model model) {
+	public String approveBooking(@RequestParam(name = "bookingid", required=false) Integer bookingId, @ModelAttribute(name = "nanny") NannyEntity nanny,BindingResult bindingResult, Model model) {
 
 		String error = "";
 		String result = "";
 
-		BookingEntity booking = bookingService.findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(idBooking,
+		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId,
 				"Cancelada", "Agendada", "Rechazada");
 
 		if (booking != null) {
@@ -247,7 +247,7 @@ public class AdminController {
 				List<NannyEntity> nannies = nannyService.findAllNannies();
 				model.addAttribute("nanny", nannyToAssign);
 				model.addAttribute("nannies", nannies);
-				model.addAttribute("idBooking", booking.getBookingId());
+				model.addAttribute("bookingId", booking.getBookingId());
 				return ViewConstants.NANNY_ASSIGN;
 			}
 			
@@ -276,12 +276,12 @@ public class AdminController {
 	}
 	
 	@PostMapping("/rejectbooking")
-	public String rejectBooking(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+	public String rejectBooking(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
 
-		BookingEntity booking = bookingService.findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(idBooking,
+		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId,
 				"Cancelada", "Agendada", "Rechazada");
 
 		if (booking != null) {

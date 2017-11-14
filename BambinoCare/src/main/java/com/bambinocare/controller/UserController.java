@@ -84,7 +84,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView(ViewConstants.USER_SHOW);
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userLogged = userService.findUserByEmail(user.getUsername());
+		UserEntity userLogged = userService.findByEmail(user.getUsername());
 
 		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
@@ -98,15 +98,15 @@ public class UserController {
 	}
 
 	@PostMapping("/showbookingdetail")
-	public String showBookingDetail(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+	public String showBookingDetail(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
-		BookingEntity booking = bookingService.findBookingByIdBookingAndUser(idBooking, userEntity);
+		BookingEntity booking = bookingService.findByBookingIdAndUser(bookingId, userEntity);
 
 		if (booking != null) {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
@@ -139,7 +139,7 @@ public class UserController {
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("booking", booking);
@@ -223,14 +223,14 @@ public class UserController {
 
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBooking,
+			@RequestParam(required = false) String error, @RequestParam(required = true) Integer bookingId,
 			Model model) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
-		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(
-				idBooking, userEntity, "Cancelada");
+		BookingEntity booking = bookingService.findByBookingIdAndUserAndBookingStatusBookingStatusDescNotIn(
+				bookingId, userEntity, "Cancelada");
 
 		if (booking == null) {
 			error = "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
@@ -278,9 +278,9 @@ public class UserController {
 		}
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
-		BookingEntity oldBooking = bookingService.findBookingByIdBookingAndUser(booking.getBookingId(), userEntity);
+		BookingEntity oldBooking = bookingService.findByBookingIdAndUser(booking.getBookingId(), userEntity);
 
 		oldBooking.setDuration(booking.getDuration());
 		oldBooking.setDate(getDate(booking.getDate(), 1));
@@ -356,7 +356,7 @@ public class UserController {
 			return "redirect:/users/showbookings?error=" + error;
 		}
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
 		ClientEntity oldClient = clientService.findByUser(userEntity);
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -386,16 +386,16 @@ public class UserController {
 	}
 
 	@PostMapping("/cancelbooking")
-	public String cancelBooking(@RequestParam(name = "idbooking") Integer idBooking, Model model) {
+	public String cancelBooking(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
-		BookingEntity booking = bookingService.findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(
-				idBooking, userEntity, "Cancelada");
+		BookingEntity booking = bookingService.findByBookingIdAndUserAndBookingStatusBookingStatusDescNotIn(
+				bookingId, userEntity, "Cancelada");
 
 		if (booking != null) {
 			BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Cancelada");
@@ -467,7 +467,7 @@ public class UserController {
 		BambinoEntity bambino = new BambinoEntity();
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("bambino", bambino);
@@ -479,11 +479,11 @@ public class UserController {
 	
 	@GetMapping("/editBambinoForm")
 	public String editBambinoForm(@RequestParam(required = false) String result,
-		@RequestParam(required = false) String error, @RequestParam(required = true) Integer idBambino, Model model) {
+		@RequestParam(required = false) String error, @RequestParam(required = true) Integer bambinoId, Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		
-		BambinoEntity bambino = bambinoService.findBambinoByBambinoIdAndUser(idBambino, userEntity);
+		BambinoEntity bambino = bambinoService.findByBambinoIdAndUser(bambinoId, userEntity);
 
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
@@ -517,9 +517,9 @@ public class UserController {
 		}
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		
-		BambinoEntity oldbambino = bambinoService.findBambinoByBambinoIdAndUser(bambino.getBambinoId(), userEntity);
+		BambinoEntity oldbambino = bambinoService.findByBambinoIdAndUser(bambino.getBambinoId(), userEntity);
 		
 		oldbambino.setFirstname(bambino.getFirstname());
 		oldbambino.setLastname(bambino.getLastname());
@@ -546,7 +546,7 @@ public class UserController {
 		EmergencyContactEntity contact = new EmergencyContactEntity();
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("contact", contact);
@@ -606,11 +606,11 @@ public class UserController {
 	
 	@GetMapping("/editcontactForm")
 	public String editContactForm(@RequestParam(required = false) String result,
-		@RequestParam(required = false) String error, @RequestParam(required = true) Integer idContacto, Model model) {
+		@RequestParam(required = false) String error, @RequestParam(required = true) Integer contactId, Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		
-		EmergencyContactEntity contact = emergencyContactService.findEmergencyContactByIdContactAndUser(idContacto, userEntity);
+		EmergencyContactEntity contact = emergencyContactService.findByContactIdAndUser(contactId, userEntity);
 
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
@@ -656,9 +656,9 @@ public class UserController {
 		}
 		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		
-		EmergencyContactEntity oldcontact = emergencyContactService.findEmergencyContactByIdContactAndUser(contact.getContactId(), userEntity);
+		EmergencyContactEntity oldcontact = emergencyContactService.findByContactIdAndUser(contact.getContactId(), userEntity);
 		
 		oldcontact.setFirstname(contact.getFirstname());
 		oldcontact.setLastname(contact.getLastname());

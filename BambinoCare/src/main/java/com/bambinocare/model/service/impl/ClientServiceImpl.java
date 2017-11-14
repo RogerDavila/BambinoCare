@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.bambinocare.model.entity.ClientEntity;
-import com.bambinocare.model.entity.RolEntity;
+import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.ClientRepository;
 import com.bambinocare.model.service.ClientService;
@@ -24,9 +24,9 @@ public class ClientServiceImpl implements ClientService{
 		
 		if(client == null) return null;
 		
-		RolEntity rolEntity = new RolEntity(3, "Cliente");
+		RoleEntity roleEntity = new RoleEntity(3, "Cliente");
 		
-		client.getUser().setRol(rolEntity);
+		client.getUser().setRole(roleEntity);
 		client.getUser().setEnabled(true);
 		
 		UserEntity user = client.getUser();

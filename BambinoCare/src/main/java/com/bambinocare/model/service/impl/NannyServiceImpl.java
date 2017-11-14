@@ -24,8 +24,8 @@ public class NannyServiceImpl implements NannyService{
 	}
 
 	@Override
-	public NannyEntity findNannyByIdNanny(Integer idNanny) {
-		return nannyRepository.findByIdNanny(idNanny);
+	public NannyEntity findByNannyId(Integer nannyId) {
+		return nannyRepository.findByNannyId(nannyId);
 	}
 	
 	@Override
@@ -43,8 +43,8 @@ public class NannyServiceImpl implements NannyService{
 	}
 	
 	@Override
-	public void removeNanny(Integer idNanny){
-		nannyRepository.delete(findNannyByIdNanny(idNanny));
+	public void removeNanny(Integer nannyId){
+		nannyRepository.delete(findByNannyId(nannyId));
 	}
 	
 }

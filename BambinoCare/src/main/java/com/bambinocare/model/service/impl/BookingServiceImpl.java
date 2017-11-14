@@ -34,14 +34,14 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public BookingEntity findBookingByIdBooking(Integer idBooking) {
-		return bookingRepository.findByIdBooking(idBooking);
+	public BookingEntity findByBookingId(Integer bookingId) {
+		return bookingRepository.findByBookingId(bookingId);
 	}
 
 	@Override
 	public boolean bookingExist(BookingEntity booking) {
 
-		if(findBookingByIdBooking(booking.getIdBooking()) != null) {
+		if(findByBookingId(booking.getBookingId()) != null) {
 			return true;
 		}
 		
@@ -49,20 +49,20 @@ public class BookingServiceImpl implements BookingService{
 	}
 
 	@Override
-	public BookingEntity findBookingByIdBookingAndUser(Integer idBooking, UserEntity user) {
-		return bookingRepository.findByIdBookingAndClientUser(idBooking, user);
+	public BookingEntity findByBookingIdAndUser(Integer bookingId, UserEntity user) {
+		return bookingRepository.findByBookingIdAndClientUser(bookingId, user);
 	}
 
 	@Override
-	public BookingEntity findBookingByIdBookingAndUserAndBookingStatusBookingStatusDescNotIn(Integer idBooking,
+	public BookingEntity findByBookingIdAndUserAndBookingStatusBookingStatusDescNotIn(Integer bookingId,
 			UserEntity user, String bookingStatusDesc) {
-		return bookingRepository.findByIdBookingAndClientUserAndBookingStatusBookingStatusDescNotIn(idBooking, user, bookingStatusDesc);
+		return bookingRepository.findByBookingIdAndClientUserAndBookingStatusBookingStatusDescNotIn(bookingId, user, bookingStatusDesc);
 	}
 
 	@Override
-	public BookingEntity findBookingByIdBookingAndBookingStatusBookingStatusDescNotIn(Integer idBooking,
+	public BookingEntity findByBookingIdAndBookingStatusBookingStatusDescNotIn(Integer bookingId,
 			String... bookingStatusDesc) {
-		return bookingRepository.findByIdBookingAndBookingStatusBookingStatusDescNotIn(idBooking, bookingStatusDesc);
+		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId, bookingStatusDesc);
 	}
 	
 }

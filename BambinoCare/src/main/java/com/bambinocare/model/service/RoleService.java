@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.bambinocare.model.entity.RoleEntity;
 
-public interface RolService {
+public interface RoleService {
 
 	List<RoleEntity> findAllRoles();
 	

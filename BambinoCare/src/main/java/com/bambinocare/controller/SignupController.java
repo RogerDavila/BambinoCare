@@ -22,7 +22,7 @@ import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.EmailService;
-import com.bambinocare.model.service.RolService;
+import com.bambinocare.model.service.RoleService;
 import com.bambinocare.model.service.UserService;
 
 @Controller
@@ -34,8 +34,8 @@ public class SignupController {
 	private ClientService clientService;
 
 	@Autowired
-	@Qualifier("rolService")
-	private RolService rolService;
+	@Qualifier("roleService")
+	private RoleService roleService;
 
 	@Autowired
 	@Qualifier("userService")
@@ -55,7 +55,7 @@ public class SignupController {
 		
 		ClientEntity client = new ClientEntity();
 
-		List<RoleEntity> roles = rolService.findAllRoles();
+		List<RoleEntity> roles = roleService.findAllRoles();
 
 		model.addAttribute("error", error);
 		model.addAttribute("result", result);

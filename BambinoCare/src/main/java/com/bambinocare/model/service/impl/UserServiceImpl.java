@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.User;
 
-import com.bambinocare.model.entity.RolEntity;
+import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.UserRepository;
 import com.bambinocare.model.service.UserService;
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		UserEntity user = userRepository.findByEmail(email);
-		List<GrantedAuthority> authorities = buildAuthorities(user.getRol());
+		List<GrantedAuthority> authorities = buildAuthorities(user.getRole());
 		return buildUser(user, authorities);
 	}
 	
@@ -40,9 +40,9 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 				true, true, true, authorities);
 	}
 	
-	private List<GrantedAuthority> buildAuthorities(RolEntity rol){
+	private List<GrantedAuthority> buildAuthorities(RoleEntity rol){
 		Set<GrantedAuthority> auths = new HashSet<>();
-		auths.add(new SimpleGrantedAuthority(rol.getRolDesc()));
+		auths.add(new SimpleGrantedAuthority(rol.getRoleDesc()));
 
 		return new ArrayList<GrantedAuthority>(auths);
 	}
@@ -53,13 +53,13 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 	} 
 	
 	@Override
-	public UserEntity findUserByEmail(String email){
+	public UserEntity findByEmail(String email){
 		return userRepository.findByEmail(email);
 	}
 	
 	@Override
-	public void removeUser(Integer idUser){
-		userRepository.delete(findUserByIdUser(idUser));
+	public void removeUser(Integer userId){
+		userRepository.delete(findByUserId(userId));
 	}
 	
 	@Override
@@ -77,19 +77,19 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 	}
 
 	@Override
-	public UserEntity findUserByIdUser(Integer idUser) {
-		return userRepository.findByIdUser(idUser);
+	public UserEntity findByUserId(Integer userId) {
+		return userRepository.findByUserId(userId);
 	}
 
 	@Override
 	public boolean userExist(String email) {
-		return findUserByEmail(email) != null ? true : false;
+		return findByEmail(email) != null ? true : false;
 	}
 	
 	@Override
 	public UserEntity updatePassword(String email, String password) {
 		
-		UserEntity user = findUserByEmail(email);
+		UserEntity user = findByEmail(email);
 		user.setPassword(password);
 		UserEntity newUser = createUser(user);
 		

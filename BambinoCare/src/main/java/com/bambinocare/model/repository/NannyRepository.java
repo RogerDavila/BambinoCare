@@ -13,6 +13,6 @@ import com.bambinocare.model.entity.NannyEntity;
 public interface NannyRepository extends JpaRepository<NannyEntity, Serializable>{
 
 	List<NannyEntity> findAll();
-	NannyEntity findByIdNanny(Integer idNanny);
+	NannyEntity findByNannyId(Integer nannyId);
 	
 }

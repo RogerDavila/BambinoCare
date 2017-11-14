@@ -38,8 +38,8 @@ public class EmergencyContactServiceImpl implements EmergencyContactService{
 	}
 	
 	@Override
-	public EmergencyContactEntity findEmergencyContactByIdContactAndUser(Integer idContact, UserEntity user) {
-		return emergencyContactRepository.findByidContactoAndClientUser(idContact, user);
+	public EmergencyContactEntity findByContactIdAndUser(Integer contactId, UserEntity user) {
+		return emergencyContactRepository.findByContactIdAndClientUser(contactId, user);
 	}
 	
 }
