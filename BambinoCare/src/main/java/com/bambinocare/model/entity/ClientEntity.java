@@ -17,53 +17,49 @@ public class ClientEntity {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_client",nullable=false, unique=true)
-	private Integer idClient;
+	@Column(name="client_id",nullable=false, unique=true)
+	private Integer clientId;
 	
-	@JoinColumn(name="id_user", nullable=false)
+	@JoinColumn(name="user_id", nullable=false)
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private UserEntity user;
 	
-	@Column(name="employment", nullable=false)
-	private String employment;
+	@Column(name="job", nullable=false)
+	private String job;
 	
 	@Column(name="street", nullable=false)
 	private String street;
 	
-	@Column(name="suburb", nullable=false)
-	private String suburb;
+	@Column(name="neighborhood", nullable=false)
+	private String neighborhood;
 	
-	@Column(name="town", nullable=false)
-	private String town;
+	@Column(name="city", nullable=false)
+	private String city;
 	
 	@Column(name="state", nullable=false)
 	private String state;
-	
-	public ClientEntity(Integer idClient, UserEntity user, String employment, String street, String suburb, String town,
+
+	public ClientEntity(Integer clientId, UserEntity user, String job, String street, String neighborhood, String city,
 			String state) {
 		super();
-		this.idClient = idClient;
+		this.clientId = clientId;
 		this.user = user;
-		this.employment = employment;
+		this.job = job;
 		this.street = street;
-		this.suburb = suburb;
-		this.town = town;
+		this.neighborhood = neighborhood;
+		this.city = city;
 		this.state = state;
 	}
 
-	
-	
 	public ClientEntity() {
 	}
 
-
-
-	public Integer getIdClient() {
-		return idClient;
+	public Integer getClientId() {
+		return clientId;
 	}
 
-	public void setIdClient(Integer idClient) {
-		this.idClient = idClient;
+	public void setClientId(Integer clientId) {
+		this.clientId = clientId;
 	}
 
 	public UserEntity getUser() {
@@ -74,12 +70,12 @@ public class ClientEntity {
 		this.user = user;
 	}
 
-	public String getEmployment() {
-		return employment;
+	public String getJob() {
+		return job;
 	}
 
-	public void setEmployment(String employment) {
-		this.employment = employment;
+	public void setJob(String job) {
+		this.job = job;
 	}
 
 	public String getStreet() {
@@ -90,20 +86,20 @@ public class ClientEntity {
 		this.street = street;
 	}
 
-	public String getSuburb() {
-		return suburb;
+	public String getNeighborhood() {
+		return neighborhood;
 	}
 
-	public void setSuburb(String suburb) {
-		this.suburb = suburb;
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
 	}
 
-	public String getTown() {
-		return town;
+	public String getCity() {
+		return city;
 	}
 
-	public void setTown(String town) {
-		this.town = town;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getState() {
@@ -113,5 +109,5 @@ public class ClientEntity {
 	public void setState(String state) {
 		this.state = state;
 	}
-
+	
 }

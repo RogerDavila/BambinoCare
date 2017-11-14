@@ -17,8 +17,8 @@ public class UserEntity {
 	
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name="id_user")
-	private Integer idUser;
+	@Column(name="user_id")
+	private Integer userId;
 	
 	@Column(name="email", nullable=false, unique=true)
 	private String email;
@@ -29,45 +29,45 @@ public class UserEntity {
 	@Transient
 	private String passwordConfirm;
 	
-	@JoinColumn(name="id_rol", nullable=false)
+	@JoinColumn(name="role_id", nullable=false)
 	@OneToOne(fetch = FetchType.EAGER)
-	private RolEntity rol;
+	private RoleEntity role;
 	
 	@Column(name="enabled",nullable=false)
 	private boolean enabled;
 	
-	@Column(name="name", nullable=false)
-	private String name;
+	@Column(name="firstname", nullable=false)
+	private String firstname;
 
 	@Column(name="lastname", nullable=false)
 	private String lastname;
 	
-	@Column(name="telephone", nullable=false)
-	private String telephone;
-	
-	public UserEntity(Integer idUser, String email, String password, RolEntity rol, boolean enabled, String name,
-			String lastname, String telephone) {
-		this.idUser = idUser;
+	@Column(name="phone", nullable=false)
+	private String phone;
+
+	public UserEntity(Integer userId, String email, String password, String passwordConfirm, RoleEntity role,
+			boolean enabled, String firstname, String lastname, String phone) {
+		super();
+		this.userId = userId;
 		this.email = email;
 		this.password = password;
-		this.rol = rol;
+		this.passwordConfirm = passwordConfirm;
+		this.role = role;
 		this.enabled = enabled;
-		this.name = name;
+		this.firstname = firstname;
 		this.lastname = lastname;
-		this.telephone = telephone;
+		this.phone = phone;
 	}
 
 	public UserEntity() {
 	}
 
-
-
-	public Integer getIdUser() {
-		return idUser;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setIdUser(Integer idUser) {
-		this.idUser = idUser;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getEmail() {
@@ -86,12 +86,20 @@ public class UserEntity {
 		this.password = password;
 	}
 
-	public RolEntity getRol() {
-		return rol;
+	public String getPasswordConfirm() {
+		return passwordConfirm;
 	}
 
-	public void setRol(RolEntity rol) {
-		this.rol = rol;
+	public void setPasswordConfirm(String passwordConfirm) {
+		this.passwordConfirm = passwordConfirm;
+	}
+
+	public RoleEntity getRole() {
+		return role;
+	}
+
+	public void setRole(RoleEntity role) {
+		this.role = role;
 	}
 
 	public boolean isEnabled() {
@@ -102,12 +110,12 @@ public class UserEntity {
 		this.enabled = enabled;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	public String getLastname() {
@@ -118,20 +126,12 @@ public class UserEntity {
 		this.lastname = lastname;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
-	}
-	
-	public String getPasswordConfirm() {
-		return passwordConfirm;
-	}
-
-	public void setPasswordConfirm(String passwordConfirm) {
-		this.passwordConfirm = passwordConfirm;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
 }

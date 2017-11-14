@@ -14,33 +14,34 @@ import com.bambinocare.model.repository.BambinoRepository;
 import com.bambinocare.model.service.BambinoService;
 
 @Service("bambinoService")
-public class BambinoServiceImpl implements BambinoService{
+public class BambinoServiceImpl implements BambinoService {
 
 	@Autowired
 	@Qualifier("bambinoRepository")
 	private BambinoRepository bambinoRepository;
-	
+
 	@Override
 	public List<BambinoEntity> findByClient(ClientEntity client) {
-		
-		if(client==null) return new ArrayList<>();
-		
+
+		if (client == null)
+			return new ArrayList<>();
+
 		return bambinoRepository.findByClient(client);
 	}
 
 	@Override
-	public BambinoEntity createBambino(BambinoEntity bambino){
+	public BambinoEntity createBambino(BambinoEntity bambino) {
 		return bambinoRepository.save(bambino);
 	}
-	
+
 	@Override
 	public List<BambinoEntity> findByUser(UserEntity user) {
 		return bambinoRepository.findByClientUser(user);
 	}
-	
+
 	@Override
-	public BambinoEntity findBambinoByIdBambinoAndUser(Integer idBambino, UserEntity user) {
-		return bambinoRepository.findByIdBambinoAndClientUser(idBambino, user);
+	public BambinoEntity findBambinoByBambinoIdAndUser(Integer bambinoId, UserEntity user) {
+		return bambinoRepository.findByBambinoIdAndClientUser(bambinoId, user);
 	}
-	
+
 }

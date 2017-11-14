@@ -91,7 +91,7 @@ public class LoginController {
 			user.setPassword(rp.nextString());
 			UserEntity newUser = userService.updatePassword(user.getEmail(), user.getPassword());
 			if(newUser != null) {
-				emailService.sendSimpleMessage(user.getEmail(), "BambinoCare - Cambio de contraseña", "Hola " + newUser.getName() + "!,\n\r "
+				emailService.sendSimpleMessage(user.getEmail(), "BambinoCare - Cambio de contraseña", "Hola " + newUser.getFirstname() + "!,\n\r "
 						+ "Te enviamos tu nueva contraseña: " + user.getPassword());
 				result = "Tu nueva contraseña fue enviada a tu correo.";
 				return new ModelAndView("redirect:/recoverypasswordform?result="+result);

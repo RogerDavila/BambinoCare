@@ -11,59 +11,58 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="bambino")
+@Table(name = "bambino")
 public class BambinoEntity {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_bambino",nullable=false, unique=true)
-	private Integer idBambino;
-	
-	@JoinColumn(name="id_client", nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "bambino_id", nullable = false, unique = true)
+	private Integer bambinoId;
+
+	@JoinColumn(name = "client_id", nullable = false)
 	@OneToOne(fetch = FetchType.EAGER)
 	private ClientEntity client;
-	
-	@Column(name="name", nullable=false)
-	private String name;
-	
-	@Column(name="lastname", nullable=false)
-	private String lastname;
-	
-	@Column(name="age", nullable=false)
-	private Integer age;
-	
-	@Column(name="medical_situation", nullable=false)
-	private String medicalSituation;
-	
-	@Column(name="degree")
-	private String degree;
-	
-	@Column(name="observation", nullable=false)
-	private String observation;
 
-	
-	public BambinoEntity(Integer idBambino, ClientEntity client, String name, String lastname, Integer age,
-			String medicalSituation, String degree, String observation) {
+	@Column(name = "firstname", nullable = false)
+	private String firstname;
+
+	@Column(name = "lastname", nullable = false)
+	private String lastname;
+
+	@Column(name = "age", nullable = false)
+	private Integer age;
+
+	@Column(name = "medical_situation", nullable = false)
+	private String medicalSituation;
+
+	@Column(name = "grade")
+	private String grade;
+
+	@Column(name = "comments", nullable = false)
+	private String comments;
+
+	public BambinoEntity(Integer bambinoId, ClientEntity client, String firstname, String lastname, Integer age,
+			String medicalSituation, String grade, String comments) {
 		super();
-		this.idBambino = idBambino;
+		this.bambinoId = bambinoId;
 		this.client = client;
-		this.name = name;
+		this.firstname = firstname;
 		this.lastname = lastname;
 		this.age = age;
 		this.medicalSituation = medicalSituation;
-		this.degree = degree;
-		this.observation = observation;
+		this.grade = grade;
+		this.comments = comments;
 	}
 
 	public BambinoEntity() {
 	}
 
-	public Integer getIdBambino() {
-		return idBambino;
+	public Integer getBambinoId() {
+		return bambinoId;
 	}
 
-	public void setIdBambino(Integer idBambino) {
-		this.idBambino = idBambino;
+	public void setBambinoId(Integer bambinoId) {
+		this.bambinoId = bambinoId;
 	}
 
 	public ClientEntity getClient() {
@@ -74,12 +73,12 @@ public class BambinoEntity {
 		this.client = client;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	public String getLastname() {
@@ -106,20 +105,20 @@ public class BambinoEntity {
 		this.medicalSituation = medicalSituation;
 	}
 
-	public String getDegree() {
-		return degree;
+	public String getGrade() {
+		return grade;
 	}
 
-	public void setDegree(String degree) {
-		this.degree = degree;
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
 
-	public String getObservation() {
-		return observation;
+	public String getComments() {
+		return comments;
 	}
 
-	public void setObservation(String observation) {
-		this.observation = observation;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
-	
+
 }

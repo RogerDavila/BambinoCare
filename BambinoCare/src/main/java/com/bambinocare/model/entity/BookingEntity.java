@@ -25,14 +25,14 @@ public class BookingEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_booking")
-	private Integer idBooking;
+	@Column(name = "booking_id")
+	private Integer bookingId;
 
-	@JoinColumn(name="id_client", nullable=false)
+	@JoinColumn(name = "client_id", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ClientEntity client;
 
-	@JoinColumn(name = "id_booking_type", nullable = false)
+	@JoinColumn(name = "booking_type_id", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private BookingTypeEntity bookingType;
 
@@ -40,39 +40,39 @@ public class BookingEntity {
 	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(iso = ISO.DATE)
 	private Date date;
-	
+
 	@Column(name = "hour", nullable = false)
 	private String hour;
 
 	@Column(name = "duration", nullable = false)
 	private Double duration;
 
-	@JoinColumn(name = "id_booking_status", nullable = false)
+	@JoinColumn(name = "booking_status_id", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private BookingStatusEntity bookingStatus;
 
-	@JoinColumn(name = "id_nanny", nullable = true)
+	@JoinColumn(name = "nanny_id", nullable = true)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private NannyEntity nanny;
-	
+
 	@Column(name = "cost", nullable = false)
 	private Double cost;
-	
-	@JoinColumn(name = "id_tutory", nullable = true)
-	@OneToOne(fetch = FetchType.EAGER, optional=true)
+
+	@JoinColumn(name = "tutory_id", nullable = true)
+	@OneToOne(fetch = FetchType.EAGER, optional = true)
 	@Transient
 	private TutoryEntity tutory;
 
-	@JoinColumn(name = "id_event", nullable = true)
-	@OneToOne(fetch = FetchType.EAGER, optional=true)
+	@JoinColumn(name = "event_id", nullable = true)
+	@OneToOne(fetch = FetchType.EAGER, optional = true)
 	@Transient
 	private EventEntity event;
 
-	public BookingEntity(Integer idBooking, ClientEntity client, BookingTypeEntity bookingType, Date date, String hour,
+	public BookingEntity(Integer bookingId, ClientEntity client, BookingTypeEntity bookingType, Date date, String hour,
 			Double duration, BookingStatusEntity bookingStatus, NannyEntity nanny, Double cost, TutoryEntity tutory,
 			EventEntity event) {
 		super();
-		this.idBooking = idBooking;
+		this.bookingId = bookingId;
 		this.client = client;
 		this.bookingType = bookingType;
 		this.date = date;
@@ -88,20 +88,20 @@ public class BookingEntity {
 	public BookingEntity() {
 	}
 
-	public String getHour() {
-		return hour;
+	public Integer getBookingId() {
+		return bookingId;
 	}
 
-	public void setHour(String hour) {
-		this.hour = hour;
+	public void setBookingId(Integer bookingId) {
+		this.bookingId = bookingId;
 	}
 
-	public Integer getIdBooking() {
-		return idBooking;
+	public ClientEntity getClient() {
+		return client;
 	}
 
-	public void setIdBooking(Integer idBooking) {
-		this.idBooking = idBooking;
+	public void setClient(ClientEntity client) {
+		this.client = client;
 	}
 
 	public BookingTypeEntity getBookingType() {
@@ -118,6 +118,14 @@ public class BookingEntity {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public String getHour() {
+		return hour;
+	}
+
+	public void setHour(String hour) {
+		this.hour = hour;
 	}
 
 	public Double getDuration() {
@@ -168,12 +176,4 @@ public class BookingEntity {
 		this.event = event;
 	}
 
-	public ClientEntity getClient() {
-		return client;
-	}
-
-	public void setClient(ClientEntity client) {
-		this.client = client;
-	}
-	
 }

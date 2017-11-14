@@ -86,7 +86,7 @@ public class UserController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userLogged = userService.findUserByEmail(user.getUsername());
 
-		mav.addObject("usernameLogged", userLogged.getName());
+		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
 		mav.addObject("bambinos", bambinoService.findByUser(userLogged));
 		mav.addObject("contacts", emergencyContactService.findByUser(userLogged));
@@ -112,7 +112,7 @@ public class UserController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 
-			model.addAttribute("usernameLogged", userEntity.getName());
+			model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 			model.addAttribute("booking", booking);
 			model.addAttribute("bookingTypes", bookingTypes);
@@ -140,7 +140,7 @@ public class UserController {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		model.addAttribute("usernameLogged", userEntity.getName());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
@@ -240,7 +240,7 @@ public class UserController {
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 
-		model.addAttribute("usernameLogged", userEntity.getName());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
@@ -280,7 +280,7 @@ public class UserController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
 
-		BookingEntity oldBooking = bookingService.findBookingByIdBookingAndUser(booking.getIdBooking(), userEntity);
+		BookingEntity oldBooking = bookingService.findBookingByIdBookingAndUser(booking.getBookingId(), userEntity);
 
 		oldBooking.setDuration(booking.getDuration());
 		oldBooking.setDate(getDate(booking.getDate(), 1));
@@ -312,7 +312,7 @@ public class UserController {
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getUser().getName() == null || client.getUser().getName().equals("")) {
+		if (client.getUser().getFirstname() == null || client.getUser().getFirstname().equals("")) {
 			error = "Favor de verificar el Nombre";
 			return "redirect:/users/showbookings?error=" + error;
 		}
@@ -322,7 +322,7 @@ public class UserController {
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getUser().getTelephone() == null || client.getUser().getTelephone().equals("")) {
+		if (client.getUser().getPhone() == null || client.getUser().getPhone().equals("")) {
 			error = "Favor de verificar el email";
 			return "redirect:/users/showbookings?error=" + error;
 		}
@@ -332,12 +332,12 @@ public class UserController {
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getSuburb() == null || client.getSuburb().equals("")) {
+		if (client.getNeighborhood() == null || client.getNeighborhood().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getTown() == null || client.getTown().equals("")) {
+		if (client.getCity() == null || client.getCity().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
@@ -347,7 +347,7 @@ public class UserController {
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getEmployment() == null || client.getEmployment().equals("")) {
+		if (client.getJob() == null || client.getJob().equals("")) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
@@ -361,13 +361,13 @@ public class UserController {
 		ClientEntity oldClient = clientService.findByUser(userEntity);
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		oldClient.setStreet(client.getStreet());
-		oldClient.setSuburb(client.getSuburb());
-		oldClient.setTown(client.getTown());
+		oldClient.setNeighborhood(client.getNeighborhood());
+		oldClient.setCity(client.getCity());
 		oldClient.setState(client.getState());
-		oldClient.getUser().setName(client.getUser().getName());
+		oldClient.getUser().setFirstname(client.getUser().getFirstname());
 		oldClient.getUser().setLastname(client.getUser().getLastname());
 		oldClient.getUser().setEmail(client.getUser().getEmail());
-		oldClient.getUser().setTelephone(client.getUser().getTelephone());
+		oldClient.getUser().setPhone(client.getUser().getPhone());
 		oldClient.getUser().setPassword(passwordEncoder.encode(client.getUser().getPassword()));
 		
 		if (clientService.saveClient(oldClient) != null) {
@@ -432,7 +432,7 @@ public class UserController {
 		String error = "";
 		String result = "";
 		
-		if(bambino.getName() == null || bambino.getName().equalsIgnoreCase("")) {
+		if(bambino.getFirstname() == null || bambino.getFirstname().equalsIgnoreCase("")) {
 			error = "Favor de verificar el Nombre";
 			return "redirect:/users/createbookingform?error=" + error;
 		}else if(bambino.getLastname() == null || bambino.getLastname().equalsIgnoreCase("")) {
@@ -441,7 +441,7 @@ public class UserController {
 		}else if(bambino.getAge() == null){
 			error = "No puedes reservar en fechas pasadas";
 			return "redirect:/users/createbookingform?error=" + error;
-		}else if(bambino.getDegree() == null || bambino.getDegree().equals("")) {
+		}else if(bambino.getGrade() == null || bambino.getGrade().equals("")) {
 			error = "Favor de verificar el campo Hora";
 			return "redirect:/users/createbookingform?error=" + error;
 		}
@@ -468,7 +468,7 @@ public class UserController {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		model.addAttribute("usernameLogged", userEntity.getName());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("bambino", bambino);
 		model.addAttribute("result", result);
@@ -483,9 +483,9 @@ public class UserController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
 		
-		BambinoEntity bambino = bambinoService.findBambinoByIdBambinoAndUser(idBambino, userEntity);
+		BambinoEntity bambino = bambinoService.findBambinoByBambinoIdAndUser(idBambino, userEntity);
 
-		model.addAttribute("usernameLogged", userEntity.getName());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("bambino", bambino);
 
@@ -502,7 +502,7 @@ public class UserController {
 		String error = "";
 		String result = "";
 		
-		if(bambino.getName() == null || bambino.getName().equals("")) {
+		if(bambino.getFirstname() == null || bambino.getFirstname().equals("")) {
 			error = "Favor de verificar el nombre";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(bambino.getLastname() == null || bambino.getLastname().equals("")) {
@@ -511,7 +511,7 @@ public class UserController {
 		}else if(bambino.getAge() == null){
 			error = "Favor de verificar la edad";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(bambino.getDegree() == null || bambino.getDegree().equals("")) {
+		}else if(bambino.getGrade() == null || bambino.getGrade().equals("")) {
 			error = "Favor de verificar el grado escolar";
 			return "redirect:/users/showbookings?error=" + error;
 		}
@@ -519,14 +519,14 @@ public class UserController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
 		
-		BambinoEntity oldbambino = bambinoService.findBambinoByIdBambinoAndUser(bambino.getIdBambino(), userEntity);
+		BambinoEntity oldbambino = bambinoService.findBambinoByBambinoIdAndUser(bambino.getBambinoId(), userEntity);
 		
-		oldbambino.setName(bambino.getName());
+		oldbambino.setFirstname(bambino.getFirstname());
 		oldbambino.setLastname(bambino.getLastname());
 		oldbambino.setAge(bambino.getAge());
-		oldbambino.setDegree(bambino.getDegree());
+		oldbambino.setGrade(bambino.getGrade());
 		oldbambino.setMedicalSituation(bambino.getMedicalSituation());
-		oldbambino.setObservation(bambino.getObservation());
+		oldbambino.setComments(bambino.getComments());
 		
 		if (bambinoService.createBambino(oldbambino) != null) {
 			result="El bambino fue modificado con éxito!";
@@ -547,7 +547,7 @@ public class UserController {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
-		model.addAttribute("usernameLogged", userEntity.getName());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("contact", contact);
 		model.addAttribute("result", result);
@@ -563,22 +563,22 @@ public class UserController {
 		String error = "";
 		String result = "";
 		
-		if(contact.getName() == null || contact.getName().equals("")) {
+		if(contact.getFirstname() == null || contact.getFirstname().equals("")) {
 			error = "Favor de verificar el Nombre";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(contact.getLastname() == null || contact.getLastname().equals("")) {
 			error = "Favor de verificar el Apellido";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(contact.getTelephone() == null || contact.getTelephone().equals("")) {
+		}else if(contact.getPhone() == null || contact.getPhone().equals("")) {
 			error = "Favor de verificar el email";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(contact.getStreet() == null || contact.getStreet().equals("")) {
 			error = "Favor de verificar la calle";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(contact.getSuburb() == null || contact.getSuburb().equals("")) {
+		}else if(contact.getNeighborhood() == null || contact.getNeighborhood().equals("")) {
 			error = "Favor de verificar la colonia";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(contact.getTown() == null || contact.getTown().equals("")) {
+		}else if(contact.getCity() == null || contact.getCity().equals("")) {
 			error = "Favor de verificar el Municipio";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(contact.getState() == null || contact.getState().equals("")) {
@@ -612,7 +612,7 @@ public class UserController {
 		
 		EmergencyContactEntity contact = emergencyContactService.findEmergencyContactByIdContactAndUser(idContacto, userEntity);
 
-		model.addAttribute("usernameLogged", userEntity.getName());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("contact", contact);
 
@@ -629,22 +629,22 @@ public class UserController {
 		String error = "";
 		String result = "";
 		
-		if(contact.getName() == null || contact.getName().equals("")) {
+		if(contact.getFirstname() == null || contact.getFirstname().equals("")) {
 			error = "Favor de verificar el Nombre";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(contact.getLastname() == null || contact.getLastname().equals("")) {
 			error = "Favor de verificar el Apellido";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(contact.getTelephone() == null || contact.getTelephone().equals("")) {
+		}else if(contact.getPhone() == null || contact.getPhone().equals("")) {
 			error = "Favor de verificar el email";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(contact.getStreet() == null || contact.getStreet().equals("")) {
 			error = "Favor de verificar la calle";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(contact.getSuburb() == null || contact.getSuburb().equals("")) {
+		}else if(contact.getNeighborhood() == null || contact.getNeighborhood().equals("")) {
 			error = "Favor de verificar la colonia";
 			return "redirect:/users/showbookings?error=" + error;
-		}else if(contact.getTown() == null || contact.getTown().equals("")) {
+		}else if(contact.getCity() == null || contact.getCity().equals("")) {
 			error = "Favor de verificar el Municipio";
 			return "redirect:/users/showbookings?error=" + error;
 		}else if(contact.getState() == null || contact.getState().equals("")) {
@@ -658,14 +658,14 @@ public class UserController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findUserByEmail(user.getUsername());
 		
-		EmergencyContactEntity oldcontact = emergencyContactService.findEmergencyContactByIdContactAndUser(contact.getIdContacto(), userEntity);
+		EmergencyContactEntity oldcontact = emergencyContactService.findEmergencyContactByIdContactAndUser(contact.getContactId(), userEntity);
 		
-		oldcontact.setName(contact.getName());
+		oldcontact.setFirstname(contact.getFirstname());
 		oldcontact.setLastname(contact.getLastname());
-		oldcontact.setTelephone(contact.getTelephone());
+		oldcontact.setPhone(contact.getPhone());
 		oldcontact.setStreet(contact.getStreet());
-		oldcontact.setSuburb(contact.getSuburb());
-		oldcontact.setTown(contact.getTown());
+		oldcontact.setNeighborhood(contact.getNeighborhood());
+		oldcontact.setCity(contact.getCity());
 		oldcontact.setState(contact.getState());
 		oldcontact.setRelationship(contact.getRelationship());
 		

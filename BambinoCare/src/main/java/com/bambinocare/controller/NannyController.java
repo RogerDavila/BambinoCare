@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bambinocare.constants.ViewConstants;
 import com.bambinocare.model.entity.NannyEntity;
-import com.bambinocare.model.entity.RolEntity;
+import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.NannyService;
 import com.bambinocare.model.service.RolService;
@@ -45,7 +45,7 @@ public class NannyController {
 	public String showNannyCreate(Model model){
 		NannyEntity nanny = new NannyEntity();
 		
-		List<RolEntity> roles =  rolService.findAllRoles();
+		List<RoleEntity> roles =  rolService.findAllRoles();
 		
 		model.addAttribute("roles", roles);
 		model.addAttribute("nanny", nanny);
@@ -61,7 +61,7 @@ public class NannyController {
 			nanny = nannyService.findNannyByIdNanny(idNanny);
 		}
 		
-		List<RolEntity> roles =  rolService.findAllRoles();
+		List<RoleEntity> roles =  rolService.findAllRoles();
 		
 		model.addAttribute("roles", roles);
 		model.addAttribute("nanny",nanny);

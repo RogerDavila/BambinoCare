@@ -73,7 +73,7 @@ public class AdminController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userLogged = userService.findUserByEmail(user.getUsername());
 
-		mav.addObject("usernameLogged", userLogged.getName());
+		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findAllBookings());
 		mav.addObject("error", error);
 		mav.addObject("result", result);
@@ -96,7 +96,7 @@ public class AdminController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 
-			model.addAttribute("usernameLogged", userEntity.getName());
+			model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 			model.addAttribute("booking", booking);
 			model.addAttribute("bookingTypes", bookingTypes);
@@ -133,7 +133,7 @@ public class AdminController {
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 
-		model.addAttribute("usernameLogged", userEntity.getName());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
@@ -170,7 +170,7 @@ public class AdminController {
 			return "redirect:/admin/showbookings?error=" + error;
 		}
 
-		BookingEntity oldBooking = bookingService.findBookingByIdBooking(booking.getIdBooking());
+		BookingEntity oldBooking = bookingService.findBookingByIdBooking(booking.getBookingId());
 
 		oldBooking.setDuration(booking.getDuration());
 		oldBooking.setDate(getDate(booking.getDate(), 1));
@@ -240,14 +240,14 @@ public class AdminController {
 
 		if (booking != null) {
 			
-			if(nanny.getIdNanny() != null && booking.getNanny() == null) {
+			if(nanny.getNannyId() != null && booking.getNanny() == null) {
 				booking.setNanny(nanny);
 			} else if (booking.getNanny() == null) {
 				NannyEntity nannyToAssign = new NannyEntity();
 				List<NannyEntity> nannies = nannyService.findAllNannies();
 				model.addAttribute("nanny", nannyToAssign);
 				model.addAttribute("nannies", nannies);
-				model.addAttribute("idBooking", booking.getIdBooking());
+				model.addAttribute("idBooking", booking.getBookingId());
 				return ViewConstants.NANNY_ASSIGN;
 			}
 			

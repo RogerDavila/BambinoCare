@@ -16,45 +16,45 @@ public class LaboralExperienceEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_laboral_experience",nullable=false, unique=true)
-	private Integer idLaboralExperience;
+	@Column(name="laboral_experience_id",nullable=false, unique=true)
+	private Integer laboralExperienceId;
 	
-	@JoinColumn(name="id_nanny", nullable=false)
+	@JoinColumn(name="nanny_id", nullable=false)
 	@OneToOne(fetch = FetchType.EAGER)
 	private NannyEntity nanny;
 	
-	@Column(name="company", nullable=false)
-	private String company;
+	@Column(name="organization", nullable=false)
+	private String organization;
 	
-	@Column(name="position", nullable=false)
-	private String position;
+	@Column(name="job_title", nullable=false)
+	private String jobTitle;
 	
-	@Column(name="activity", nullable=false)
-	private String activity;
+	@Column(name="activities", nullable=false)
+	private String activities;
 	
 	@Column(name="time_worked", nullable=false)
 	private String timeWorked;
 
-	public LaboralExperienceEntity(Integer idLaboralExperience, NannyEntity nanny, String company, String position,
-			String activity, String timeWorked) {
+	public LaboralExperienceEntity(Integer laboralExperienceId, NannyEntity nanny, String organization, String jobTitle,
+			String activities, String timeWorked) {
 		super();
-		this.idLaboralExperience = idLaboralExperience;
+		this.laboralExperienceId = laboralExperienceId;
 		this.nanny = nanny;
-		this.company = company;
-		this.position = position;
-		this.activity = activity;
+		this.organization = organization;
+		this.jobTitle = jobTitle;
+		this.activities = activities;
 		this.timeWorked = timeWorked;
 	}
 
 	public LaboralExperienceEntity() {
 	}
 
-	public Integer getIdLaboralExperience() {
-		return idLaboralExperience;
+	public Integer getLaboralExperienceId() {
+		return laboralExperienceId;
 	}
 
-	public void setIdLaboralExperience(Integer idLaboralExperience) {
-		this.idLaboralExperience = idLaboralExperience;
+	public void setLaboralExperienceId(Integer laboralExperienceId) {
+		this.laboralExperienceId = laboralExperienceId;
 	}
 
 	public NannyEntity getNanny() {
@@ -65,28 +65,28 @@ public class LaboralExperienceEntity {
 		this.nanny = nanny;
 	}
 
-	public String getCompany() {
-		return company;
+	public String getOrganization() {
+		return organization;
 	}
 
-	public void setCompany(String company) {
-		this.company = company;
+	public void setOrganization(String organization) {
+		this.organization = organization;
 	}
 
-	public String getPosition() {
-		return position;
+	public String getJobTitle() {
+		return jobTitle;
 	}
 
-	public void setPosition(String position) {
-		this.position = position;
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
 	}
 
-	public String getActivity() {
-		return activity;
+	public String getActivities() {
+		return activities;
 	}
 
-	public void setActivity(String activity) {
-		this.activity = activity;
+	public void setActivities(String activities) {
+		this.activities = activities;
 	}
 
 	public String getTimeWorked() {

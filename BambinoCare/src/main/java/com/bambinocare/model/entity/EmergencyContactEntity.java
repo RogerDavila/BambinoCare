@@ -16,30 +16,30 @@ public class EmergencyContactEntity {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_contacto",nullable=false, unique=true)
-	private Integer idContacto;
+	@Column(name="contact_id",nullable=false, unique=true)
+	private Integer contactId;
 	
-	@JoinColumn(name="id_client", nullable=false)
+	@JoinColumn(name="client_id", nullable=false)
 	@OneToOne(fetch = FetchType.EAGER)
 	private ClientEntity client;
 	
-	@Column(name="name", nullable=false)
-	private String name;
+	@Column(name="firstname", nullable=false)
+	private String firstname;
 	
 	@Column(name="lastname", nullable=false)
 	private String lastname;
 	
-	@Column(name="telephone", nullable=false)
-	private String telephone;
+	@Column(name="phone", nullable=false)
+	private String phone;
 	
 	@Column(name="street", nullable=false)
 	private String street;
 	
-	@Column(name="suburb", nullable=false)
-	private String suburb;
+	@Column(name="neighborhood", nullable=false)
+	private String neighborhood;
 	
-	@Column(name="town", nullable=false)
-	private String town;
+	@Column(name="city", nullable=false)
+	private String city;
 	
 	@Column(name="state", nullable=false)
 	private String state;
@@ -47,17 +47,17 @@ public class EmergencyContactEntity {
 	@Column(name="relationship", nullable=false)
 	private String relationship;
 
-	public EmergencyContactEntity(Integer idContacto, ClientEntity client, String name, String lastname,
-			String telephone, String street, String suburb, String town, String state, String relationship) {
+	public EmergencyContactEntity(Integer contactId, ClientEntity client, String firstname, String lastname,
+			String phone, String street, String neighborhood, String city, String state, String relationship) {
 		super();
-		this.idContacto = idContacto;
+		this.contactId = contactId;
 		this.client = client;
-		this.name = name;
+		this.firstname = firstname;
 		this.lastname = lastname;
-		this.telephone = telephone;
+		this.phone = phone;
 		this.street = street;
-		this.suburb = suburb;
-		this.town = town;
+		this.neighborhood = neighborhood;
+		this.city = city;
 		this.state = state;
 		this.relationship = relationship;
 	}
@@ -65,12 +65,12 @@ public class EmergencyContactEntity {
 	public EmergencyContactEntity() {
 	}
 
-	public Integer getIdContacto() {
-		return idContacto;
+	public Integer getContactId() {
+		return contactId;
 	}
 
-	public void setIdContacto(Integer idContacto) {
-		this.idContacto = idContacto;
+	public void setContactId(Integer contactId) {
+		this.contactId = contactId;
 	}
 
 	public ClientEntity getClient() {
@@ -81,12 +81,12 @@ public class EmergencyContactEntity {
 		this.client = client;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	public String getLastname() {
@@ -97,12 +97,12 @@ public class EmergencyContactEntity {
 		this.lastname = lastname;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getStreet() {
@@ -113,20 +113,20 @@ public class EmergencyContactEntity {
 		this.street = street;
 	}
 
-	public String getSuburb() {
-		return suburb;
+	public String getNeighborhood() {
+		return neighborhood;
 	}
 
-	public void setSuburb(String suburb) {
-		this.suburb = suburb;
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
 	}
 
-	public String getTown() {
-		return town;
+	public String getCity() {
+		return city;
 	}
 
-	public void setTown(String town) {
-		this.town = town;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getState() {
@@ -143,6 +143,6 @@ public class EmergencyContactEntity {
 
 	public void setRelationship(String relationship) {
 		this.relationship = relationship;
-	}	
+	}
 
 }

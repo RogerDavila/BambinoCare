@@ -8,40 +8,40 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="tutory")
+@Table(name = "tutory")
 public class TutoryEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_tutory",unique=true,nullable = false)
-	private Integer idTutory;
-	
-	@Column(name="course", nullable=false)
-	private String course;
-	
-	@Column(name="topic", nullable=false)
-	private String topic;
-	
-	@Column(name="observations", nullable=false)
-	private String observations;
+	@Column(name = "tutory_id", unique = true, nullable = false)
+	private Integer tutoryId;
 
-	public TutoryEntity(Integer idTutory, String course, String topic, String observations) {
+	@Column(name = "course", nullable = false)
+	private String course;
+
+	@Column(name = "topic", nullable = false)
+	private String topic;
+
+	@Column(name = "comments", nullable = false)
+	private String comments;
+
+	public TutoryEntity(Integer tutoryId, String course, String topic, String comments) {
 		super();
-		this.idTutory = idTutory;
+		this.tutoryId = tutoryId;
 		this.course = course;
 		this.topic = topic;
-		this.observations = observations;
+		this.comments = comments;
 	}
 
 	public TutoryEntity() {
 	}
 
-	public Integer getIdTutory() {
-		return idTutory;
+	public Integer getTutoryId() {
+		return tutoryId;
 	}
 
-	public void setIdTutory(Integer idTutory) {
-		this.idTutory = idTutory;
+	public void setTutoryId(Integer tutoryId) {
+		this.tutoryId = tutoryId;
 	}
 
 	public String getCourse() {
@@ -60,12 +60,12 @@ public class TutoryEntity {
 		this.topic = topic;
 	}
 
-	public String getObservations() {
-		return observations;
+	public String getComments() {
+		return comments;
 	}
 
-	public void setObservations(String observations) {
-		this.observations = observations;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
-	
+
 }

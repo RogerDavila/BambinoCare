@@ -7,34 +7,33 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="booking_type")
+@Table(name = "booking_type")
 public class BookingTypeEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_booking_type",unique=true,nullable = false)
-	private Integer idBookingType;
-	
-	@Column(name="booking_type_desc", nullable=false)
+	@Column(name = "booking_type_id", unique = true, nullable = false)
+	private Integer bookingTypeId;
+
+	@Column(name = "booking_type_desc", nullable = false)
 	private String bookingTypeDesc;
 
-	public BookingTypeEntity(Integer idBookingType, String bookingTypeDesc) {
+	public BookingTypeEntity(Integer bookingTypeId, String bookingTypeDesc) {
 		super();
-		this.idBookingType = idBookingType;
+		this.bookingTypeId = bookingTypeId;
 		this.bookingTypeDesc = bookingTypeDesc;
 	}
 
 	public BookingTypeEntity() {
 	}
 
-	public Integer getIdBookingType() {
-		return idBookingType;
+	public Integer getBookingTypeId() {
+		return bookingTypeId;
 	}
 
-	public void setIdBookingType(Integer idBookingType) {
-		this.idBookingType = idBookingType;
+	public void setBookingTypeId(Integer bookingTypeId) {
+		this.bookingTypeId = bookingTypeId;
 	}
 
 	public String getBookingTypeDesc() {

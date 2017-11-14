@@ -12,107 +12,103 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="nanny")
+@Table(name = "nanny")
 public class NannyEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_nanny", unique=true, nullable=false)
-	private Integer idNanny;
-	
-	@JoinColumn(name="id_user", nullable = false)
+	@Column(name = "nanny_id", unique = true, nullable = false)
+	private Integer nannyId;
+
+	@JoinColumn(name = "user_id", nullable = false)
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private UserEntity user;
-	
-	@Column(name="age",nullable=false)
+
+	@Column(name = "age", nullable = false)
 	private Integer age;
-	
-	@Column(name="street", nullable=false)
+
+	@Column(name = "street", nullable = false)
 	private String street;
-	
-	@Column(name="suburb", nullable=false)
-	private String suburb;
-	
-	@Column(name="town", nullable=false)
-	private String town;
-	
-	@Column(name="state", nullable=false)
+
+	@Column(name = "neighborhood", nullable = false)
+	private String neighborhood;
+
+	@Column(name = "city", nullable = false)
+	private String city;
+
+	@Column(name = "state", nullable = false)
 	private String state;
-	
-	@Column(name="study_level",nullable=false)
-	private String studyLevel;
-	
-	@Column(name="study_place", nullable=false)
-	private String studyPlace;
 
-	@Column(name="capacitationCertification", nullable=false)
-	private String capacitationCertification;
-	
-	@Column(name="qualitie", nullable=false)
-	private String qualitie;
-	
-	@Column(name="hobby", nullable=false)
-	private String hobby;
-	
-	@Column(name="bambino_reason", nullable=false)
+	@Column(name = "degree", nullable = false)
+	private String degree;
+
+	@Column(name = "school", nullable = false)
+	private String school;
+
+	@Column(name = "course", nullable = false)
+	private String course;
+
+	@Column(name = "qualities", nullable = false)
+	private String qualities;
+
+	@Column(name = "hobbies", nullable = false)
+	private String hobbies;
+
+	@Column(name = "bambino_reason", nullable = false)
 	private String bambinoReason;
-	
-	@Column(name="children_reason", nullable=false)
-	private String childrenReason;
-	
-	@Column(name="observation", nullable=false)
-	private String observation;
-	
-	@Column(name="ife", nullable=true)
-	private byte[] ife;
-	
-	@Column(name="curp", nullable=true)
-	private byte[] curp;
-	
-	@Column(name="college_degree", nullable=true)
-	private byte[] collegeDegree;
 
-	
-	
-	public NannyEntity(Integer idNanny, UserEntity user, Integer age, String street, String suburb,
-			String town, String state, String studyLevel, String studyPlace, String capacitationCertification,
-			String qualitie, String hobby, String bambinoReason, String childrenReason, String observation, byte[] ife,
-			byte[] curp, byte[] collegeDegree) {
+	@Column(name = "children_reason", nullable = false)
+	private String childrenReason;
+
+	@Column(name = "comments", nullable = false)
+	private String comments;
+
+	@Column(name = "ife_file", nullable = true)
+	private byte[] ifeFile;
+
+	@Column(name = "curp_file", nullable = true)
+	private byte[] curpFile;
+
+	@Column(name = "degree_file", nullable = true)
+	private byte[] degreeFile;
+
+	public NannyEntity(Integer nannyId, UserEntity user, Integer age, String street, String neighborhood, String city,
+			String state, String degree, String school, String course, String qualities, String hobbies,
+			String bambinoReason, String childrenReason, String comments, byte[] ifeFile, byte[] curpFile,
+			byte[] degreeFile) {
 		super();
-		this.idNanny = idNanny;
+		this.nannyId = nannyId;
 		this.user = user;
 		this.age = age;
 		this.street = street;
-		this.suburb = suburb;
-		this.town = town;
+		this.neighborhood = neighborhood;
+		this.city = city;
 		this.state = state;
-		this.studyLevel = studyLevel;
-		this.studyPlace = studyPlace;
-		this.capacitationCertification = capacitationCertification;
-		this.qualitie = qualitie;
-		this.hobby = hobby;
+		this.degree = degree;
+		this.school = school;
+		this.course = course;
+		this.qualities = qualities;
+		this.hobbies = hobbies;
 		this.bambinoReason = bambinoReason;
 		this.childrenReason = childrenReason;
-		this.observation = observation;
-		this.ife = ife;
-		this.curp = curp;
-		this.collegeDegree = collegeDegree;
+		this.comments = comments;
+		this.ifeFile = ifeFile;
+		this.curpFile = curpFile;
+		this.degreeFile = degreeFile;
 	}
 	
-	
 	public NannyEntity(UserEntity user) {
-		super();
 		this.user = user;
 	}
 
 	public NannyEntity() {
 	}
 
-	public Integer getIdNanny() {
-		return idNanny;
+	public Integer getNannyId() {
+		return nannyId;
 	}
 
-	public void setIdNanny(Integer idNanny) {
-		this.idNanny = idNanny;
+	public void setNannyId(Integer nannyId) {
+		this.nannyId = nannyId;
 	}
 
 	public UserEntity getUser() {
@@ -139,20 +135,20 @@ public class NannyEntity {
 		this.street = street;
 	}
 
-	public String getSuburb() {
-		return suburb;
+	public String getNeighborhood() {
+		return neighborhood;
 	}
 
-	public void setSuburb(String suburb) {
-		this.suburb = suburb;
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
 	}
 
-	public String getTown() {
-		return town;
+	public String getCity() {
+		return city;
 	}
 
-	public void setTown(String town) {
-		this.town = town;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getState() {
@@ -163,44 +159,44 @@ public class NannyEntity {
 		this.state = state;
 	}
 
-	public String getStudyLevel() {
-		return studyLevel;
+	public String getDegree() {
+		return degree;
 	}
 
-	public void setStudyLevel(String studyLevel) {
-		this.studyLevel = studyLevel;
+	public void setDegree(String degree) {
+		this.degree = degree;
 	}
 
-	public String getStudyPlace() {
-		return studyPlace;
+	public String getSchool() {
+		return school;
 	}
 
-	public void setStudyPlace(String studyPlace) {
-		this.studyPlace = studyPlace;
+	public void setSchool(String school) {
+		this.school = school;
 	}
 
-	public String getCapacitationCertification() {
-		return capacitationCertification;
+	public String getCourse() {
+		return course;
 	}
 
-	public void setCapacitationCertification(String capacitationCertification) {
-		this.capacitationCertification = capacitationCertification;
+	public void setCourse(String course) {
+		this.course = course;
 	}
 
-	public String getQualitie() {
-		return qualitie;
+	public String getQualities() {
+		return qualities;
 	}
 
-	public void setQualitie(String qualitie) {
-		this.qualitie = qualitie;
+	public void setQualities(String qualities) {
+		this.qualities = qualities;
 	}
 
-	public String getHobby() {
-		return hobby;
+	public String getHobbies() {
+		return hobbies;
 	}
 
-	public void setHobby(String hobby) {
-		this.hobby = hobby;
+	public void setHobbies(String hobbies) {
+		this.hobbies = hobbies;
 	}
 
 	public String getBambinoReason() {
@@ -219,36 +215,36 @@ public class NannyEntity {
 		this.childrenReason = childrenReason;
 	}
 
-	public String getObservation() {
-		return observation;
+	public String getComments() {
+		return comments;
 	}
 
-	public void setObservation(String observation) {
-		this.observation = observation;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
 
-	public byte[] getIfe() {
-		return ife;
+	public byte[] getIfeFile() {
+		return ifeFile;
 	}
 
-	public void setIfe(byte[] ife) {
-		this.ife = ife;
+	public void setIfeFile(byte[] ifeFile) {
+		this.ifeFile = ifeFile;
 	}
 
-	public byte[] getCurp() {
-		return curp;
+	public byte[] getCurpFile() {
+		return curpFile;
 	}
 
-	public void setCurp(byte[] curp) {
-		this.curp = curp;
+	public void setCurpFile(byte[] curpFile) {
+		this.curpFile = curpFile;
 	}
 
-	public byte[] getCollegeDegree() {
-		return collegeDegree;
+	public byte[] getDegreeFile() {
+		return degreeFile;
 	}
 
-	public void setCollegeDegree(byte[] collegeDegree) {
-		this.collegeDegree = collegeDegree;
+	public void setDegreeFile(byte[] degreeFile) {
+		this.degreeFile = degreeFile;
 	}
-	
+
 }

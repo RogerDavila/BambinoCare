@@ -6,10 +6,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.bambinocare.model.entity.RolEntity;
+import com.bambinocare.model.entity.RoleEntity;
 
-@Repository("rolRepository")
-public interface RolRepository extends JpaRepository<RolEntity, Serializable>{
+@Repository("roleRepository")
+public interface RoleRepository extends JpaRepository<RoleEntity, Serializable>{
 
-	List<RolEntity> findAll();
+	List<RoleEntity> findAll();
 }

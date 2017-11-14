@@ -8,32 +8,32 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="booking_status")
+@Table(name = "booking_status")
 public class BookingStatusEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_booking_status",unique=true,nullable = false)
-	private Integer idBookingStatus;
-	
-	@Column(name="booking_status_desc", nullable=false)
+	@Column(name = "booking_status_id", unique = true, nullable = false)
+	private Integer bookingStatusId;
+
+	@Column(name = "booking_status_desc", nullable = false)
 	private String bookingStatusDesc;
 
-	public BookingStatusEntity(Integer idBookingStatus, String bookingStatusDesc) {
+	public BookingStatusEntity(Integer bookingStatusId, String bookingStatusDesc) {
 		super();
-		this.idBookingStatus = idBookingStatus;
+		this.bookingStatusId = bookingStatusId;
 		this.bookingStatusDesc = bookingStatusDesc;
 	}
 
 	public BookingStatusEntity() {
 	}
 
-	public Integer getIdBookingStatus() {
-		return idBookingStatus;
+	public Integer getBookingStatusId() {
+		return bookingStatusId;
 	}
 
-	public void setIdBookingStatus(Integer idBookingStatus) {
-		this.idBookingStatus = idBookingStatus;
+	public void setBookingStatusId(Integer bookingStatusId) {
+		this.bookingStatusId = bookingStatusId;
 	}
 
 	public String getBookingStatusDesc() {
@@ -43,5 +43,5 @@ public class BookingStatusEntity {
 	public void setBookingStatusDesc(String bookingStatusDesc) {
 		this.bookingStatusDesc = bookingStatusDesc;
 	}
-	
+
 }

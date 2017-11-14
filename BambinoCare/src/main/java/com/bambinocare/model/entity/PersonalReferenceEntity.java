@@ -11,54 +11,54 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="personal_reference")
+@Table(name = "personal_reference")
 public class PersonalReferenceEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_reference",nullable=false, unique=true)
-	private Integer idReference;
-	
-	@JoinColumn(name="id_nanny", nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "reference_id", nullable = false, unique = true)
+	private Integer referenceId;
+
+	@JoinColumn(name = "nanny_id", nullable = false)
 	@OneToOne(fetch = FetchType.EAGER)
 	private NannyEntity nanny;
-	
-	@Column(name="name", nullable=false)
-	private String name;
-	
-	@Column(name="lastname", nullable=false)
+
+	@Column(name = "firstname", nullable = false)
+	private String firstname;
+
+	@Column(name = "lastname", nullable = false)
 	private String lastname;
-	
-	@Column(name="telephone", nullable=false)
-	private String telephone;
-	
-	@Column(name="time_meet", nullable=false)
-	private String time_meet;	
-	
-	@Column(name="relationship", nullable=false)
+
+	@Column(name = "phone", nullable = false)
+	private String phone;
+
+	@Column(name = "how_long_known", nullable = false)
+	private String how_long_known;
+
+	@Column(name = "relationship", nullable = false)
 	private String relationship;
 
-	public PersonalReferenceEntity(Integer idReference, NannyEntity nanny, String name, String lastname,
-			String telephone, String time_meet, String relationship) {
+	public PersonalReferenceEntity(Integer referenceId, NannyEntity nanny, String firstname, String lastname,
+			String phone, String how_long_known, String relationship) {
 		super();
-		this.idReference = idReference;
+		this.referenceId = referenceId;
 		this.nanny = nanny;
-		this.name = name;
+		this.firstname = firstname;
 		this.lastname = lastname;
-		this.telephone = telephone;
-		this.time_meet = time_meet;
+		this.phone = phone;
+		this.how_long_known = how_long_known;
 		this.relationship = relationship;
 	}
 
 	public PersonalReferenceEntity() {
 	}
 
-	public Integer getIdReference() {
-		return idReference;
+	public Integer getReferenceId() {
+		return referenceId;
 	}
 
-	public void setIdReference(Integer idReference) {
-		this.idReference = idReference;
+	public void setReferenceId(Integer referenceId) {
+		this.referenceId = referenceId;
 	}
 
 	public NannyEntity getNanny() {
@@ -69,12 +69,12 @@ public class PersonalReferenceEntity {
 		this.nanny = nanny;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstname() {
+		return firstname;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
 	}
 
 	public String getLastname() {
@@ -85,20 +85,20 @@ public class PersonalReferenceEntity {
 		this.lastname = lastname;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getPhone() {
+		return phone;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
-	public String getTime_meet() {
-		return time_meet;
+	public String getHow_long_known() {
+		return how_long_known;
 	}
 
-	public void setTime_meet(String time_meet) {
-		this.time_meet = time_meet;
+	public void setHow_long_known(String how_long_known) {
+		this.how_long_known = how_long_known;
 	}
 
 	public String getRelationship() {
@@ -107,6 +107,6 @@ public class PersonalReferenceEntity {
 
 	public void setRelationship(String relationship) {
 		this.relationship = relationship;
-	}	
+	}
 
 }

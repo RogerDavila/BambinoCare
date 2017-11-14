@@ -8,63 +8,61 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="event")
+@Table(name = "event")
 public class EventEntity {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id_event",nullable=false, unique=true)
-	private Integer idEvent;
-	
-	@Column(name="event_type", nullable=false)
-	private String eventType;
-	
-	@Column(name="street", nullable=false)
-	private String street;
-	
-	@Column(name="suburb", nullable=false)
-	private String suburb;
-	
-	@Column(name="town", nullable=false)
-	private String town;
-	
-	@Column(name="state", nullable=false)
-	private String state;
-	
-	@Column(name="bambinos_no", nullable=false)
-	private Integer bambinosNo;
-	
-	@Column(name="age", nullable=false)
-	private Integer age;
-	
-	@Column(name="observations", nullable=true)
-	private String observations;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "event_id", nullable = false, unique = true)
+	private Integer eventId;
 
-	public EventEntity(Integer idEvent, String eventType, String street, String suburb, String town, String state,
-			Integer bambinosNo, Integer age, String observations) {
+	@Column(name = "event_type", nullable = false)
+	private String eventType;
+
+	@Column(name = "street", nullable = false)
+	private String street;
+
+	@Column(name = "neighborhood", nullable = false)
+	private String neighborhood;
+
+	@Column(name = "city", nullable = false)
+	private String city;
+
+	@Column(name = "state", nullable = false)
+	private String state;
+
+	@Column(name = "bambinos_num", nullable = false)
+	private Integer bambinosNum;
+
+	@Column(name = "age", nullable = false)
+	private Integer age;
+
+	@Column(name = "comments", nullable = true)
+	private String comments;
+
+	public EventEntity(Integer eventId, String eventType, String street, String neighborhood, String city, String state,
+			Integer bambinosNum, Integer age, String comments) {
 		super();
-		this.idEvent = idEvent;
+		this.eventId = eventId;
 		this.eventType = eventType;
 		this.street = street;
-		this.suburb = suburb;
-		this.town = town;
+		this.neighborhood = neighborhood;
+		this.city = city;
 		this.state = state;
-		this.bambinosNo = bambinosNo;
+		this.bambinosNum = bambinosNum;
 		this.age = age;
-		this.observations = observations;
+		this.comments = comments;
 	}
 
-	
-	
 	public EventEntity() {
 	}
 
-	public Integer getIdEvent() {
-		return idEvent;
+	public Integer getEventId() {
+		return eventId;
 	}
 
-	public void setIdEvent(Integer idEvent) {
-		this.idEvent = idEvent;
+	public void setEventId(Integer eventId) {
+		this.eventId = eventId;
 	}
 
 	public String getEventType() {
@@ -83,20 +81,20 @@ public class EventEntity {
 		this.street = street;
 	}
 
-	public String getSuburb() {
-		return suburb;
+	public String getNeighborhood() {
+		return neighborhood;
 	}
 
-	public void setSuburb(String suburb) {
-		this.suburb = suburb;
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
 	}
 
-	public String getTown() {
-		return town;
+	public String getCity() {
+		return city;
 	}
 
-	public void setTown(String town) {
-		this.town = town;
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 	public String getState() {
@@ -107,12 +105,12 @@ public class EventEntity {
 		this.state = state;
 	}
 
-	public Integer getBambinosNo() {
-		return bambinosNo;
+	public Integer getBambinosNum() {
+		return bambinosNum;
 	}
 
-	public void setBambinosNo(Integer bambinosNo) {
-		this.bambinosNo = bambinosNo;
+	public void setBambinosNum(Integer bambinosNum) {
+		this.bambinosNum = bambinosNum;
 	}
 
 	public Integer getAge() {
@@ -123,12 +121,12 @@ public class EventEntity {
 		this.age = age;
 	}
 
-	public String getObservations() {
-		return observations;
+	public String getComments() {
+		return comments;
 	}
 
-	public void setObservations(String observations) {
-		this.observations = observations;
+	public void setComments(String comments) {
+		this.comments = comments;
 	}
-	
+
 }

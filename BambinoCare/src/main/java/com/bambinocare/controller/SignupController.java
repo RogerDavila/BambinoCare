@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bambinocare.constants.ViewConstants;
 import com.bambinocare.model.entity.ClientEntity;
-import com.bambinocare.model.entity.RolEntity;
+import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.EmailService;
@@ -55,7 +55,7 @@ public class SignupController {
 		
 		ClientEntity client = new ClientEntity();
 
-		List<RolEntity> roles = rolService.findAllRoles();
+		List<RoleEntity> roles = rolService.findAllRoles();
 
 		model.addAttribute("error", error);
 		model.addAttribute("result", result);
@@ -75,7 +75,7 @@ public class SignupController {
 			error = "Favor de verificar el campo usuario";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
-		if (client.getUser().getName() == null || client.getUser().getName().equals("")) {
+		if (client.getUser().getFirstname() == null || client.getUser().getFirstname().equals("")) {
 			error = "Favor de verificar el campo Nombre";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
@@ -83,7 +83,7 @@ public class SignupController {
 			error = "Favor de verificar el campo Apellido";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
-		if (client.getUser().getTelephone() == null || client.getUser().getTelephone().equals("")) {
+		if (client.getUser().getPhone() == null || client.getUser().getPhone().equals("")) {
 			error = "Favor de verificar el campo Telefono";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
@@ -91,11 +91,11 @@ public class SignupController {
 			error = "Favor de verificar el campo Calle";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
-		if (client.getSuburb() == null || client.getSuburb().equals("")) {
+		if (client.getNeighborhood() == null || client.getNeighborhood().equals("")) {
 			error = "Favor de verificar el campo Colonia";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
-		if (client.getTown() == null || client.getTown().equals("")) {
+		if (client.getCity() == null || client.getCity().equals("")) {
 			error = "Favor de verificar el campo Municipio";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
@@ -103,7 +103,7 @@ public class SignupController {
 			error = "Favor de verificar el campo Estado";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
-		if (client.getEmployment() == null || client.getEmployment().equals("")) {
+		if (client.getJob() == null || client.getJob().equals("")) {
 			error = "Favor de verificar el campo Ocupacion";
 			return new ModelAndView("redirect:/signup/signupform?error=" + error);
 		}
