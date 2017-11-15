@@ -69,16 +69,16 @@
 							<tr th:each="booking : ${bookings}">
 								<td>
 									<form th:action="@{/users/showbookingdetail}" method="POST">
-										<input type="hidden" name="idbooking"
-											th:value="${booking.idBooking}" /> 
+										<input type="hidden" name="bookingId"
+											th:value="${booking.bookingId}" /> 
 										<button type="submit"
 											class="btn-floating deep-purple lighten-1" >
-											<i class="material-icons">event_note</i>
+									{8		<i class="material-icons">event_note</i>
 										</button>
 									</form>
 								</td>
 								<td
-									th:text="${booking.client == null ? '' : booking.client.user.name} "></td>
+									th:text="${booking.client == null ? '' : booking.client.user.firstname} "></td>
 								<td
 									th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
 								<td th:text="${booking.date}"></td>
@@ -87,17 +87,17 @@
 								<td
 									th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
 								<td
-									th:text="${booking.nanny == null ? '' : booking.nanny.user.name}"></td>
+									th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
 								<td th:text="${booking.cost}"></td>
 								<td th:text="${booking.tutory}"></td>
 								<td th:text="${booking.event}"></td>
 								<td><a href="#" class="btn-floating deep-purple lighten-1"
-									th:href="@{/users/editbookingform?idBooking=__${booking.idBooking}__}">
+									th:href="@{/users/editbookingform?bookingId=__${booking.bookingId}__}">
 										<i class="material-icons">edit</i>
 								</a></td>
 								<td><form th:action="@{/users/cancelbooking}" method="post">
 										<input type="hidden" name="idbooking"
-											th:value="${booking.idBooking}" />
+											th:value="${booking.bookingId}" />
 										<button type="submit"
 											class="btn-floating deep-purple lighten-1">
 											<i class="material-icons">delete</i>
@@ -132,9 +132,9 @@
 				th:object="${client}" method="post" name="clientform">
 					<div class="row">
 						<div class="input-field col s6">
-						<input type="hidden" th:value="${idClient}" th:field = "*{idClient}"/>
+						<input type="hidden" th:value="${clientId}" th:field = "*{clientId}"/>
 							<input id="nombre" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.name}" th:field = "*{user.name}"/> 
+								required="required" disabled="disabled" th:value="${client.user.firstname}" th:field = "*{user.firstname}"/> 
 								<label for="first_name">Nombre</label>
 						</div>
 						<div class="input-field col s6">
@@ -151,12 +151,12 @@
 						</div>
 						<div class="input-field col s3">
 							<input id="neighborhood" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${suburb}" th:field = "*{suburb}" /> 
+								required="required" disabled="disabled" th:value="${neighborhood}" th:field = "*{neighborhood}" /> 
 								<label for="neighborhood">Colonia</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="city" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${town}" th:field = "*{town}" /> 
+								required="required" disabled="disabled" th:value="${city}" th:field = "*{city}" /> 
 								<label for="city">Municipio</label>
 						</div>
 						<div class="input-field col s3">
@@ -168,13 +168,13 @@
 					<div class="row">
 						<div class="input-field col s4">
 							<input id="job" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${employment}" th:field = "*{employment}" /> 
+								required="required" disabled="disabled" th:value="${job}" th:field = "*{job}" /> 
 								<label for="job">Ocupación</label>
 						</div>
 						<div class="input-field col s4">
-							<input id="telephone" type="number" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.telephone}" th:field = "*{user.telephone}" /> 
-								<label for="telephone">Telefono</label>
+							<input id="phone" type="number" class="validate black-text"
+								required="required" disabled="disabled" th:value="${client.user.phone}" th:field = "*{user.phone}" /> 
+								<label for="phone">Telefono</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="email" type="email" class="validate black-text"
@@ -239,17 +239,17 @@
 						<td th:text="${bambino.name}"></td>
 						<td th:text="${bambino.lastname}"></td>
 						<td th:text="${bambino.age}"></td>
-						<td th:text="${bambino.degree}"></td>
+						<td th:text="${bambino.grade}"></td>
 						<td th:text="${bambino.medicalSituation}"></td>
-						<td th:text="${bambino.observation}"></td>
+						<td th:text="${bambino.comments}"></td>
 						<td><a href="#" class="btn-floating deep-purple lighten-1"
-							th:href="@{/users/editBambinoForm?idBambino=__${bambino.idBambino}__}">
+							th:href="@{/users/editBambinoForm?bambinoId=__${bambino.bambinoId}__}">
 							<i class="material-icons">edit</i>
 							</a>
 						</td>
 						<td>
 							<form method="post">
-								<input type="hidden" name="idBambino" th:value = "${bambino.idBambino}"/>
+								<input type="hidden" name="bambinoId" th:value = "${bambino.bambinoId}"/>
 								<button type="submit" class="btn-floating deep-purple lighten-1">
 									<i class="material-icons">delete</i>
 								</button>
@@ -296,20 +296,20 @@
 					<tr th:each="contact : ${contacts}">
 						<td th:text="${contact.name}"></td>
 						<td th:text="${contact.lastname}"></td>
-						<td th:text="${contact.telephone}"></td>
+						<td th:text="${contact.phone}"></td>
 						<td th:text="${contact.street}"></td>
-						<td th:text="${contact.suburb}"></td>
-						<td th:text="${contact.town}"></td>
+						<td th:text="${contact.neighborhood}"></td>
+						<td th:text="${contact.city}"></td>
 						<td th:text="${contact.state}"></td>
 						<td th:text="${contact.relationship}"></td>
 						<td><a href="#" class="btn-floating deep-purple lighten-1"
-							th:href="@{/users/editcontactForm?idContacto=__${contact.idContacto}__}">
+							th:href="@{/users/editcontactForm?contactId=__${contact.contactId}__}">
 							<i class="material-icons">edit</i>
 							</a>
 						</td>
 						<td>
 							<form method="post">
-								<input type="hidden" th:value = "${contact.idContacto}"/>
+								<input type="hidden" th:value = "${contact.contactId}"/>
 								<button type="submit" class="btn-floating deep-purple lighten-1">
 									<i class="material-icons">delete</i>
 								</button>

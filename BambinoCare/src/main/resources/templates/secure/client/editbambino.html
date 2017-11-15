@@ -35,7 +35,7 @@
 			th:object="${bambino}" method="post" name="bookingform">
 			<div class="row">
 				<div class="input-field col s3">
-				<input type="hidden" th:value="${idBambino}" th:field = "*{idBambino}"/>
+				<input type="hidden" th:value="${bambinoId}" th:field = "*{bambinoId}"/>
 					<input id="nombre" type="text" class="validate black-text"
 						required="required"  th:value="${name}" th:field = "*{name}"/> 
 					<label for="first_name">Nombre</label>
@@ -53,7 +53,7 @@
 				</div>
 				<div class="input-field col s3">
 					<input id="neighborhood" type="text" class="validate black-text"
-						required="required"  th:value="${degree}" th:field = "*{degree}" /> 
+						required="required"  th:value="${grade}" th:field = "*{grade}" /> 
 					<label for="neighborhood">Grado Escolar</label>
 				</div>
 			</div>
@@ -65,7 +65,7 @@
 				</div>
 				<div class="input-field col s4">
 						<textarea id="Observaciones" class="materialize-textarea"
-							th:field="*{observation}" th:value="${observation}" data-length="120"></textarea>
+							th:field="*{comments}" th:value="${comments}" data-length="120"></textarea>
 					<label for="email">Observaciones</label>
 				</div>
 			</div>

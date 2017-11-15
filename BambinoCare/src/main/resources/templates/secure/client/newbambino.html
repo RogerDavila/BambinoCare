@@ -50,7 +50,7 @@
 				</div>
 				<div class="input-field col s3">
 					<input id="neighborhood" type="text" class="validate black-text"
-						required="required"  th:value="${degree}" th:field = "*{degree}" /> 
+						required="required"  th:value="${grade}" th:field = "*{grade}" /> 
 					<label for="neighborhood">Grado Escolar</label>
 				</div>
 			</div>
@@ -61,9 +61,9 @@
 					<label for="medicalSituation">Situacion Medica</label>
 				</div>
 				<div class="input-field col s4">
-						<textarea id="observation" class="materialize-textarea"
-							th:field="*{observation}" th:value="${observation}" data-length="120"></textarea>
-					<label for="observation">Observaciones</label>
+						<textarea id="comments" class="materialize-textarea"
+							th:field="*{comments}" th:value="${comments}" data-length="120"></textarea>
+					<label for="comments">Observaciones</label>
 				</div>
 			</div>
 			<div class="row">

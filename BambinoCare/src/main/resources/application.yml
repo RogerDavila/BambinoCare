@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/bambino?useSSL=false
     username: root
-    password: S4nt4T3ch2017
+    password: avi381v.
   jpa:
     generate-ddl: true
     show-sql: true

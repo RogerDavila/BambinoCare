@@ -35,7 +35,7 @@
 		th:object="${contact}" method="post" name="contactform">
 			<div class="row">
 				<div class="input-field col s4">
-				<input type="hidden" th:value="${idContacto}" th:field = "*{idContacto}"/>
+				<input type="hidden" th:value="${contactId}" th:field = "*{contactId}"/>
 					<input id="nombre" type="text" class="validate black-text"
 						required="required"  th:value="${name}" th:field = "*{name}"/> 
 					<label for="first_name">Nombre</label>
@@ -46,9 +46,9 @@
 						<label for="last_name">Apellidos</label>
 				</div>
 				<div class="input-field col s4">
-					<input id="telephone" type="text" class="validate black-text"
-						required="required"  th:value="${telephone}" th:field = "*{telephone}" /> 
-					<label for="telephone">Telefono</label>
+					<input id="phone" type="text" class="validate black-text"
+						required="required"  th:value="${phone}" th:field = "*{phone}" /> 
+					<label for="phone">Telefono</label>
 				</div>
 			</div>
 			<div class="row">
@@ -58,14 +58,14 @@
 					<label for="street">Calle/numero</label>
 				</div>
 				<div class="input-field col s3">
-					<input id="suburb" type="text" class="validate black-text"
-						required="required"  th:value="${suburb}" th:field = "*{suburb}" /> 
-					<label for="suburb">Colonia</label>
+					<input id="neighborhood" type="text" class="validate black-text"
+						required="required"  th:value="${neighborhood}" th:field = "*{neighborhood}" /> 
+					<label for="neighborhood">Colonia</label>
 				</div>
 				<div class="input-field col s3">
-					<input id="town" type="text" class="validate black-text"
-						required="required"  th:value="${town}" th:field = "*{town}" /> 
-					<label for="town">Municipio</label>
+					<input id="city" type="text" class="validate black-text"
+						required="required"  th:value="${city}" th:field = "*{city}" /> 
+					<label for="city">Municipio</label>
 				</div>
 				<div class="input-field col s3">
 					<input id="state" type="text" class="validate black-text"

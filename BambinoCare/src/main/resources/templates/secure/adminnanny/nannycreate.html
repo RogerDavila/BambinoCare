@@ -25,8 +25,8 @@
 				<input type="hidden" th:field="*{user.enabled}" value="true"/>
 				
 				Nombre: <input type="text" class="form-control"
-					th:field="*{user.name}"
-					th:value="${user == null ? '' : user.name }" required="required"></input> <br />
+					th:field="*{user.firstname}"
+					th:value="${user == null ? '' : user.firstname }" required="required"></input> <br />
 
 				Apellido: <input type="text" class="form-control"
 					th:field="*{user.lastname}"
@@ -37,8 +37,8 @@
 					th:value="${user == null ? '' : user.email}" required="required"></input> <br />
 
 				Telefono: <input type="text" class="form-control"
-					th:field="*{user.telephone}"
-					th:value="${user == null ? '' : user.telephone}" required="required"></input> <br />
+					th:field="*{user.phone}"
+					th:value="${user == null ? '' : user.phone}" required="required"></input> <br />
 
 				Contraseña: <input type="text" class="form-control"
 					th:field="*{user.password}"
@@ -54,34 +54,34 @@
 				<br /> 
 				
 				Colonia: <input type="text" class="form-control"
-					th:field="*{suburb}" th:value="${suburb}" required="required"></input> <br />
+					th:field="*{neighborhood}" th:value="${neighborhood}" required="required"></input> <br />
 
 				Municipio: <input type="text" class="form-control"
-					th:field="*{town}" th:value="${town}" required="required"></input> <br /> 
+					th:field="*{city}" th:value="${city}" required="required"></input> <br /> 
 				
 				Estado: <input
 					type="text" class="form-control" th:field="*{state}"
 					th:value="${state}" required="required"></input> <br /> 
 					
 				Grado de estudios: <input
-					type="text" class="form-control" th:field="*{studyLevel}"
-					th:value="${studyLevel}" required="required"></input> <br /> 
+					type="text" class="form-control" th:field="*{degree}"
+					th:value="${degree}" required="required"></input> <br /> 
 					
 				Lugar de estudios: <input
-					type="text" class="form-control" th:field="*{studyPlace}"
-					th:value="${studyPlace}" required="required"></input> <br /> 
+					type="text" class="form-control" th:field="*{school}"
+					th:value="${school}" required="required"></input> <br /> 
 					
 				Capacitación y
 				certificación: <input type="text" class="form-control"
-					th:field="*{capacitationCertification}"
-					th:value="${capacitationCertification}" required="required"></input> <br />
+					th:field="*{course}"
+					th:value="${course}" required="required"></input> <br />
 
 				Cualidades: <input type="text" class="form-control"
-					th:field="*{qualitie}" th:value="${qualitie}" required="required"></input> <br />
+					th:field="*{qualities}" th:value="${qualities}" required="required"></input> <br />
 
 
 				Pasatiempos: <input type="text" class="form-control"
-					th:field="*{hobby}" th:value="${hobby}" required="required"></input> <br /> 
+					th:field="*{hobbies}" th:value="${hobbies}" required="required"></input> <br /> 
 					
 				Razones Bambino: <input type="text" class="form-control"
 					th:field="*{bambinoReason}" th:value="${bambinoReason}" required="required"></input> <br />
@@ -91,21 +91,21 @@
 				<br /> 
 				
 				Observaciones: <input type="text" class="form-control"
-					th:field="*{observation}" th:value="${observation}" required="required"></input> <br />
+					th:field="*{comments}" th:value="${comments}" required="required"></input> <br />
 
-				<select class="form-control" id="rol" th:field="*{user.rol.idRol}">
-					<option th:each="rol : ${roles}" th:value="${rol.idRol}"
-						th:text="${rol.rolDesc}"></option>
+				<select class="form-control" id="rol" th:field="*{user.rol.roleId}">
+					<option th:each="rol : ${roles}" th:value="${rol.roleId}"
+						th:text="${rol.roleDesc}"></option>
 				</select> 
 				
-				<input type="file" accept="image/*" th:field="*{ife}"
-					th:value="${ife}"></input> 
+				<input type="file" accept="image/*" th:field="*{ifeFile}"
+					th:value="${ifeFile}"></input> 
 				
 				<input type="file" accept="image/*"
-					th:field="*{curp}" th:value="${curp}"></input> 
+					th:field="*{curpFile}" th:value="${curpFile}"></input> 
 				
 				<input type="file"
-					accept="image/*" th:field="*{collegeDegree}" th:value="${collegeDegree}"></input>
+					accept="image/*" th:field="*{degreeFile}" th:value="${degreeFile}"></input>
 
 				<button class="btn btn-lg btn-primary btn-block" type="submit">
 					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>

@@ -39,8 +39,8 @@
 					<div class="row">
 						<div class="input-field col s6">
 							<input id="first_name" type="text" class="validate black-text"
-								th:field="*{user.name}"
-								th:value="${user == null ? '' : user.name }"
+								th:field="*{user.firstname}"
+								th:value="${user == null ? '' : user.firstname }"
 								th:required="required" /> <label for="first_name">Nombre</label>
 						</div>
 						<div class="input-field col s6">
@@ -58,12 +58,12 @@
 						</div>
 						<div class="input-field col s4">
 							<input id="neighborhood" type="text" class="validate black-text"
-								th:field="*{suburb}" th:value="${suburb}" th:required="required" />
+								th:field="*{neighborhood}" th:value="${neighborhood}" th:required="required" />
 							<label for="neighborhood">Colonia</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="city" type="text" class="validate black-text"
-								th:field="*{town}" th:value="${town}" th:required="required" />
+								th:field="*{city}" th:value="${city}" th:required="required" />
 							<label for="city">Municipio</label>
 						</div>
 					</div>
@@ -75,13 +75,13 @@
 						</div>
 						<div class="input-field col s4">
 							<input id="Municipio" type="text" class="validate black-text"
-								th:field="*{employment}" th:value="${employment}"
+								th:field="*{job}" th:value="${job}"
 								th:required="required" /> <label for="Municipio">Ocupación</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="Telefono" type="number" class="validate black-text"
-								th:field="*{user.telephone}"
-								th:value="${user == null ? '' : user.telephone}"
+								th:field="*{user.phone}"
+								th:value="${user == null ? '' : user.phone}"
 								th:required="required" /> <label for="Telefono">Telefono</label>
 						</div>
 					</div>

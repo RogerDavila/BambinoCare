@@ -55,7 +55,7 @@
 							<td>
 								<form th:action="@{/admin/showbookingdetail}" method="POST">
 									<input type="hidden" name="idbooking"
-										th:value="${booking.idBooking}" />
+										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1">
 										<i class="material-icons">event_note</i>
@@ -63,7 +63,7 @@
 								</form>
 							</td>
 							<td
-								th:text="${booking.client == null ? '' : booking.client.user.name} "></td>
+								th:text="${booking.client == null ? '' : booking.client.user.firstname} "></td>
 							<td th:text="${booking.date}"></td>
 							<td th:text="${booking.hour}"></td>
 							<td
@@ -74,7 +74,7 @@
 
 								<form th:action="@{/admin/approvebooking}" method="post">
 									<input type="hidden" name="idbooking"
-										th:value="${booking.idBooking}" />
+										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1"
 										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
@@ -86,7 +86,7 @@
 
 								<form th:action="@{/admin/rejectbooking}" method="post">
 									<input type="hidden" name="idbooking"
-										th:value="${booking.idBooking}" />
+										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1"
 										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
@@ -97,16 +97,16 @@
 
 							</td>
 							<td
-								th:text="${booking.nanny == null ? '' : booking.nanny.user.name}"></td>
+								th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
 							<td th:text="${booking.duration}"></td>
 							<td th:text="${booking.cost}"></td>
 							<td><a href="#" class="btn-floating deep-purple lighten-1"
-								th:href="@{/admin/editbookingform?idBooking=__${booking.idBooking}__}">
+								th:href="@{/admin/editbookingform?bookingId=__${booking.bookingId}__}">
 									<i class="material-icons">edit</i>
 							</a></td>
 							<td><form th:action="@{/admin/cancelbooking}" method="post">
 									<input type="hidden" name="idbooking"
-										th:value="${booking.idBooking}" />
+										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1">
 										<i class="material-icons">delete</i>
@@ -313,9 +313,9 @@
 							required="required" disabled="disabled" /> <label for="job">Ocupación</label>
 					</div>
 					<div class="input-field col s4">
-						<input id="telephone" type="number" class="validate black-text"
+						<input id="phone" type="number" class="validate black-text"
 							required="required" disabled="disabled" /> <label
-							for="telephone">Telefono</label>
+							for="phone">Telefono</label>
 					</div>
 					<div class="input-field col s4">
 						<input id="email" type="email" class="validate black-text"

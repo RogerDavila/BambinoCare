@@ -32,13 +32,13 @@
 			<div class="center grey-text text-darken-3">
 				<h5>Editar Reservación</h5>
 			</div>
-			<input type="hidden" th:value="${idBooking}" th:field = "*{idBooking}"/>
+			<input type="hidden" th:value="${bookingId}" th:field = "*{bookingId}"/>
 			<div class="row">
 				<div class="col s6">
 					<select id="bookingtype"
-						th:field="*{bookingType.idBookingType}" disabled="disabled">
+						th:field="*{bookingType.bookingTypeId}" disabled="disabled">
 						<option th:each="bookingType : ${bookingTypes}"
-							th:value="${bookingType.idBookingType}"
+							th:value="${bookingType.bookingTypeId}"
 							th:text="${bookingType.bookingTypeDesc}" value="${nametype}"
 							th:async="true"></option>
 					</select> <label class="black-text" for="bookingtype">Tipo de
@@ -85,8 +85,8 @@
 				<div class="row">
 					<div class="input-field col s12">
 						<textarea id="Observaciones" class="materialize-textarea"
-							th:field="*{tutory.observations}"
-							th:value="${tutory == null ? '' : tutory.observations}"
+							th:field="*{tutory.comments}"
+							th:value="${tutory == null ? '' : tutory.comments}"
 							data-length="120"></textarea>
 						<label for="Observaciones">Observaciones</label>
 					</div>
@@ -96,9 +96,9 @@
 			<div id="Evento">
 				<div class="row">
 					<div class="col s6">
-						<select id="bookingtype" th:field="*{bookingType.idBookingType}">
+						<select id="bookingtype" th:field="*{bookingType.bookingTypeId}">
 							<option th:each="eventType : ${eventTypes}"
-								th:value="${eventType.idEventType}"
+								th:value="${eventType.eventTypeId}"
 								th:text="${eventType.eventTypeDesc}" th:async="true"></option>
 						</select> <label class="black-text" for="bookingtype">Tipo de
 							Evento</label>
@@ -106,8 +106,8 @@
 
 					<div class="input-field col s4">
 						<input id="NoBambino" type="text" class="validate black-text"
-							th:field="*{event.bambinosNo}"
-							th:value="${event == null ? '' : event.bambinosNo}" /> <label
+							th:field="*{event.bambinosNum}"
+							th:value="${event == null ? '' : event.bambinosNum}" /> <label
 							for="NoBambino">Numero de Bambinos</label>
 					</div>
 					<!-- div class="input-field col s4">
@@ -124,14 +124,14 @@
 					</div>
 					<div class="input-field col s3">
 						<input id="neighborhood" type="text" class="validate black-text"
-							th:field="*{event.suburb}"
-							th:value="${event == null ? '' : event.suburb}" /> <label
+							th:field="*{event.neighborhood}"
+							th:value="${event == null ? '' : event.neighborhood}" /> <label
 							for="neighborhood">Colonia</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="city" type="text" class="validate black-text"
-							th:field="*{event.town}"
-							th:value="${event == null ? '' : event.town}" /> <label
+							th:field="*{event.city}"
+							th:value="${event == null ? '' : event.city}" /> <label
 							for="city">Municipio</label>
 					</div>
 					<div class="input-field col s3">
@@ -144,8 +144,8 @@
 				<div class="row">
 					<div class="input-field col s12">
 						<textarea id="Observaciones" class="materialize-textarea"
-							data-length="120" th:field="*{event.observations}"
-							th:value="${event == null ? '' : event.observations}"></textarea>
+							data-length="120" th:field="*{event.comments}"
+							th:value="${event == null ? '' : event.comments}"></textarea>
 						<label for="Observaciones">Observaciones</label>
 					</div>
 				</div>
