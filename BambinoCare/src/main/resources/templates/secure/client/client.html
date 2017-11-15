@@ -16,7 +16,7 @@
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
 			<div
-				th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
+				th:include="/secure/client/fragments/header :: header(${usernameLogged})"></div>
 			<div class="nav-content">
 				<ul class="tabs tabs-transparent">
 					<li class="tab"><a class="active" href="#Reservaciones">Mis
@@ -70,10 +70,10 @@
 								<td>
 									<form th:action="@{/users/showbookingdetail}" method="POST">
 										<input type="hidden" name="bookingId"
-											th:value="${booking.bookingId}" /> 
+											th:value="${booking.bookingId}" />
 										<button type="submit"
-											class="btn-floating deep-purple lighten-1" >
-									{8		<i class="material-icons">event_note</i>
+											class="btn-floating deep-purple lighten-1">
+											<i class="material-icons">event_note</i>
 										</button>
 									</form>
 								</td>
@@ -96,7 +96,7 @@
 										<i class="material-icons">edit</i>
 								</a></td>
 								<td><form th:action="@{/users/cancelbooking}" method="post">
-										<input type="hidden" name="idbooking"
+										<input type="hidden" name="bookingid"
 											th:value="${booking.bookingId}" />
 										<button type="submit"
 											class="btn-floating deep-purple lighten-1">
@@ -129,69 +129,78 @@
 
 			<div class="row">
 				<form class="col s12 white" th:action="@{/users/edituser}"
-				th:object="${client}" method="post" name="clientform">
+					th:object="${client}" method="post" name="clientform">
 					<div class="row">
 						<div class="input-field col s6">
-						<input type="hidden" th:value="${clientId}" th:field = "*{clientId}"/>
-							<input id="nombre" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.firstname}" th:field = "*{user.firstname}"/> 
-								<label for="first_name">Nombre</label>
+							<input type="hidden" th:value="${clientId}"
+								th:field="*{clientId}" /> <input id="nombre" type="text"
+								class="validate black-text" required="required"
+								disabled="disabled" th:value="${client.user.firstname}"
+								th:field="*{user.firstname}" /> <label for="first_name">Nombre</label>
 						</div>
 						<div class="input-field col s6">
 							<input id="last_name" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.lastname}" th:field = "*{user.lastname}" /> 
-								<label for="last_name">Apellidos</label>
+								required="required" disabled="disabled"
+								th:value="${client.user.lastname}" th:field="*{user.lastname}" />
+							<label for="last_name">Apellidos</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s3">
 							<input id="street_num" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${street}" th:field = "*{street}" /> 
-								<label for="street_num">Calle - Numero</label>
+								required="required" disabled="disabled" th:value="${street}"
+								th:field="*{street}" /> <label for="street_num">Calle -
+								Numero</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="neighborhood" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${neighborhood}" th:field = "*{neighborhood}" /> 
-								<label for="neighborhood">Colonia</label>
+								required="required" disabled="disabled"
+								th:value="${neighborhood}" th:field="*{neighborhood}" /> <label
+								for="neighborhood">Colonia</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="city" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${city}" th:field = "*{city}" /> 
-								<label for="city">Municipio</label>
+								required="required" disabled="disabled" th:value="${city}"
+								th:field="*{city}" /> <label for="city">Municipio</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="state" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${state}" th:field = "*{state}" /> 
-								<label for="state">Estado</label>
+								required="required" disabled="disabled" th:value="${state}"
+								th:field="*{state}" /> <label for="state">Estado</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s4">
 							<input id="job" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${job}" th:field = "*{job}" /> 
-								<label for="job">Ocupación</label>
+								required="required" disabled="disabled" th:value="${job}"
+								th:field="*{job}" /> <label for="job">Ocupación</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="phone" type="number" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.phone}" th:field = "*{user.phone}" /> 
-								<label for="phone">Telefono</label>
+								required="required" disabled="disabled"
+								th:value="${client.user.phone}" th:field="*{user.phone}" /> <label
+								for="phone">Telefono</label>
 						</div>
 						<div class="input-field col s4">
 							<input id="email" type="email" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.email}" th:field = "*{user.email}" /> 
-								<label for="email">Email</label>
+								required="required" disabled="disabled"
+								th:value="${client.user.email}" th:field="*{user.email}" /> <label
+								for="email">Email</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="input-field col s3">
 							<input id="nombre" type="password" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.password}" th:field = "*{user.password}" /> 
-								<label for="password">Contraseña</label>
+								required="required" disabled="disabled"
+								th:value="${client.user.password}" th:field="*{user.password}" />
+							<label for="password">Contraseña</label>
 						</div>
 						<div class="input-field col s3">
 							<input id="last_name" type="password" class="validate black-text"
-								required="required" disabled="disabled" th:value="${client.user.password}" th:field = "*{user.passwordConfirm}" /> 
-								<label for="password">Confirmar Contraseña</label>
+								required="required" disabled="disabled"
+								th:value="${client.user.password}"
+								th:field="*{user.passwordConfirm}" /> <label for="password">Confirmar
+								Contraseña</label>
 						</div>
 						<div class="input-field col s6 rigth-align">
 							<a id="cancel" th:href="@{/users/cancel}"
@@ -213,52 +222,53 @@
 					<h5>Mis Bambinos</h5>
 				</div>
 				<div class="col s2">
-					<br /> 
-					<a id="editPerfil" th:href="@{/users/createbambinoform}" 
-					class="btn-floating deep-purple lighten-1 btn-large">
-						<i class="material-icons">add</i>
+					<br /> <a id="editPerfil" th:href="@{/users/createbambinoform}"
+						class="btn-floating deep-purple lighten-1 btn-large"> <i
+						class="material-icons">add</i>
 					</a>
 				</div>
 			</div>
 			<div class="row">
-			<table class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-                <thead>
-                  <tr>
-                      <th>Nombre</th>
-                      <th>Apellido</th>
-                      <th>Edad</th>
-                      <th>Grado Escolar</th>
-                      <th>Situacion Medica</th>
-                      <th>Observaciones</th>
-                      <th>Editar</th>
-                      <th>Borrar</th>
-                  </tr>
-                </thead>
-                <tbody>
-					<tr th:each="bambino : ${bambinos}">
-						<td th:text="${bambino.name}"></td>
-						<td th:text="${bambino.lastname}"></td>
-						<td th:text="${bambino.age}"></td>
-						<td th:text="${bambino.grade}"></td>
-						<td th:text="${bambino.medicalSituation}"></td>
-						<td th:text="${bambino.comments}"></td>
-						<td><a href="#" class="btn-floating deep-purple lighten-1"
-							th:href="@{/users/editBambinoForm?bambinoId=__${bambino.bambinoId}__}">
-							<i class="material-icons">edit</i>
-							</a>
-						</td>
-						<td>
-							<form method="post">
-								<input type="hidden" name="bambinoId" th:value = "${bambino.bambinoId}"/>
-								<button type="submit" class="btn-floating deep-purple lighten-1">
-									<i class="material-icons">delete</i>
-								</button>
-							</form>
-						</td>
+				<table
+					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Apellido</th>
+							<th>Edad</th>
+							<th>Grado Escolar</th>
+							<th>Situacion Medica</th>
+							<th>Observaciones</th>
+							<th>Editar</th>
+							<th>Borrar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="bambino : ${bambinos}">
+							<td th:text="${bambino.firstname}"></td>
+							<td th:text="${bambino.lastname}"></td>
+							<td th:text="${bambino.age}"></td>
+							<td th:text="${bambino.grade}"></td>
+							<td th:text="${bambino.medicalSituation}"></td>
+							<td th:text="${bambino.comments}"></td>
+							<td><a href="#" class="btn-floating deep-purple lighten-1"
+								th:href="@{/users/editBambinoForm?bambinoId=__${bambino.bambinoId}__}">
+									<i class="material-icons">edit</i>
+							</a></td>
+							<td>
+								<form method="post">
+									<input type="hidden" name="bambinoId"
+										th:value="${bambino.bambinoId}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1">
+										<i class="material-icons">delete</i>
+									</button>
+								</form>
+							</td>
 
-					</tr>
-				</tbody>
-              </table>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 
 		</div>
@@ -269,10 +279,9 @@
 					<h5>Contactos de emergencia</h5>
 				</div>
 				<div class="col s2">
-					<br /> 
-					<a id="editPerfil" th:href="@{/users/createcontactform}" 
-					class="btn-floating deep-purple lighten-1 btn-large">
-						<i class="material-icons">add</i>
+					<br /> <a id="editPerfil" th:href="@{/users/createcontactform}"
+						class="btn-floating deep-purple lighten-1 btn-large"> <i
+						class="material-icons">add</i>
 					</a>
 				</div>
 			</div>
@@ -292,33 +301,33 @@
 							<th>Borrar</th>
 						</tr>
 					</thead>
-                 <tbody>
-					<tr th:each="contact : ${contacts}">
-						<td th:text="${contact.name}"></td>
-						<td th:text="${contact.lastname}"></td>
-						<td th:text="${contact.phone}"></td>
-						<td th:text="${contact.street}"></td>
-						<td th:text="${contact.neighborhood}"></td>
-						<td th:text="${contact.city}"></td>
-						<td th:text="${contact.state}"></td>
-						<td th:text="${contact.relationship}"></td>
-						<td><a href="#" class="btn-floating deep-purple lighten-1"
-							th:href="@{/users/editcontactForm?contactId=__${contact.contactId}__}">
-							<i class="material-icons">edit</i>
-							</a>
-						</td>
-						<td>
-							<form method="post">
-								<input type="hidden" th:value = "${contact.contactId}"/>
-								<button type="submit" class="btn-floating deep-purple lighten-1">
-									<i class="material-icons">delete</i>
-								</button>
-							</form>
-						</td>
+					<tbody>
+						<tr th:each="contact : ${contacts}">
+							<td th:text="${contact.firstname}"></td>
+							<td th:text="${contact.lastname}"></td>
+							<td th:text="${contact.phone}"></td>
+							<td th:text="${contact.street}"></td>
+							<td th:text="${contact.neighborhood}"></td>
+							<td th:text="${contact.city}"></td>
+							<td th:text="${contact.state}"></td>
+							<td th:text="${contact.relationship}"></td>
+							<td><a href="#" class="btn-floating deep-purple lighten-1"
+								th:href="@{/users/editcontactForm?contactId=__${contact.contactId}__}">
+									<i class="material-icons">edit</i>
+							</a></td>
+							<td>
+								<form method="post">
+									<input type="hidden" th:value="${contact.contactId}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1">
+										<i class="material-icons">delete</i>
+									</button>
+								</form>
+							</td>
 
-					</tr>
-				</tbody>
-              </table>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

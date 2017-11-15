@@ -73,7 +73,7 @@
 							<td>
 
 								<form th:action="@{/admin/approvebooking}" method="post">
-									<input type="hidden" name="idbooking"
+									<input type="hidden" name="bookingid"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1"
@@ -85,7 +85,7 @@
 							<td>
 
 								<form th:action="@{/admin/rejectbooking}" method="post">
-									<input type="hidden" name="idbooking"
+									<input type="hidden" name="bookingId"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1"
