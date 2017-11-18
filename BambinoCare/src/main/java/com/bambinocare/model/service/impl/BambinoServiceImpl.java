@@ -35,7 +35,7 @@ public class BambinoServiceImpl implements BambinoService {
 	}
 
 	@Override
-	public List<BambinoEntity> findByUser(UserEntity user) {
+	public List<BambinoEntity> findByClientUser(UserEntity user) {
 		return bambinoRepository.findByClientUser(user);
 	}
 

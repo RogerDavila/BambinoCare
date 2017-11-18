@@ -1,6 +1,7 @@
 package com.bambinocare.model.entity;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -31,6 +34,10 @@ public class BookingEntity {
 	@JoinColumn(name = "client_id", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
 	private ClientEntity client;
+	
+	@ManyToMany
+	@JoinTable(name="booking_bambino")
+	private Set<BambinoEntity> bambino;
 
 	@JoinColumn(name = "booking_type_id", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -68,12 +75,13 @@ public class BookingEntity {
 	@Transient
 	private EventEntity event;
 
-	public BookingEntity(Integer bookingId, ClientEntity client, BookingTypeEntity bookingType, Date date, String hour,
-			Double duration, BookingStatusEntity bookingStatus, NannyEntity nanny, Double cost, TutoryEntity tutory,
-			EventEntity event) {
+	public BookingEntity(Integer bookingId, ClientEntity client, Set<BambinoEntity> bambino,
+			BookingTypeEntity bookingType, Date date, String hour, Double duration, BookingStatusEntity bookingStatus,
+			NannyEntity nanny, Double cost, TutoryEntity tutory, EventEntity event) {
 		super();
 		this.bookingId = bookingId;
 		this.client = client;
+		this.bambino = bambino;
 		this.bookingType = bookingType;
 		this.date = date;
 		this.hour = hour;
@@ -174,6 +182,14 @@ public class BookingEntity {
 
 	public void setEvent(EventEntity event) {
 		this.event = event;
+	}
+
+	public Set<BambinoEntity> getBambino() {
+		return bambino;
+	}
+
+	public void setBambino(Set<BambinoEntity> bambino) {
+		this.bambino = bambino;
 	}
 
 }

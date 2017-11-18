@@ -1,5 +1,7 @@
 package com.bambinocare.model.entity;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -22,6 +25,9 @@ public class BambinoEntity {
 	@JoinColumn(name = "client_id", nullable = false)
 	@OneToOne(fetch = FetchType.EAGER)
 	private ClientEntity client;
+	
+	@ManyToMany(mappedBy="bambino")
+	private Set<BookingEntity> booking;
 
 	@Column(name = "firstname", nullable = false)
 	private String firstname;
@@ -41,11 +47,12 @@ public class BambinoEntity {
 	@Column(name = "comments", nullable = false)
 	private String comments;
 
-	public BambinoEntity(Integer bambinoId, ClientEntity client, String firstname, String lastname, Integer age,
-			String medicalSituation, String grade, String comments) {
+	public BambinoEntity(Integer bambinoId, ClientEntity client, Set<BookingEntity> booking, String firstname,
+			String lastname, Integer age, String medicalSituation, String grade, String comments) {
 		super();
 		this.bambinoId = bambinoId;
 		this.client = client;
+		this.booking = booking;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.age = age;
@@ -119,6 +126,14 @@ public class BambinoEntity {
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	public Set<BookingEntity> getBooking() {
+		return booking;
+	}
+
+	public void setBooking(Set<BookingEntity> booking) {
+		this.booking = booking;
 	}
 
 }

@@ -88,7 +88,7 @@ public class UserController {
 
 		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
-		mav.addObject("bambinos", bambinoService.findByUser(userLogged));
+		mav.addObject("bambinos", bambinoService.findByClientUser(userLogged));
 		mav.addObject("contacts", emergencyContactService.findByUser(userLogged));
 		mav.addObject("client", clientService.findByUser(userLogged));
 		mav.addObject("error", error);
@@ -135,16 +135,18 @@ public class UserController {
 			@RequestParam(required = false) String error, Model model) {
 		BookingEntity booking = new BookingEntity();
 
-		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
+		
+		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity) ;
+		
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
-
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
 		model.addAttribute("eventTypes", eventTypes);
+		model.addAttribute("allbambinos", bambinos);
 
 		model.addAttribute("result", result);
 		model.addAttribute("error", error);
