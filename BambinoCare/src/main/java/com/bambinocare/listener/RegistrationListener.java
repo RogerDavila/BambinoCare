@@ -41,7 +41,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
 		emailService.sendSimpleMessage(to, subject,
 				"Hola!\n" + "Casi terminamos con tu registro en BambinoCare, "
-				 		+ "por favor confirma tu registro en el siguiente link: \n http://localhost:8080"
+						+ "por favor confirma tu registro en el siguiente link: \n http://localhost:8080"
 						+ confirmationUrl + "\n\nSi has recibido este correo por error, por favor haz caso omiso.");
 	}
 
