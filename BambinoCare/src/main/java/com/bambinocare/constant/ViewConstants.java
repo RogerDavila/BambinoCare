@@ -1,4 +1,4 @@
-package com.bambinocare.constants;
+package com.bambinocare.constant;
 
 public class ViewConstants {
 	public static final String SIGNUP_FORM = "/unsecure/signup";

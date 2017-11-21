@@ -1,11 +1,14 @@
 package com.bambinocare.controller;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +17,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bambinocare.constants.ViewConstants;
+import com.bambinocare.constant.ViewConstants;
+import com.bambinocare.event.OnRegistrationCompleteEvent;
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
+import com.bambinocare.model.entity.VerificationTokenEntity;
 import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.RoleService;
@@ -28,6 +34,9 @@ import com.bambinocare.model.service.UserService;
 @Controller
 @RequestMapping("/signup")
 public class SignupController {
+
+	@Autowired
+	ApplicationEventPublisher eventPublisher;
 
 	@Autowired
 	@Qualifier("clientService")
@@ -48,11 +57,12 @@ public class SignupController {
 	@GetMapping("/signupform")
 	public String showSignupForm(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, Model model) {
-		
-		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().getAuthority().equals("ROLE_ANONYMOUS")) {
+
+		if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get()
+				.getAuthority().equals("ROLE_ANONYMOUS")) {
 			return "redirect:/loginsuccess";
 		}
-		
+
 		ClientEntity client = new ClientEntity();
 
 		List<RoleEntity> roles = roleService.findAllRoles();
@@ -66,7 +76,8 @@ public class SignupController {
 	}
 
 	@PostMapping("/createuserclient")
-	public ModelAndView createUserClient(@ModelAttribute(name = "client") ClientEntity client, Model model) {
+	public ModelAndView createUserClient(@ModelAttribute(name = "client") ClientEntity client, 
+				Model model, WebRequest request) {
 
 		String error = null;
 		String result = null;
@@ -130,23 +141,12 @@ public class SignupController {
 			result = "1";
 
 			UserEntity user = client.getUser();
-
+			
 			if (!userService.userExist(user.getEmail())) {
 				// Arrojar mensaje de error TEST2
 			} else {
-				try {
-					emailService.sendHTMLMessage(user.getEmail(), "BambinoCare - Registro Exitoso", "<html><body><div style='text-align:center'><b>Agradecemos tu preferencia</b></div><br />" + 
-							"<div style='text-align:center'>" + 
-							"Te agradecemos por habernos seleccionado como tus Bambinaias para el cuidado<br />" + 
-							"e integridad de tus Bambinos. A partir de ahora formas parte de la comunidad<br />" + 
-							"Bambino Care y podrás tener acceso a nuestro sistema y conocer todos nuestros<br />" + 
-							"servicios, así como hacer reservaciones y contar con atención personalizada.<br />"
-							+ "</div>" + 
-							"<br />" + 
-							"<div style='text-align:center'><b>¡GRACIAS!</b></div></body></html>");
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				}
+					String appUrl = "/signup" + request.getContextPath();
+					eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, request.getLocale(), appUrl));
 			}
 		} else {
 			result = "0";
@@ -155,6 +155,41 @@ public class SignupController {
 		return new ModelAndView("redirect:/signup/signupform?result=" + result);
 	}
 
+	@GetMapping("/registrationConfirm")
+	public String confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
+		
+		Locale locale = request.getLocale();
+		
+		VerificationTokenEntity verificationToken = userService.getVerificationToken(token);
+		if(verificationToken == null) {
+			String result = "token no válido";
+			model.addAttribute("result", result);
+			
+			return "redirect:/baduser";
+		}
+		
+		UserEntity user = verificationToken.getUser();
+		
+		user.setEnabled(true);
+		userService.editUser(user);
+		
+		try {
+			emailService.sendHTMLMessage(user.getEmail(), "BambinoCare - Registro Exitoso", "<html><body><div style='text-align:center'><b>Agradecemos tu preferencia</b></div><br />" + 
+					"<div style='text-align:center'>" + 
+					"Te agradecemos por habernos seleccionado como tus Bambinaias para el cuidado<br />" + 
+					"e integridad de tus Bambinos. A partir de ahora formas parte de la comunidad<br />" + 
+					"Bambino Care y podrás tener acceso a nuestro sistema y conocer todos nuestros<br />" + 
+					"servicios, así como hacer reservaciones y contar con atención personalizada.<br />"
+					+ "</div>" + 
+					"<br />" + 
+					"<div style='text-align:center'><b>¡GRACIAS!</b></div></body></html>");
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/login";
+	}
+	
 	@GetMapping("/cancel")
 	public String cancel() {
 		return "redirect:/";

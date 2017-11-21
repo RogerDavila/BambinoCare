@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bambinocare.constants.ViewConstants;
+import com.bambinocare.constant.ViewConstants;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.UserService;
