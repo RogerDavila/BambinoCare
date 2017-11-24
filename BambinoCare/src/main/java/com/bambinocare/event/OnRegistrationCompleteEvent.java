@@ -10,14 +10,12 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
 
 	private static final long serialVersionUID = -5975506595145106350L;
 	private String appUrl;
-	private Locale locale;
 	private UserEntity user;
 
-	public OnRegistrationCompleteEvent(UserEntity user, Locale locale, String appUrl) {
+	public OnRegistrationCompleteEvent(UserEntity user, String appUrl) {
 		super(user);
 		
 		this.user = user;
-		this.locale = locale;
 		this.appUrl = appUrl;
 	}
 
@@ -27,14 +25,6 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
 
 	public void setAppUrl(String appUrl) {
 		this.appUrl = appUrl;
-	}
-
-	public Locale getLocale() {
-		return locale;
-	}
-
-	public void setLocale(Locale locale) {
-		this.locale = locale;
 	}
 
 	public UserEntity getUser() {

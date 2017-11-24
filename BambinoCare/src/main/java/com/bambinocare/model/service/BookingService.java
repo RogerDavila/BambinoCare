@@ -15,5 +15,6 @@ public interface BookingService {
 	BookingEntity findByBookingIdAndUser(Integer bookingId, UserEntity user);
 	BookingEntity findByBookingIdAndUserAndBookingStatusBookingStatusDescNotIn(Integer bookingId, UserEntity user, String bookingStatusDesc);
 	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescNotIn(Integer bookingId,String... bookingStatusDesc);
+	Double calculateCost(Integer duration, Integer bambinoQuantity);
 	
 }

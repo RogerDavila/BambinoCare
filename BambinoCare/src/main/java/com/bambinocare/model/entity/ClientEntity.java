@@ -109,5 +109,13 @@ public class ClientEntity {
 	public void setState(String state) {
 		this.state = state;
 	}
+
+	@Override
+	public String toString() {
+		return "ClientEntity [clientId=" + clientId + ", user=" + user + ", job=" + job + ", street=" + street
+				+ ", neighborhood=" + neighborhood + ", city=" + city + ", state=" + state + "]";
+	}
+	
+	
 	
 }
