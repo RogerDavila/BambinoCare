@@ -40,6 +40,8 @@ public class LoginController {
 			return "redirect:/loginsuccess";
 		}
 		
+		error = (error != null) ? "Usuario/Contraseña inválidos" : null;
+		
 		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);
 		return ViewConstants.LOGIN_FORM;
@@ -48,7 +50,7 @@ public class LoginController {
 	@GetMapping("/loginsuccess")
 	public String loginCheck(){
 		
-		Optional <SimpleGrantedAuthority> rol = (Optional<SimpleGrantedAuthority> ) SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst();
+		Optional <SimpleGrantedAuthority> rol = (Optional<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst();
 		if(rol.isPresent()) {
 			String rolStr = rol.get().getAuthority();
 			if(rolStr.equals("Cliente")) {

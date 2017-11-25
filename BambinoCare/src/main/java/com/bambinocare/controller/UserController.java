@@ -160,6 +160,9 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		String error = "";
 		String result = "";
+		
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
 			mav = new ModelAndView("redirect:/users/createbookingform");
@@ -180,8 +183,6 @@ public class UserController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 
-			User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			UserEntity userEntity = userService.findByEmail(user.getUsername());
 			mav.addObject("usernameLogged", userEntity.getFirstname());
 
 			mav.addObject("booking", booking);
@@ -200,8 +201,6 @@ public class UserController {
 			return mav;
 		}
 
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findByEmail(user.getUsername());
 		ClientEntity client = clientService.findByUserEmail(user.getUsername());
 
 		booking.setClient(client);
@@ -209,6 +208,7 @@ public class UserController {
 		if (bambinoService.findByClient(client).isEmpty()) {
 			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
 			error = "Favor dar de alta a sus bambinos";
+
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 
@@ -218,7 +218,6 @@ public class UserController {
 			mav.addObject("bookingTypes", bookingTypes);
 			mav.addObject("eventTypes", eventTypes);
 
-			mav.addObject("result", result);
 			mav.addObject("error", error);
 
 			return mav;
