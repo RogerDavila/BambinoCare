@@ -1,7 +1,5 @@
 package com.bambinocare.event;
 
-import java.util.Locale;
-
 import org.springframework.context.ApplicationEvent;
 
 import com.bambinocare.model.entity.UserEntity;

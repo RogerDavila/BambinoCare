@@ -50,6 +50,7 @@ public class LoginController {
 	@GetMapping("/loginsuccess")
 	public String loginCheck(){
 		
+		@SuppressWarnings("unchecked")
 		Optional <SimpleGrantedAuthority> rol = (Optional<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst();
 		if(rol.isPresent()) {
 			String rolStr = rol.get().getAuthority();
