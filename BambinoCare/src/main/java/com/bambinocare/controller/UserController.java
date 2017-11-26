@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -154,27 +156,27 @@ public class UserController {
 	}
 
 	@PostMapping("/createbooking")
-	public ModelAndView createBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
-			Model model) {
+	public ModelAndView createBooking(@ModelAttribute(name = "booking") BookingEntity booking,
+			BindingResult bindingResult, Model model) {
 
 		ModelAndView mav = new ModelAndView();
 		String error = "";
 		String result = "";
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
 			mav = new ModelAndView("redirect:/users/createbookingform");
 			error = "Favor de verificar el campo Duración";
-			mav.addObject("error",error);
+			mav.addObject("error", error);
 			return mav;
 		}
 
 		if (booking.getDate() == null) {
 			mav = new ModelAndView("redirect:/users/createbookingform");
 			error = "Favor de verificar el campo Fecha";
-			mav.addObject("error",error);
+			mav.addObject("error", error);
 			return mav;
 		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
 			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
@@ -197,7 +199,7 @@ public class UserController {
 		if (booking.getHour() == null || booking.getHour().equals("")) {
 			mav = new ModelAndView("redirect:/users/createbookingform");
 			error = "Favor de verificar el campo Hora";
-			mav.addObject("error",error);
+			mav.addObject("error", error);
 			return mav;
 		}
 
@@ -250,10 +252,22 @@ public class UserController {
 		booking.setDate(getDate(booking.getDate(), 1));
 
 		if (bookingService.createBooking(booking) != null) {
-			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
-					"El usuario " + booking.getClient().getUser().getEmail() + " ha agendado una nueva cita el día "
-							+ booking.getDate() + ". Puedes revisar el detalle en"
-							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+			try {
+				emailService.sendHTMLMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
+						"<html><body><p>El usuario " + booking.getClient().getUser().getEmail()
+								+ " ha agendado una nueva cita: </p><table border=\"1\">"
+								+ "<thead><tr><th>Cliente</th><th>Servicio</th><th>Bambinos</th><th>Edades</th>"
+								+ "<th>Fecha</th><th>Horario</th><th>Lugar</th></tr></thead><tbody><tr><td>"
+								+ booking.getClient().getUser().getEmail() + "</td><td>"
+								+ booking.getBookingType().getBookingTypeDesc()
+								+ "</td><td>Hardcode</td><td>Hardcode</td><td>" + booking.getDate() + "</td><td>"
+								+ booking.getDuration() + "</td><td>" + booking.getClient().getStreet()
+								+ booking.getClient().getNeighborhood() + booking.getClient().getState() + "</td></tr>"
+								+ "</tbody></table><p>Puedes revisar el detalle en"
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com</p></body></html>");
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
 
 			emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación",
 					"Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
@@ -264,12 +278,12 @@ public class UserController {
 		} else {
 			mav = new ModelAndView("redirect:/users/createbookingform");
 			error = "No se ha podido realizar la reservación, intente nuevamente";
-			mav.addObject("error",error);
+			mav.addObject("error", error);
 			return mav;
 		}
 
 		mav = new ModelAndView("redirect:/users/showbookings");
-		mav.addObject("result",result);
+		mav.addObject("result", result);
 		return mav;
 	}
 
