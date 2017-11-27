@@ -86,6 +86,10 @@ footer.page-footer {
   position: fixed;
 }
 
+.checkbox-purple[type="checkbox"].filled-in:checked + label:after{
+     border: 2px solid #9C27B0;
+     background-color: #9C27B0;
+}
 
 .listcare {
 	list-style-type: square;

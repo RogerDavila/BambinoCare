@@ -1,8 +1,11 @@
 package com.bambinocare.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -91,7 +94,7 @@ public class UserController {
 
 		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
-		mav.addObject("bambinos", bambinoService.findByUser(userLogged));
+		mav.addObject("bambinos", bambinoService.findByClientUser(userLogged));
 		mav.addObject("contacts", emergencyContactService.findByUser(userLogged));
 		mav.addObject("client", clientService.findByUser(userLogged));
 		mav.addObject("error", error);
@@ -138,16 +141,19 @@ public class UserController {
 			@RequestParam(required = false) String error, Model model) {
 		BookingEntity booking = new BookingEntity();
 
-		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
+
+		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
 		model.addAttribute("eventTypes", eventTypes);
+		model.addAttribute("allbambinos", bambinos);
 
 		model.addAttribute("result", result);
 		model.addAttribute("error", error);
@@ -184,7 +190,9 @@ public class UserController {
 
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 
+			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
 
 			mav.addObject("booking", booking);
@@ -213,7 +221,9 @@ public class UserController {
 
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 
+			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
 
 			mav.addObject("booking", booking);
@@ -232,7 +242,57 @@ public class UserController {
 			error = "Favor dar de alta al menos 2 contactos de emergencia";
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 
+			mav.addObject("allbambinos", bambinos);
+			mav.addObject("usernameLogged", userEntity.getFirstname());
+
+			mav.addObject("booking", booking);
+			mav.addObject("bookingTypes", bookingTypes);
+			mav.addObject("eventTypes", eventTypes);
+
+			mav.addObject("error", error);
+
+			return mav;
+		}
+
+		if (booking.getBambino() != null) {
+			List<String> bambinoIds = new ArrayList<>();
+			for (BambinoEntity bambino : booking.getBambino()) {
+				bambinoIds.add(bambino.getBambinoId().toString());
+			}
+			booking.setBambinoId(bambinoIds);
+		}
+
+		if (booking.getBambinoId().size() <= 0) {
+			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+			error = "Favor de elegir al menos un bambino";
+			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+
+			mav.addObject("allbambinos", bambinos);
+			mav.addObject("usernameLogged", userEntity.getFirstname());
+
+			mav.addObject("booking", booking);
+			mav.addObject("bookingTypes", bookingTypes);
+			mav.addObject("eventTypes", eventTypes);
+
+			mav.addObject("error", error);
+
+			return mav;
+		}
+
+		booking.setBambino(bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(), userEntity));
+
+		if (booking.getBambino().isEmpty()) {
+			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+			error = "Ocurrió un error al intentar agregar a los bambinos";
+			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+
+			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
 
 			mav.addObject("booking", booking);
@@ -303,9 +363,19 @@ public class UserController {
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
+		if (booking.getBambino() != null) {
+			List<String> bambinoIds = new ArrayList<>();
+			for (BambinoEntity bambino : booking.getBambino()) {
+				bambinoIds.add(bambino.getBambinoId().toString());
+			}
+			booking.setBambinoId(bambinoIds);
+		}
+
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 
+		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("booking", booking);
@@ -319,32 +389,58 @@ public class UserController {
 	}
 
 	@PostMapping("/editbooking")
-	public String editBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
+	public ModelAndView editBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
 			Model model) {
-
+		
+		ModelAndView mav = new ModelAndView();
+		
 		String error = "";
 		String result = "";
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
 			error = "Favor de verificar el campo Duración";
-			return "redirect:/users/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		}
 
 		if (booking.getDate() == null) {
 			error = "Favor de verificar el campo Fecha";
-			return "redirect:/users/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
 			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
-			return "redirect:/users/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		}
 
 		if (booking.getHour() == null || booking.getHour().equals("")) {
 			error = "Favor de verificar el campo Hora";
-			return "redirect:/users/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		}
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
+		
+		if (booking.getBambinoId().size() <= 0) {
+			error = "Favor de elegir al menos un bambino";
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
+		}
+
+		booking.setBambino(bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(), userEntity));
+
+		if (booking.getBambino().isEmpty()) {
+			error = "Ocurrió un error al intentar agregar a los bambinos";
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
+		}
 
 		BookingEntity oldBooking = bookingService.findByBookingIdAndUser(booking.getBookingId(), userEntity);
 
@@ -352,6 +448,7 @@ public class UserController {
 		oldBooking.setDate(getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
 		oldBooking.setCost(booking.getDuration() * 200);
+		oldBooking.setBambino(booking.getBambino());
 
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
@@ -363,7 +460,10 @@ public class UserController {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
 		}
 
-		return "redirect:/users/showbookings?error=" + error + "&result=" + result;
+		mav = new ModelAndView("redirect:/users/showbookings");
+		mav.addObject("error", error);
+		mav.addObject("result", result);
+		return mav;
 	}
 
 	@PostMapping("/edituser")
