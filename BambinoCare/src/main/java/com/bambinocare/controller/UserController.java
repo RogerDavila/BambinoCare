@@ -3,9 +3,7 @@ package com.bambinocare.controller;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.mail.MessagingException;
 
@@ -104,7 +102,7 @@ public class UserController {
 	}
 
 	@PostMapping("/showbookingdetail")
-	public String showBookingDetail(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
+	public String showBookingDetail(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
@@ -115,11 +113,22 @@ public class UserController {
 		BookingEntity booking = bookingService.findByBookingIdAndUser(bookingId, userEntity);
 
 		if (booking != null) {
+
+			if (booking.getBambino() != null) {
+				List<String> bambinoIds = new ArrayList<>();
+				for (BambinoEntity bambino : booking.getBambino()) {
+					bambinoIds.add(bambino.getBambinoId().toString());
+				}
+				booking.setBambinoId(bambinoIds);
+			}
+
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 
 			model.addAttribute("usernameLogged", userEntity.getFirstname());
 
+			model.addAttribute("allbambinos", bambinos);
 			model.addAttribute("booking", booking);
 			model.addAttribute("bookingTypes", bookingTypes);
 			model.addAttribute("eventTypes", eventTypes);
@@ -389,11 +398,11 @@ public class UserController {
 	}
 
 	@PostMapping("/editbooking")
-	public ModelAndView editBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
-			Model model) {
-		
+	public ModelAndView editBooking(@ModelAttribute(name = "booking") BookingEntity booking,
+			BindingResult bindingResult, Model model) {
+
 		ModelAndView mav = new ModelAndView();
-		
+
 		String error = "";
 		String result = "";
 
@@ -425,7 +434,7 @@ public class UserController {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
-		
+
 		if (booking.getBambinoId().size() <= 0) {
 			error = "Favor de elegir al menos un bambino";
 			mav = new ModelAndView("redirect:/users/showbookings");

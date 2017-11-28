@@ -12,8 +12,8 @@
 	rel="stylesheet" />
 
 <link type="text/css" rel="stylesheet"
-	href="../static/css/materialize.min.css"
-	th:href="@{/css/materialize.min.css}" media="screen,projection" />
+	href="../static/css/materialize.css"
+	th:href="@{/css/materialize.css}" media="screen,projection" />
 
 <link href="../static/css/style.css" th:href="@{/css/style.css}"
 	type="text/css" rel="stylesheet" media="screen,projection" />
@@ -80,6 +80,28 @@
 						type="text" pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}"
 						th:field="*{hour}" th:value="${hour}" class="timepicker"
 						disabled="disabled" />
+				</div>
+				<div id="infobambinos" class="col s6">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Nombre</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:each="bambinoclient : ${allbambinos}">
+								<td><input type="checkbox" class="filled-in"
+									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
+									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
+								<td
+									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
+							</tr>
+						</tbody>
+					</table>
+
 				</div>
 			</div>
 

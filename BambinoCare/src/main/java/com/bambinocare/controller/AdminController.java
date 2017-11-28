@@ -1,5 +1,6 @@
 package com.bambinocare.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,12 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bambinocare.constant.ViewConstants;
+import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.UserEntity;
+import com.bambinocare.model.service.BambinoService;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
 import com.bambinocare.model.service.BookingTypeService;
@@ -48,7 +51,7 @@ public class AdminController {
 	@Autowired
 	@Qualifier("emailService")
 	private EmailService emailService;
-	
+
 	@Autowired
 	@Qualifier("nannyService")
 	private NannyService nannyService;
@@ -64,6 +67,10 @@ public class AdminController {
 	@Autowired
 	@Qualifier("bookingStatusService")
 	private BookingStatusService bookingStatusService;
+
+	@Autowired
+	@Qualifier("bambinoService")
+	private BambinoService bambinoService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String error,
@@ -94,9 +101,20 @@ public class AdminController {
 		BookingEntity booking = bookingService.findByBookingId(bookingId);
 
 		if (booking != null) {
+
+			if (booking.getBambino() != null) {
+				List<String> bambinoIds = new ArrayList<>();
+				for (BambinoEntity bambino : booking.getBambino()) {
+					bambinoIds.add(bambino.getBambinoId().toString());
+				}
+				booking.setBambinoId(bambinoIds);
+			}
+
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(booking.getClient().getUser());
 
+			model.addAttribute("allbambinos", bambinos);
 			model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 			model.addAttribute("booking", booking);
@@ -114,7 +132,7 @@ public class AdminController {
 		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
 
 	}
-	
+
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, @RequestParam(required = true) Integer bookingId,
@@ -131,9 +149,19 @@ public class AdminController {
 			return "redirect:/admin/showbookings?error=" + error;
 		}
 
+		if (booking.getBambino() != null) {
+			List<String> bambinoIds = new ArrayList<>();
+			for (BambinoEntity bambino : booking.getBambino()) {
+				bambinoIds.add(bambino.getBambinoId().toString());
+			}
+			booking.setBambinoId(bambinoIds);
+		}
+
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+		List<BambinoEntity> bambinos = bambinoService.findByClientUser(booking.getClient().getUser());
 
+		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		model.addAttribute("booking", booking);
@@ -147,28 +175,55 @@ public class AdminController {
 	}
 
 	@PostMapping("/editbooking")
-	public String editBooking(@ModelAttribute(name = "booking") BookingEntity booking, BindingResult bindingResult,
-			Model model) {
+	public ModelAndView editBooking(@ModelAttribute(name = "booking") BookingEntity booking,
+			BindingResult bindingResult, Model model) {
+
+		ModelAndView mav = new ModelAndView();
 
 		String error = "";
 		String result = "";
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
 			error = "Favor de verificar el campo Duración";
-			return "redirect:/admin/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		}
 
 		if (booking.getDate() == null) {
 			error = "Favor de verificar el campo Fecha";
-			return "redirect:/admin/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
 			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
-			return "redirect:/admin/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		}
 
 		if (booking.getHour() == null || booking.getHour().equals("")) {
 			error = "Favor de verificar el campo Hora";
-			return "redirect:/admin/showbookings?error=" + error;
+			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav.addObject("error", error);
+			return mav;
+		}
+
+		if (booking.getBambinoId().size() <= 0) {
+			error = "Favor de elegir al menos un bambino";
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
+		}
+
+		booking.setBambino(
+				bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(), booking.getClient().getUser()));
+
+		if (booking.getBambino().isEmpty()) {
+			error = "Ocurrió un error al intentar agregar a los bambinos";
+			mav = new ModelAndView("redirect:/users/showbookings");
+			mav.addObject("error", error);
+			return mav;
 		}
 
 		BookingEntity oldBooking = bookingService.findByBookingId(booking.getBookingId());
@@ -177,6 +232,7 @@ public class AdminController {
 		oldBooking.setDate(getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
 		oldBooking.setCost(booking.getDuration() * 200);
+		oldBooking.setBambino(booking.getBambino());
 
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage(oldBooking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
@@ -189,7 +245,10 @@ public class AdminController {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		mav = new ModelAndView("redirect:/admin/showbookings");
+		mav.addObject("error", error);
+		mav.addObject("result", result);
+		return mav;
 	}
 
 	@PostMapping("/cancelbooking")
@@ -229,9 +288,10 @@ public class AdminController {
 	public String cancel() {
 		return "redirect:/admin/showbookings";
 	}
-	
+
 	@PostMapping("/approvebooking")
-	public String approveBooking(@RequestParam(name = "bookingid", required=false) Integer bookingId, @ModelAttribute(name = "nanny") NannyEntity nanny,BindingResult bindingResult, Model model) {
+	public String approveBooking(@RequestParam(name = "bookingid", required = false) Integer bookingId,
+			@ModelAttribute(name = "nanny") NannyEntity nanny, BindingResult bindingResult, Model model) {
 
 		String error = "";
 		String result = "";
@@ -240,8 +300,8 @@ public class AdminController {
 				"Cancelada", "Agendada", "Rechazada");
 
 		if (booking != null) {
-			
-			if(nanny.getNannyId() != null && booking.getNanny() == null) {
+
+			if (nanny.getNannyId() != null && booking.getNanny() == null) {
 				booking.setNanny(nanny);
 			} else if (booking.getNanny() == null) {
 				NannyEntity nannyToAssign = new NannyEntity();
@@ -251,7 +311,7 @@ public class AdminController {
 				model.addAttribute("bookingId", booking.getBookingId());
 				return ViewConstants.NANNY_ASSIGN;
 			}
-			
+
 			bookingService.createBooking(booking);
 			BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Agendada");
 
@@ -275,7 +335,7 @@ public class AdminController {
 
 		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
 	}
-	
+
 	@PostMapping("/rejectbooking")
 	public String rejectBooking(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
 
