@@ -61,6 +61,53 @@
     	}
 	});
     
-
+    $('#contacto')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Footer";
+    });
+    
+    $('#servicios')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Servicios";
+    });
+    
+    $('#inicio')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#";
+    });
+    
+    $('#nosotros')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Nosotros";
+    });
+    
+    $('#contactoMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Footer";
+    });
+    
+    $('#serviciosMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Servicios";
+    });
+    
+    $('#inicioMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#";
+    });
+    
+    $('#nosotrosMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Nosotros";
+    });
+    
   });
 })(jQuery);

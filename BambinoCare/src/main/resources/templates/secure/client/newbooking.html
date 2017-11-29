@@ -205,6 +205,7 @@
 
 	<script th:inline="javascript">
 	$(function() {
+		  var costs = [[${costs}]];
 		  $('#error')
 		    .show(1000, function() {
 		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
@@ -220,7 +221,47 @@
 			    sendbutton.prop('disabled', true);
 			    cancelbutton.addClass('disabled');
 			});
+		  
+		  $("#duration, input[type='checkbox']")
+		  	.change(function() {
+		  		var sum = 0;
+		  		var duration = $("#duration")
+		  		$( "input[type='checkbox']").each(function(checkbox) {
+				  	if(this.checked){
+						sum += 1;
+				  	}
+				});
+		  		
+		  			/*<![CDATA[*/
+		  		var costsCurrent = [];
+		  		for(var cost of costs){
+		  			if(cost.bambinoQuantity == sum){
+		  				costsCurrent.push(cost);
+		  			}
+		  		}
+		  		
+		  		for(var i = 0; i < costsCurrent.length; i++ ){
+	  				var durationValue = duration[0].value;
+	  				
+	  				if(durationValue != "" && !isNaN(durationValue)){
+		  				if(durationValue > costsCurrent[i].hourQuantity){
+			  				continue;
+		  				}else{
+		  					
+		  					if(durationValue == costsCurrent[i].hourQuantity){
+		  						console.log("El costo es de: " + costsCurrent[i].cost + " porque: bambinosQty: " + costsCurrent[i].bambinoQuantity + " y HoursQty: " +  costsCurrent[i].hourQuantity + " y durationValue: " + durationValue + ".......");
+		  					}else{
+		  						console.log("El costo es de: " + costsCurrent[i-1].cost + " porque: bambinosQty: " + costsCurrent[i-1].bambinoQuantity + " y HoursQty: " +  costsCurrent[i-1].hourQuantity + " y durationValue: " + durationValue );
+		  					}
+		  					break;
+		  				}
+	  				}
+		  		}/*]]>*/
+		  		
+			});
 		});
+	
+	
 	</script>
 
 </body>

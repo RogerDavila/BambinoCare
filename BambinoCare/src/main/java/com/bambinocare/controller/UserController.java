@@ -28,14 +28,18 @@ import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
 import com.bambinocare.model.entity.ClientEntity;
+import com.bambinocare.model.entity.CostEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.UserEntity;
+import com.bambinocare.model.repository.BambinoRepository;
+import com.bambinocare.model.repository.CostRepository;
 import com.bambinocare.model.service.BambinoService;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
 import com.bambinocare.model.service.BookingTypeService;
 import com.bambinocare.model.service.ClientService;
+import com.bambinocare.model.service.CostService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EmergencyContactService;
 import com.bambinocare.model.service.EventTypeService;
@@ -80,6 +84,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("emergencyContactService")
 	private EmergencyContactService emergencyContactService;
+	
+	@Autowired
+	@Qualifier("costService")
+	private CostService costService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String error,
@@ -156,6 +164,7 @@ public class UserController {
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+		List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
 
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
@@ -163,6 +172,7 @@ public class UserController {
 		model.addAttribute("bookingTypes", bookingTypes);
 		model.addAttribute("eventTypes", eventTypes);
 		model.addAttribute("allbambinos", bambinos);
+		model.addAttribute("costs", costs);
 
 		model.addAttribute("result", result);
 		model.addAttribute("error", error);

@@ -69,6 +69,8 @@ public class BookingServiceImpl implements BookingService{
 	public Double calculateCost(Integer duration, Integer bambinoQuantity) {
 		Double cost = 0.0;
 		
+		
+		
 		return cost;
 	}
 	
