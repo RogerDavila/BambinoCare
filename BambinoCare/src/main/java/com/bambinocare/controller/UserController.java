@@ -32,8 +32,6 @@ import com.bambinocare.model.entity.CostEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.UserEntity;
-import com.bambinocare.model.repository.BambinoRepository;
-import com.bambinocare.model.repository.CostRepository;
 import com.bambinocare.model.service.BambinoService;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
@@ -173,6 +171,7 @@ public class UserController {
 		model.addAttribute("eventTypes", eventTypes);
 		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("costs", costs);
+		model.addAttribute("totalCost", booking.getCost());
 
 		model.addAttribute("result", result);
 		model.addAttribute("error", error);
@@ -210,9 +209,12 @@ public class UserController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
 
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
+			mav.addObject("costs", costs);
+			mav.addObject("totalCost", booking.getCost());
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -241,9 +243,12 @@ public class UserController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
 
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
+			mav.addObject("costs", costs);
+			mav.addObject("totalCost", booking.getCost());
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -262,9 +267,12 @@ public class UserController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
 
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
+			mav.addObject("costs", costs);
+			mav.addObject("totalCost", booking.getCost());
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -289,9 +297,12 @@ public class UserController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-
+			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+			
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
+			mav.addObject("costs", costs);
+			mav.addObject("totalCost", booking.getCost());
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -310,9 +321,12 @@ public class UserController {
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
 
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
+			mav.addObject("costs", costs);
+			mav.addObject("totalCost", booking.getCost());
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -326,7 +340,7 @@ public class UserController {
 		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
 		booking.setBookingStatus(bookingStatus);
 
-		booking.setCost(booking.getDuration() * 200);
+		booking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
 
 		booking.setDate(getDate(booking.getDate(), 1));
 
@@ -393,9 +407,12 @@ public class UserController {
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+		List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
 
 		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
+		model.addAttribute("costs", costs);
+		model.addAttribute("totalCost", booking.getCost());
 
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
@@ -466,8 +483,8 @@ public class UserController {
 		oldBooking.setDuration(booking.getDuration());
 		oldBooking.setDate(getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
-		oldBooking.setCost(booking.getDuration() * 200);
 		oldBooking.setBambino(booking.getBambino());
+		oldBooking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
 
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",

@@ -76,14 +76,16 @@
 						th:attr="value=*{nanny == null ? 'No hay Bambinaia asignada' : nanny.user.firstname + ' ' + nanny.user.lastname}"
 						disabled="disabled" />
 				</div>
+			</div>
 
+			<div class="row">
 				<div id="infobambinos" class="col s6">
 					<table
 						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
 						<thead>
 							<tr>
 								<th></th>
-								<th>Nombre</th>
+								<th>Bambino</th>
 							</tr>
 						</thead>
 
@@ -99,7 +101,10 @@
 					</table>
 
 				</div>
+			</div>
 
+			<div class="row">
+				<div class="col s12" id="cost"></div>
 			</div>
 
 			<div class="divider"></div>
@@ -214,6 +219,15 @@
 
 	<script th:inline="javascript">
 	$(function() {
+		  var totalCost = [[${totalCost}]];
+		  var costs = [[${costs}]];
+		  
+		  if(!totalCost){
+			  totalCost = 0.0;
+		  }
+		  
+		  document.getElementById('cost').innerHTML = "Total: $" + totalCost;
+		  
 		  $('#error')
 		    .show(1000, function() {
 		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
@@ -229,6 +243,53 @@
 
 			    sendbutton.prop('disabled', true);
 			    cancelbutton.addClass('disabled');
+			});
+		  
+		  /*
+			EMPIEZA CALCULO DE COSTOS
+			*/
+		  $("#duration, input[type='checkbox']")
+		  	.change(function() {
+		  		var sum = 0;
+		  		var duration = $("#duration")
+		  		$( "input[type='checkbox']").each(function(checkbox) {
+				  	if(this.checked){
+						sum += 1;
+				  	}
+				});
+		  		
+		  		if(sum > 3){
+		  			sum = 3;
+		  		}
+		  		
+		  			/*<![CDATA[*/
+		  		var costsCurrent = [];
+		  		for(var cost of costs){
+		  			if(cost.bambinoQuantity == sum){
+		  				costsCurrent.push(cost);
+		  			}
+		  		}
+		  		
+		  		for(var i = 0; i < costsCurrent.length; i++ ){
+	  				var durationValue = duration[0].value;
+	  				
+	  				if(durationValue != "" && !isNaN(durationValue)){
+		  				if(durationValue > costsCurrent[i].hourQuantity){
+			  				continue;
+		  				}else{
+		  					
+		  					if(durationValue == costsCurrent[i].hourQuantity){
+		  						totalCost = costsCurrent[i].cost * durationValue;
+		  						console.log("El costo es de: " + costsCurrent[i].cost + " porque: bambinosQty: " + costsCurrent[i].bambinoQuantity + " y HoursQty: " +  costsCurrent[i].hourQuantity + " y durationValue: " + durationValue + ".......");
+		  					}else{
+		  						totalCost = costsCurrent[i-1].cost * durationValue;
+		  						console.log("El costo es de: " + costsCurrent[i-1].cost + " porque: bambinosQty: " + costsCurrent[i-1].bambinoQuantity + " y HoursQty: " +  costsCurrent[i-1].hourQuantity + " y durationValue: " + durationValue );
+		  					}
+		  					break;
+		  				}
+	  				}
+		  		}/*]]>*/
+		  		document.getElementById('cost').innerHTML = "Total: $" + totalCost;
 			});
 		});
 	</script>

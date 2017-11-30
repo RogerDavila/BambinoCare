@@ -8,4 +8,6 @@ public interface CostService {
 	List<CostEntity> findByBambinoQuantityOrderByHourQuantity(Integer bambinoQuantity);
 
 	List<CostEntity> findAllByOrderByHourQuantity();
+	
+	Double calculateTotalCost(Double duration, Integer bambinoQuantity);
 }

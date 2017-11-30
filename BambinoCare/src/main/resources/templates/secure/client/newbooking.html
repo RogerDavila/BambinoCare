@@ -66,14 +66,16 @@
 						th:field="*{hour}" th:value="${hour}" class="timepicker"
 						required="required" />
 				</div>
+			</div>
 
-				<div id="infobambinos" class="col s6">
+			<div class="row">
+				<div id="infobambinos" class="col s12 l5 offset-l3">
 					<table
 						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
 						<thead>
 							<tr>
 								<th></th>
-								<th>Nombre</th>
+								<th>Bambino</th>
 							</tr>
 						</thead>
 
@@ -89,9 +91,10 @@
 					</table>
 
 				</div>
-
 			</div>
-
+			<div class="row">
+				<div class="col s12" id="cost"></div>
+			</div>
 
 			<div class="divider"></div>
 
@@ -192,6 +195,7 @@
 				</div>
 			</div>
 		</form>
+
 		<div th:if="${error != null}" id="error"></div>
 		<div th:if="${result != null}" id="result"></div>
 	</div>
@@ -204,8 +208,17 @@
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
 
 	<script th:inline="javascript">
+	
 	$(function() {
+		 var totalCost = [[${totalCost}]];
 		  var costs = [[${costs}]];
+		  
+		  if(!totalCost){
+			  totalCost = 0.0;
+		  }
+		  
+		  calculateCost();
+		  
 		  $('#error')
 		    .show(1000, function() {
 		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
@@ -221,9 +234,17 @@
 			    sendbutton.prop('disabled', true);
 			    cancelbutton.addClass('disabled');
 			});
-		  
+		 
 		  $("#duration, input[type='checkbox']")
-		  	.change(function() {
+		  	.change(function(){
+		  		calculateCost()
+		  		});
+		  
+		  /*
+			EMPIEZA CALCULO DE COSTOS
+			*/
+			function calculateCost() {
+				console.log("Entra");
 		  		var sum = 0;
 		  		var duration = $("#duration")
 		  		$( "input[type='checkbox']").each(function(checkbox) {
@@ -231,6 +252,10 @@
 						sum += 1;
 				  	}
 				});
+		  		
+		  		if(sum > 3){
+		  			sum = 3;
+		  		}
 		  		
 		  			/*<![CDATA[*/
 		  		var costsCurrent = [];
@@ -241,24 +266,27 @@
 		  		}
 		  		
 		  		for(var i = 0; i < costsCurrent.length; i++ ){
-	  				var durationValue = duration[0].value;
-	  				
-	  				if(durationValue != "" && !isNaN(durationValue)){
+						var durationValue = duration[0].value;
+						
+						if(durationValue != "" && !isNaN(durationValue)){
 		  				if(durationValue > costsCurrent[i].hourQuantity){
 			  				continue;
 		  				}else{
 		  					
 		  					if(durationValue == costsCurrent[i].hourQuantity){
+		  						totalCost = costsCurrent[i].cost * durationValue;
 		  						console.log("El costo es de: " + costsCurrent[i].cost + " porque: bambinosQty: " + costsCurrent[i].bambinoQuantity + " y HoursQty: " +  costsCurrent[i].hourQuantity + " y durationValue: " + durationValue + ".......");
 		  					}else{
+		  						totalCost = costsCurrent[i-1].cost * durationValue;
 		  						console.log("El costo es de: " + costsCurrent[i-1].cost + " porque: bambinosQty: " + costsCurrent[i-1].bambinoQuantity + " y HoursQty: " +  costsCurrent[i-1].hourQuantity + " y durationValue: " + durationValue );
 		  					}
 		  					break;
 		  				}
-	  				}
+						}
 		  		}/*]]>*/
-		  		
-			});
+		  		document.getElementById('cost').innerHTML = "Total: $" + totalCost;
+			}
+
 		});
 	
 	

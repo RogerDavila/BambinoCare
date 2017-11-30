@@ -65,13 +65,4 @@ public class BookingServiceImpl implements BookingService{
 		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId, bookingStatusDesc);
 	}
 
-	@Override
-	public Double calculateCost(Integer duration, Integer bambinoQuantity) {
-		Double cost = 0.0;
-		
-		
-		
-		return cost;
-	}
-	
 }
