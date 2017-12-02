@@ -133,6 +133,7 @@ public class UserController {
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 
 			model.addAttribute("usernameLogged", userEntity.getFirstname());
+			model.addAttribute("totalCost", booking.getCost());
 
 			model.addAttribute("allbambinos", bambinos);
 			model.addAttribute("booking", booking);

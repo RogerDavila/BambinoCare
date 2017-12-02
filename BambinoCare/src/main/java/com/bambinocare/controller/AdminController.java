@@ -24,6 +24,7 @@ import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
+import com.bambinocare.model.entity.CostEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.UserEntity;
@@ -31,6 +32,7 @@ import com.bambinocare.model.service.BambinoService;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
 import com.bambinocare.model.service.BookingTypeService;
+import com.bambinocare.model.service.CostService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EventTypeService;
 import com.bambinocare.model.service.NannyService;
@@ -71,6 +73,10 @@ public class AdminController {
 	@Autowired
 	@Qualifier("bambinoService")
 	private BambinoService bambinoService;
+	
+	@Autowired
+	@Qualifier("costService")
+	private CostService costService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String error,
@@ -116,6 +122,7 @@ public class AdminController {
 
 			model.addAttribute("allbambinos", bambinos);
 			model.addAttribute("usernameLogged", userEntity.getFirstname());
+			model.addAttribute("totalCost", booking.getCost());
 
 			model.addAttribute("booking", booking);
 			model.addAttribute("bookingTypes", bookingTypes);
@@ -160,9 +167,12 @@ public class AdminController {
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(booking.getClient().getUser());
-
+		List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+		
 		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
+		model.addAttribute("costs", costs);
+		model.addAttribute("totalCost", booking.getCost());
 
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);
@@ -231,8 +241,8 @@ public class AdminController {
 		oldBooking.setDuration(booking.getDuration());
 		oldBooking.setDate(getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
-		oldBooking.setCost(booking.getDuration() * 200);
 		oldBooking.setBambino(booking.getBambino());
+		oldBooking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
 
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage(oldBooking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
