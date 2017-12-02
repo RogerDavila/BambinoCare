@@ -21,6 +21,7 @@ import com.bambinocare.constants.ViewConstants;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
+import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.UserEntity;
@@ -306,6 +307,24 @@ public class AdminController {
 		}
 
 		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+	}
+	
+	
+	
+	@GetMapping("/createnannyform")
+	public String createNannyForm(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, Model model) {
+		EmergencyContactEntity nanny = new EmergencyContactEntity();
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
+		model.addAttribute("usernameLogged", userEntity.getFirstname());
+
+		model.addAttribute("nanny", nanny);
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
+		return ViewConstants.CREATE_NANNY;
 	}
 
 	public static Date getDate(Date date, int days) {

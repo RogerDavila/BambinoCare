@@ -537,6 +537,14 @@ public class UserController {
 		return "redirect:/users/showbookings?error="+error+"&result="+result;
 	}
 	
+	@PostMapping("/removeBambino")
+	public String removeBambino(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, @RequestParam(required = true) Integer bambinoId, Model model) {
+		bambinoService.removeBambino(bambinoId);
+		result="El bambino fue borrado con éxito!";
+		return "redirect:/users/showbookings?error="+error+"&result="+result;
+	}
+
 	
 	//contactos
 	
@@ -677,7 +685,16 @@ public class UserController {
 
 		return "redirect:/users/showbookings?error="+error+"&result="+result;
 	}
-
+	
+	@PostMapping("/removeContact")
+	public String removeContacts(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, @RequestParam(required = true) Integer contactId, Model model) {
+		emergencyContactService.removeContact(contactId);
+		result="El bambino fue borrado con éxito!";
+		return "redirect:/users/showbookings?error="+error+"&result="+result;
+	}
+	
+	
 	public static Date getDate(Date date, int days) {
 
 		Calendar calendar = Calendar.getInstance();

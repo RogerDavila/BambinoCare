@@ -5,6 +5,10 @@
  *
  * Made By MaterializeCSS.com
  */
+ 
+   html {
+    font-family: sans-serif;
+  }
 
  .blk{
    display: inline;
@@ -34,15 +38,21 @@ body{
   padding: 20px;
 }
 
-.parallax-container {
-  min-height: 608px;
-  line-height: 0;
-  height: auto;
-  color: rgba(255,255,255,.9);
+.section1{
+	height: 100%;
+	width: 100%;
+	background: url("../img/BkgHome2.jpg");
+    background-size: repeat;
+    height:90vh;
 }
-  .parallax-container .section {
-    width: 100%;
-  }
+
+#sidenav-overlay {
+	z-index: -1;
+}
+
+.transhome{
+	background-color: rgba(255, 255, 255, 0.5);
+}
 
 @media only screen and (max-width : 992px) {
   .parallax-container .section {

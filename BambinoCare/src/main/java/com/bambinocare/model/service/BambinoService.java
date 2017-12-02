@@ -12,4 +12,6 @@ public interface BambinoService {
 	BambinoEntity createBambino(BambinoEntity bambino);
 	List<BambinoEntity> findByUser(UserEntity user);
 	BambinoEntity findByBambinoIdAndUser(Integer bambinoId, UserEntity user);
+	void removeBambino(Integer bambinoId);
+	BambinoEntity findByBambinoId(Integer bambinoId);
 }

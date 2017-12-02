@@ -16,5 +16,6 @@ public interface BambinoRepository extends JpaRepository<BambinoEntity, Serializ
 	List<BambinoEntity> findByClient(ClientEntity client);
 	List<BambinoEntity> findByClientUser(UserEntity user);
 	BambinoEntity findByBambinoIdAndClientUser(Integer bookingId, UserEntity user);
+	BambinoEntity findByBambinoId(Integer bookingId);
 	
 }

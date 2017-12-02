@@ -15,8 +15,7 @@
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div
-				th:include="/secure/user/fragments/header :: header(${usernameLogged})"></div>
+			<div th:include="/secure/client/fragments/header :: header(${usernameLogged})"></div>
 			<div class="nav-content">
 				<ul class="tabs tabs-transparent">
 					<li class="tab"><a class="active" href="#Reservaciones">Mis
@@ -73,7 +72,7 @@
 											th:value="${booking.bookingId}" /> 
 										<button type="submit"
 											class="btn-floating deep-purple lighten-1" >
-									{8		<i class="material-icons">event_note</i>
+											<i class="material-icons">event_note</i>
 										</button>
 									</form>
 								</td>
@@ -236,7 +235,7 @@
                 </thead>
                 <tbody>
 					<tr th:each="bambino : ${bambinos}">
-						<td th:text="${bambino.name}"></td>
+						<td th:text="${bambino.firstname}"></td>
 						<td th:text="${bambino.lastname}"></td>
 						<td th:text="${bambino.age}"></td>
 						<td th:text="${bambino.grade}"></td>
@@ -248,7 +247,7 @@
 							</a>
 						</td>
 						<td>
-							<form method="post">
+							<form method="post" action="#" th:action="@{/users/removeBambino}">
 								<input type="hidden" name="bambinoId" th:value = "${bambino.bambinoId}"/>
 								<button type="submit" class="btn-floating deep-purple lighten-1">
 									<i class="material-icons">delete</i>
@@ -294,7 +293,7 @@
 					</thead>
                  <tbody>
 					<tr th:each="contact : ${contacts}">
-						<td th:text="${contact.name}"></td>
+						<td th:text="${contact.firstname}"></td>
 						<td th:text="${contact.lastname}"></td>
 						<td th:text="${contact.phone}"></td>
 						<td th:text="${contact.street}"></td>
@@ -308,8 +307,8 @@
 							</a>
 						</td>
 						<td>
-							<form method="post">
-								<input type="hidden" th:value = "${contact.contactId}"/>
+							<form method="post" action="#" th:action="@{/users/removeContact}">
+								<input type="hidden" name="contactId" th:value = "${contact.contactId}"/>
 								<button type="submit" class="btn-floating deep-purple lighten-1">
 									<i class="material-icons">delete</i>
 								</button>

@@ -19,119 +19,114 @@
 
 	<div th:include="/unsecure/fragments/header :: header"></div>
 
-	<div id="index-banner" class="parallax-container">
-		<div class="section no-pad-bot">
-			<div class="row container">
-				<form class="white pad z-depth-5" action="#" id="signupform"
-					th:action="@{/signup/createuserclient}" th:object="${client}"
-					method="post">
-					<div class="row center grey-text text-darken-3">
-						<p id="pcenter">
-							<b>¡BIENVENIDOS!</b>
-						</p>
-						<p id="pcenter">Gracias por darnos la oportunidad de
-							atenderte, así como de unirte a nuestra comunidad Bambino Care, a
-							continuación se desplegará una serie de preguntas como rutina de
-							registro, con el objetivo de validar la información para la
-							seguridad e integridad tanto de tus Bambinos, como de nuestras
-							Bambinaias.</p>
-					</div>
-					<div class="row">
-						<div class="input-field col s6">
-							<input id="first_name" type="text" class="validate black-text"
-								th:field="*{user.firstname}"
-								th:value="${user == null ? '' : user.firstname }"
-								th:required="required" /> <label for="first_name">Nombre</label>
-						</div>
-						<div class="input-field col s6">
-							<input id="last_name" type="text" class="validate black-text"
-								th:field="*{user.lastname}"
-								th:value="${user == null ? '' : user.lastname}"
-								th:required="required" /> <label for="last_name">Apellidos</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="input-field col s4">
-							<input id="street_num" type="text" class="validate black-text"
-								th:field="*{street}" th:value="${street}" th:required="required" />
-							<label for="street_num">Calle - Numero</label>
-						</div>
-						<div class="input-field col s4">
-							<input id="neighborhood" type="text" class="validate black-text"
-								th:field="*{neighborhood}" th:value="${neighborhood}" th:required="required" />
-							<label for="neighborhood">Colonia</label>
-						</div>
-						<div class="input-field col s4">
-							<input id="city" type="text" class="validate black-text"
-								th:field="*{city}" th:value="${city}" th:required="required" />
-							<label for="city">Municipio</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="input-field col s4">
-							<input id="state" type="text" class="validate black-text"
-								th:field="*{state}" th:value="${state}" th:required="required" />
-							<label for="state">Estado</label>
-						</div>
-						<div class="input-field col s4">
-							<input id="Municipio" type="text" class="validate black-text"
-								th:field="*{job}" th:value="${job}"
-								th:required="required" /> <label for="Municipio">Ocupación</label>
-						</div>
-						<div class="input-field col s4">
-							<input id="Telefono" type="number" class="validate black-text"
-								th:field="*{user.phone}"
-								th:value="${user == null ? '' : user.phone}"
-								th:required="required" /> <label for="Telefono">Telefono</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="input-field col s4">
-							<input id="email" type="email" class="validate black-text"
-								th:field="*{user.email}"
-								th:value="${user == null ? '' : user.email}"
-								th:required="required" /> <label for="email">Email</label>
-						</div>
-						<div class="input-field col s4">
-							<input id="password" type="password" class="validate black-text"
-								th:field="*{user.password}"
-								th:value="${user == null ? '' : user.password}"
-								th:required="required" /> <label for="password">Contraseña</label>
-						</div>
-						<div class="input-field col s4">
-							<input id="passwordconfirm" type="password"
-								class="validate black-text" th:field="*{user.passwordConfirm}"
-								th:value="${user == null ? '' : user.passwordConfirm}"
-								th:required="required" /> <label for="password">Confirmar
-								Contraseña</label>
-						</div>
-					</div>
 
-					<!-- div class="input-field col s4">
-                  <input id="password2" type="password" class="validate black-text" required>
-                  <label for="password2">Confirmar Contraseña</label>
-                </div-->
-
-					<div class="row">
-
-						<div th:if="${error != null}" id="error"></div>
-						<div th:if="${result == '1'}" id="success"></div>
-						<div th:if="${result == '0'}" id="failed"></div>
-
-
-						<div class="col offset-s10 s2 right-align ">
-							<button id="sendbutton"
-								class="btn waves-effect waves-light right-align deep-purple accent-2"
-								type="submit" name="action">Enviar</button>
-						</div>
+	<div class="section1 no-pad-bot">
+		<div class="row container">
+			<br/>
+			<form class="white pad z-depth-5" action="#" id="signupform"
+				th:action="@{/signup/createuserclient}" th:object="${client}"
+				method="post">
+				<div class="row center grey-text text-darken-3">
+					<p id="pcenter">
+						<b>¡BIENVENIDOS!</b>
+					</p>
+					<p id="pcenter">Gracias por darnos la oportunidad de
+						atenderte, así como de unirte a nuestra comunidad Bambino Care, a
+						continuación se desplegará una serie de preguntas como rutina de
+						registro, con el objetivo de validar la información para la
+						seguridad e integridad tanto de tus Bambinos, como de nuestras
+						Bambinaias.</p>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<input id="first_name" type="text" class="validate black-text"
+							th:field="*{user.firstname}"
+							th:value="${user == null ? '' : user.firstname }"
+							th:required="required" /> <label for="first_name">Nombre</label>
 					</div>
-				</form>
-			</div>
-		</div>
+					<div class="input-field col s6">
+						<input id="last_name" type="text" class="validate black-text"
+							th:field="*{user.lastname}"
+							th:value="${user == null ? '' : user.lastname}"
+							th:required="required" /> <label for="last_name">Apellidos</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s4">
+						<input id="street_num" type="text" class="validate black-text"
+							th:field="*{street}" th:value="${street}" th:required="required" />
+						<label for="street_num">Calle - Numero</label>
+					</div>
+					<div class="input-field col s4">
+						<input id="neighborhood" type="text" class="validate black-text"
+							th:field="*{neighborhood}" th:value="${neighborhood}" th:required="required" />
+						<label for="neighborhood">Colonia</label>
+					</div>
+					<div class="input-field col s4">
+						<input id="city" type="text" class="validate black-text"
+							th:field="*{city}" th:value="${city}" th:required="required" />
+						<label for="city">Municipio</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s4">
+						<input id="state" type="text" class="validate black-text"
+							th:field="*{state}" th:value="${state}" th:required="required" />
+						<label for="state">Estado</label>
+					</div>
+					<div class="input-field col s4">
+						<input id="Municipio" type="text" class="validate black-text"
+							th:field="*{job}" th:value="${job}"
+							th:required="required" /> <label for="Municipio">Ocupación</label>
+					</div>
+					<div class="input-field col s4">
+						<input id="Telefono" type="number" class="validate black-text"
+							th:field="*{user.phone}"
+							th:value="${user == null ? '' : user.phone}"
+							th:required="required" /> <label for="Telefono">Telefono</label>
+					</div>
+				</div>
+				<div class="row">
+					<div class="input-field col s4">
+						<input id="email" type="email" class="validate black-text"
+							th:field="*{user.email}"
+							th:value="${user == null ? '' : user.email}"
+							th:required="required" /> <label for="email">Email</label>
+					</div>
+					<div class="input-field col s4">
+						<input id="password" type="password" class="validate black-text"
+							th:field="*{user.password}"
+							th:value="${user == null ? '' : user.password}"
+							th:required="required" /> <label for="password">Contraseña</label>
+					</div>
+					<div class="input-field col s4">
+						<input id="passwordconfirm" type="password"
+							class="validate black-text" th:field="*{user.passwordConfirm}"
+							th:value="${user == null ? '' : user.passwordConfirm}"
+							th:required="required" /> <label for="password">Confirmar
+							Contraseña</label>
+					</div>
+				</div>
 
-		<div class="parallax">
-			<img src="../static/img/home2.jpg" th:src="@{/img/home2.jpg}"
-				alt="Unsplashed background img 1" />
+				<!-- div class="input-field col s4">
+                 <input id="password2" type="password" class="validate black-text" required>
+                 <label for="password2">Confirmar Contraseña</label>
+               </div-->
+
+				<div class="row">
+
+					<div th:if="${error != null}" id="error"></div>
+					<div th:if="${result == '1'}" id="success"></div>
+					<div th:if="${result == '0'}" id="failed"></div>
+
+
+					<div class="col offset-s10 s2 right-align ">
+						<button id="sendbutton"
+							class="btn waves-effect waves-light right-align deep-purple accent-2"
+							type="submit" name="action">Enviar</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	</div>
 

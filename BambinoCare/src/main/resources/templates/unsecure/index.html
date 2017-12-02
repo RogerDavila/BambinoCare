@@ -18,21 +18,29 @@
 
   <div th:include="/unsecure/fragments/header :: header"></div>
   
-  <div id="index-banner" class="parallax-container">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <br/><br/><br/><br/><br/><br/><br/><br/>
-        <h1 class="header center">¿Por qué escoger Bambino Care?</h1>
-        <div class="row center">
-          <h5 class="header col s12 light">Bambino Care y Bambino Events cuenta con especialistas en educación y
-            cuidado infantil altamente capacitadas</h5>
-        </div>
-        <br/><br/>
-
-      </div>
-    </div>
-    <div class="parallax"><img src="img/home2.jpg" alt="Unsplashed background img 1" /></div>
-  </div>
+  
+  <div class="section1 section no-pad-bot">
+  	<br/><br/>
+  	<div class="container transhome">
+	  	<br/><br/><br/><br/>
+	  	<h1 class="header center deep-purple-text darken-4-text"><b>Bienvenido a Bambino Care</b></h1>
+	  	<br/><br/><br/><br/>
+	  	<div class="row center">
+	  		<div class="col s6">
+				<a class="deep-purple accent-2 white-text" href="#Servicios" style="font-size: 30px; border: 0px; padding: 25px;">
+					Nuestros Servicios
+				</a>
+			</div>
+			<div class="col s6">
+				<a class="deep-purple accent-2 white-text" href="@{/login}" style="font-size: 30px; border: 0px; padding: 25px;">
+					Iniciar sesion
+				</a>
+			</div>
+		</div>
+		<br/><br/><br/><br/><br/>
+  	</div>
+  	<br/><br/>
+  </div>  
 
 <div id="Servicios" class="hr row transparent"></div>
 
@@ -40,7 +48,7 @@
     <div class="section">
       <!--   Icon Section   -->
        <h4 class="center">Servicios</h4>
-       <div class="row container">
+       <div class="row container hide">
           <div class="flow-text" style="
 			    padding-top: 0px;
 			    padding-left: 20px;
@@ -65,7 +73,7 @@
           </div>
       </div>
        <!-- contenido oculto -->
-      <div class="row hide">
+      <div class="row">
         <div class="col s12 m3">
           <div class="icon-block hoverable">
             <h2 class="center"><i class="material-icons">child_care</i></h2>
@@ -118,16 +126,6 @@
     </div>
   </div>
 
-
-  <div class="parallax-container valign-wrapper">
-    <div class="section no-pad-bot">
-      <div class="container">
-        <div class="row center">
-        </div>
-      </div>
-    </div>
-    <div class="parallax"><img src="img/home.jpg" alt="Unsplashed background img 2" /></div>
-  </div>
   <div id="Nosotros" class="hr row transparent"></div>
   <div class="container">
     <div class="section">
