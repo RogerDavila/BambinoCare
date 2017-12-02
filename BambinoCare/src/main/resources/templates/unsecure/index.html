@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
-	http-equiv="Content-Type"/>
-  <title>Bambino</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1;text/html; "
+	http-equiv="Content-Type" />
+<meta charset="UTF-8" />
+<title>Bambino</title>
 
 <!-- CSS  -->
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -16,189 +18,222 @@
 </head>
 <body>
 
-  <div th:include="/unsecure/fragments/header :: header"></div>
-  
-  
-  <div class="section1 section no-pad-bot">
-  	<br/><br/>
-  	<div class="container transhome">
-	  	<br/><br/><br/><br/>
-	  	<h1 class="header center deep-purple-text darken-4-text"><b>Bienvenido a Bambino Care</b></h1>
-	  	<br/><br/><br/><br/>
-	  	<div class="row center">
-	  		<div class="col s6">
-				<a class="deep-purple accent-2 white-text" href="#Servicios" style="font-size: 30px; border: 0px; padding: 25px;">
-					Nuestros Servicios
-				</a>
+	<div th:include="/unsecure/fragments/header :: header"></div>
+
+
+	<div class="section1 section no-pad-bot">
+		<br />
+		<br />
+		<div class="container transhome">
+			<br />
+			<br />
+			<br />
+			<br />
+			<h1 class="header center deep-purple-text darken-4-text">
+				<b>Bienvenido a Bambino Care</b>
+			</h1>
+			<br />
+			<br />
+			<br />
+			<br />
+			<div class="row center">
+				<div class="col s6">
+					<a class="deep-purple accent-2 white-text" href="#Servicios"
+						style="font-size: 30px; border: 0px; padding: 25px;"> Nuestros
+						Servicios </a>
+				</div>
+				<div class="col s6">
+					<a class="deep-purple accent-2 white-text" href="#" th:href="@{/login}"
+						style="font-size: 30px; border: 0px; padding: 25px;"> Iniciar
+						sesion </a>
+				</div>
 			</div>
-			<div class="col s6">
-				<a class="deep-purple accent-2 white-text" href="@{/login}" style="font-size: 30px; border: 0px; padding: 25px;">
-					Iniciar sesion
-				</a>
+			<br />
+			<br />
+			<br />
+			<br />
+			<br />
+		</div>
+		<br />
+		<br />
+	</div>
+
+	<div id="Servicios" class="hr row transparent"></div>
+
+	<div>
+		<div class="section">
+			<!--   Icon Section   -->
+			<h4 class="center">Servicios</h4>
+			<div class="row container hide">
+				<div class="flow-text"
+					style="padding-top: 0px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px; border-top-width: 20px;">
+					<div class="center">
+						<i class="medium material-icons">child_care</i>
+					</div>
+					<h5 class="center">Bambino Care</h5>
+
+					<p class="light">Cuidado y formación infantil a domicilio de
+						infantes a partir de los 6 meses de edad hasta los 14 años. A
+						continuación te detallamos las actividades que nuestras Bambinaias
+						podrán desempeñar:</p>
+					<ul class="listcare light">
+						<li>Apoyo en tareas</li>
+						<li>Velada de sueño</li>
+						<li>Supervisión de actividades en casa</li>
+						<li>Atención a niños con discapacidad</li>
+					</ul>
+
+				</div>
+			</div>
+			<!-- contenido oculto -->
+			<div class="row">
+				<div class="col s12 m3">
+					<div class="icon-block hoverable">
+						<h2 class="center">
+							<i class="material-icons">child_care</i>
+						</h2>
+						<h5 class="center">Bambino Care</h5>
+
+						<p class="light">Cuidado y formación infantil a domicilio de
+							infantes a partir de los 6 meses de edad hasta los 14 años. A
+							continuación te detallamos las actividades que nuestras
+							Bambinaias podrán desempeñar:</p>
+						<ul class="listcare light">
+							<li>Apoyo en tareas</li>
+							<li>Velada de sueño</li>
+							<li>Supervisión de actividades en casa</li>
+							<li>Atención a niños con discapacidad</li>
+						</ul>
+
+					</div>
+				</div>
+
+				<div class="col s12 m3">
+					<div class="icon-block hoverable">
+						<h2 class="center">
+							<i class="material-icons">event</i>
+						</h2>
+						<h5 class="center">Bambino Events</h5>
+
+						<p class="light">Atención, cuidado y entretenimiento en
+							eventos privados, en donde los infantes podrán desarrollar y
+							practicar actividades dinámicas, mientras los padres pueden
+							llevar a cabo sus actividades sociales, con la confianza de que
+							sus hijos estarán bien atendidos.</p>
+					</div>
+				</div>
+
+				<div class="col s12 m3">
+					<div class="icon-block hoverable">
+						<h2 class="center">
+							<i class="material-icons">local_library</i>
+						</h2>
+						<h5 class="center">Bambino Tuttoring</h5>
+
+						<p class="light">Reforzamiento de las actividades y
+							aprendizajes obtenidos en clases, por medio del acompañamiento y
+							apoyo educativo de especialistas en el área, desde el nivel
+							básico hasta educación superior.</p>
+					</div>
+				</div>
+
+				<div class="col s12 m3">
+					<div class="icon-block hoverable">
+						<h2 class="center">
+							<i class="material-icons">flash_on</i>
+						</h2>
+						<h5 class="center">Bambino ASAP</h5>
+
+						<p class="light">Servicio de cuidado y atención de infantes
+							para casos imprevistos o emergencias no contempladas.</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div id="Nosotros" class="hr row transparent"></div>
+	<div class="container">
+		<div class="section">
+			<div class="row">
+				<h4 class="center">Nosotros</h4>
+				<div class="col s12 m6">
+					<div class="icon-block">
+						<h5 class="center">Objetivo</h5>
+
+						<p class="light">Ser empresa líder en el cuidado personal y
+							emocional de los niños, brindar apoyo académico y representar una
+							guía en la formación.</p>
+					</div>
+				</div>
+
+				<div class="col s12 m6">
+					<div class="icon-block">
+						<h5 class="center">Misión</h5>
+
+						<p class="light">Representar un apoyo en las familias del hoy,
+							llevando hasta la comodidad de su hogar a las mejores niñeras y
+							educadoras, para apoyar en las actividades académicas y
+							emocionales de los seres más importantes de las familias: Los
+							hijos.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12 center">
+					<h3>
+						<i class="mdi-content-send brown-text"></i>
+					</h3>
+					<h4>Descripcion</h4>
+					<p class="left-align light">Conocemos la importancia del
+						cuidado de los niños y la preocupación que representa el dejar a
+						los hijos en el cuidado de personas que no son familiares. Por lo
+						que ofrecemos servicios de Babysitter y tutorías hasta la puerta
+						de tu hogar, para facilitar el desarrollo educativo y emocional
+						óptimo de los niños. Así mismo, conocemos que existen ocasiones en
+						las que tienes eventos en los que deseas que tus hijos te
+						acompañen, sin embargo tienes miedo a no disfrutar el momento
+						debido a que tienes que poner total atención en ellos. Es por eso
+						que nace Bambino Events, el cual te permite contratar Babysitters
+						para tus eventos, en el cual se compromete a proporcionar
+						actividades lúdicas e interesantes durante el evento. Y lo mejor
+						de todo, es que sólo se necesita un pequeño espacio.</p>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<footer id="Footer" class="page-footer deep-purple lighten-2">
+		<div class="container">
+			<div class="row">
+				<div class="col l6 s12">
+					<h5 class="white-text">Contactanos</h5>
+					<p class="grey-text text-lighten-4">Para cualquier duda o
+						sugerencias pudes contactarnos:</p>
+					<p>
+						<i class="material-icons">email</i><br />bambino_mail@gmail.com
+					</p>
+					<p>
+						<i class="material-icons">call</i><br />8182-8384
+					</p>
+
+				</div>
+				<div class="col l3 offset-l2 s12">
+					<h5 class="white-text">Redes Sociales</h5>
+					<ul>
+						<li><a class="white-text" href="#!">Facebook</a></li>
+						<li><a class="white-text" href="#!">Twiter</a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
-		<br/><br/><br/><br/><br/>
-  	</div>
-  	<br/><br/>
-  </div>  
-
-<div id="Servicios" class="hr row transparent"></div>
-
-  <div>
-    <div class="section">
-      <!--   Icon Section   -->
-       <h4 class="center">Servicios</h4>
-       <div class="row container hide">
-          <div class="flow-text" style="
-			    padding-top: 0px;
-			    padding-left: 20px;
-			    padding-right: 20px;
-			    padding-bottom: 20px;
-			    border-top-width: 20px;">
-			<div class="center">
-            	<i class="medium material-icons">child_care</i>
-            </div>
-            <h5 class="center">Bambino Care</h5>
-
-            <p class="light">
-            Cuidado y formación infantil a domicilio de infantes a partir de los 6 meses de edad hasta los 14 años. 
-            A continuación te detallamos las actividades que nuestras Bambinaias podrán desempeñar:</p>
-	        <ul class="listcare light">
-				<li> Apoyo en tareas</li>
-				<li> Velada de sueño</li>
-				<li> Supervisión de actividades en casa</li>
-				<li> Atención a niños con discapacidad</li>
-			</ul>
-            
-          </div>
-      </div>
-       <!-- contenido oculto -->
-      <div class="row">
-        <div class="col s12 m3">
-          <div class="icon-block hoverable">
-            <h2 class="center"><i class="material-icons">child_care</i></h2>
-            <h5 class="center">Bambino Care</h5>
-
-            <p class="light">
-            Cuidado y formación infantil a domicilio de infantes a partir de los 6 meses de edad hasta los 14 años. 
-            A continuación te detallamos las actividades que nuestras Bambinaias podrán desempeñar:</p>
-	        <ul class="listcare light">
-				<li> Apoyo en tareas</li>
-				<li> Velada de sueño</li>
-				<li> Supervisión de actividades en casa</li>
-				<li> Atención a niños con discapacidad</li>
-			</ul>
-            
-          </div>
-        </div>
-
-        <div class="col s12 m3">
-          <div class="icon-block hoverable">
-            <h2 class="center"><i class="material-icons">event</i></h2>
-            <h5 class="center">Bambino Events</h5>
-
-            <p class="light">Atención, cuidado y entretenimiento en eventos privados, en donde los infantes podrán desarrollar y 
-            practicar actividades dinámicas, mientras los padres pueden llevar a cabo sus actividades sociales, 
-            con la confianza de que sus hijos estarán bien atendidos.</p>
-          </div>
-        </div>
-
-        <div class="col s12 m3">
-          <div class="icon-block hoverable">
-            <h2 class="center"><i class="material-icons">local_library</i></h2>
-            <h5 class="center">Bambino Tuttoring</h5>
-
-            <p class="light">Reforzamiento de las actividades y aprendizajes obtenidos en clases, por medio del acompañamiento y 
-            apoyo educativo de especialistas en el área, desde el nivel básico hasta educación superior. </p>
-          </div>
-        </div>
-        
-        <div class="col s12 m3">
-          <div class="icon-block hoverable">
-            <h2 class="center"><i class="material-icons">flash_on</i></h2>
-            <h5 class="center">Bambino ASAP</h5>
-
-            <p class="light">Servicio de cuidado y atención de infantes para casos imprevistos o emergencias no contempladas.</p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div id="Nosotros" class="hr row transparent"></div>
-  <div class="container">
-    <div class="section">
-      <div class="row">
-          <h4 class="center">Nosotros</h4>
-          <div class="col s12 m6">
-              <div class="icon-block">
-                <h5 class="center">Objetivo</h5>
-
-                <p class="light">Ser empresa líder en el cuidado personal y emocional de los niños, brindar apoyo
-                  académico y representar una guía en la formación.</p>
-              </div>
-            </div>
-
-            <div class="col s12 m6">
-              <div class="icon-block">
-                <h5 class="center">Misión</h5>
-
-                <p class="light">Representar un apoyo en las familias del hoy, llevando hasta la comodidad de su hogar
-                  a las mejores niñeras y educadoras, para apoyar en las actividades académicas y emocionales de los
-                  seres más importantes de las familias: Los hijos.</p>
-              </div>
-            </div>
-      </div>
-
-      <div class="row">
-        <div class="col s12 center">
-          <h3><i class="mdi-content-send brown-text"></i></h3>
-          <h4>Descripcion</h4>
-          <p class="left-align light">
-              Conocemos la importancia del cuidado de los niños y la preocupación que representa el dejar a los
-              hijos en el cuidado de personas que no son familiares. Por lo que ofrecemos servicios de Babysitter y
-              tutorías hasta la puerta de tu hogar, para facilitar el desarrollo educativo y emocional óptimo de los
-              niños.
-
-              Así mismo, conocemos que existen ocasiones en las que tienes eventos en los que deseas que tus hijos te
-              acompañen, sin embargo tienes miedo a no disfrutar el momento debido a que tienes que poner total atención
-              en ellos. Es por eso que nace Bambino Events, el cual te permite contratar Babysitters para tus eventos,
-              en el cual se compromete a proporcionar actividades lúdicas e interesantes durante el evento. Y lo mejor
-              de todo, es que sólo se necesita un pequeño espacio.
-
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <footer id="Footer" class="page-footer deep-purple lighten-2">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">Contactanos</h5>
-          <p class="grey-text text-lighten-4">Para cualquier duda o sugerencias pudes contactarnos:</p>
-          <p><i class="material-icons">email</i><br/>bambino_mail@gmail.com</p>
-          <p><i class="material-icons">call</i><br/>8182-8384</p>
-
-        </div>
-        <div class="col l3 offset-l2 s12">
-          <h5 class="white-text">Redes Sociales</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Facebook</a></li>
-            <li><a class="white-text" href="#!">Twiter</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-          © 2017 Copyright
-      </div>
-    </div>
-  </footer>
+		<div class="footer-copyright">
+			<div class="container">© 2017 Copyright</div>
+		</div>
+	</footer>
 
 
 	<!--  Scripts-->
@@ -208,5 +243,5 @@
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
 
-  </body>
+</body>
 </html>

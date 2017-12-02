@@ -54,7 +54,7 @@
 						<tr th:each="booking : ${bookings}">
 							<td>
 								<form th:action="@{/admin/showbookingdetail}" method="POST">
-									<input type="hidden" name="bookingid"
+									<input type="hidden" name="bookingId"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1">
@@ -73,7 +73,7 @@
 							<td>
 
 								<form th:action="@{/admin/approvebooking}" method="post">
-									<input type="hidden" name="bookingid"
+									<input type="hidden" name="bookingId"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1"
@@ -105,7 +105,7 @@
 									<i class="material-icons">edit</i>
 							</a></td>
 							<td><form th:action="@{/admin/cancelbooking}" method="post">
-									<input type="hidden" name="idbooking"
+									<input type="hidden" name="bookingId"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1">

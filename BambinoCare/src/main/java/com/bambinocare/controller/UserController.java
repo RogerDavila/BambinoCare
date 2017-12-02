@@ -589,7 +589,7 @@ public class UserController {
 	}
 
 	@PostMapping("/cancelbooking")
-	public String cancelBooking(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
+	public String cancelBooking(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";

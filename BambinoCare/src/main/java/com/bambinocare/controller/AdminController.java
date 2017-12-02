@@ -38,6 +38,7 @@ import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EventTypeService;
 import com.bambinocare.model.service.NannyService;
 import com.bambinocare.model.service.UserService;
+import com.bambinocare.model.service.impl.BambinoServiceImpl;
 
 @Controller
 @RequestMapping("/admin")
@@ -74,7 +75,7 @@ public class AdminController {
 	@Autowired
 	@Qualifier("bambinoService")
 	private BambinoService bambinoService;
-	
+
 	@Autowired
 	@Qualifier("costService")
 	private CostService costService;
@@ -97,7 +98,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/showbookingdetail")
-	public String showBookingDetail(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
+	public String showBookingDetail(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
@@ -169,7 +170,7 @@ public class AdminController {
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(booking.getClient().getUser());
 		List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-		
+
 		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 		model.addAttribute("costs", costs);
@@ -196,48 +197,53 @@ public class AdminController {
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
 			error = "Favor de verificar el campo Duración";
-			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("error", error);
+			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
 
 		if (booking.getDate() == null) {
 			error = "Favor de verificar el campo Fecha";
-			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("error", error);
+			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
 			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
-			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("error", error);
+			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
 
 		if (booking.getHour() == null || booking.getHour().equals("")) {
 			error = "Favor de verificar el campo Hora";
-			mav = new ModelAndView("redirect:/admin/showbookings");
+			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("error", error);
+			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
 
 		if (booking.getBambinoId().size() <= 0) {
 			error = "Favor de elegir al menos un bambino";
-			mav = new ModelAndView("redirect:/users/showbookings");
+			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("error", error);
-			return mav;
-		}
-
-		booking.setBambino(
-				bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(), booking.getClient().getUser()));
-
-		if (booking.getBambino().isEmpty()) {
-			error = "Ocurrió un error al intentar agregar a los bambinos";
-			mav = new ModelAndView("redirect:/users/showbookings");
-			mav.addObject("error", error);
+			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
 
 		BookingEntity oldBooking = bookingService.findByBookingId(booking.getBookingId());
+
+		booking.setBambino(bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(),
+				oldBooking.getClient().getUser()));
+
+		if (booking.getBambino().isEmpty()) {
+			error = "Ocurrió un error al intentar agregar a los bambinos";
+			mav = new ModelAndView("redirect:/users/editbookingform");
+			mav.addObject("error", error);
+			return mav;
+		}
 
 		oldBooking.setDuration(booking.getDuration());
 		oldBooking.setDate(getDate(booking.getDate(), 1));
@@ -263,7 +269,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/cancelbooking")
-	public String cancelBooking(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
+	public String cancelBooking(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
@@ -301,7 +307,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/approvebooking")
-	public String approveBooking(@RequestParam(name = "bookingid", required = false) Integer bookingId,
+	public String approveBooking(@RequestParam(name = "bookingId", required = false) Integer bookingId,
 			@ModelAttribute(name = "nanny") NannyEntity nanny, BindingResult bindingResult, Model model) {
 
 		String error = "";
@@ -348,7 +354,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/rejectbooking")
-	public String rejectBooking(@RequestParam(name = "bookingid") Integer bookingId, Model model) {
+	public String rejectBooking(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
 		String error = "";
 		String result = "";
@@ -379,9 +385,7 @@ public class AdminController {
 
 		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
 	}
-	
-	
-	
+
 	@GetMapping("/createnannyform")
 	public String createNannyForm(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, Model model) {
