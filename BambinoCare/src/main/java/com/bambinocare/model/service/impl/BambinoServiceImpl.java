@@ -57,7 +57,6 @@ public class BambinoServiceImpl implements BambinoService {
 		return bambinoRepository.findByBambinoId(bambinoId);
 	}
 
-}
 	public Set<BambinoEntity> findBambinosByBambinoIdAndUser(List<String> bambinosId, UserEntity user){
 		Set<BambinoEntity> bambinos = new HashSet<>();
 
