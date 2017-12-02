@@ -1,7 +1,7 @@
 (function($){
   $(function(){
 
-  
+
     $('.button-collapse').sideNav({
         closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
       }
@@ -54,7 +54,7 @@
     // Reservacion
     $("#Tutorias").hide();
     $("#Evento").hide();
-    $('#tipoServicio').change(function(){ 
+    $('#tipoServicio').change(function(){
     	if($(this).val() == 2){
         $("#Tutorias").hide();
         $("#Evento").show();
@@ -64,19 +64,54 @@
         $("#Tutorias").show();
     	}
 	});
-    
-    $("#menu").on('click', function(event) {
-        if (this.hash !== "") {
-          event.preventDefault();
-          var hash = this.hash;
-          $('html, body').animate({
-            scrollTop: $(hash).offset().top
-          }, 800, function(){
-            window.location.hash = hash;
-          });
-        }
-      });
-    
+
+    $('#contacto')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Footer";
+    });
+
+    $('#servicios')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Servicios";
+    });
+
+    $('#inicio')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#";
+    });
+
+    $('#nosotros')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Nosotros";
+    });
+
+    $('#contactoMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Footer";
+    });
+
+    $('#serviciosMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Servicios";
+    });
+
+    $('#inicioMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#";
+    });
+
+    $('#nosotrosMobile')
+    .click(function() {
+    	console.log("Redirigiendo...");
+      window.location.href = "http://localhost:8080/#Nosotros";
+    });
 
   });
 })(jQuery);

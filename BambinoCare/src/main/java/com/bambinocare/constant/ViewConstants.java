@@ -1,4 +1,4 @@
-package com.bambinocare.constants;
+package com.bambinocare.constant;
 
 public class ViewConstants {
 	public static final String SIGNUP_FORM = "/unsecure/signup";
@@ -13,7 +13,7 @@ public class ViewConstants {
 	public static final String CREATE_BAMBINO = "/secure/client/newbambino";
 	public static final String CREATE_CONTACT = "/secure/client/newcontact";
 	public static final String EDIT_CONTACT = "/secure/client/editcontact";;
-	public static final String EDIT_BOOKING = "/secure/client/editbooking";
+	//public static final String EDIT_BOOKING = "/secure/client/editbooking";
 	public static final String BOOKING_EDIT = "/secure/client/bookingedit";
 	public static final String RECOVERYPASSWORD_FORM = "/unsecure/recoverypassword";
 	public static final String HOME = "/unsecure/index";

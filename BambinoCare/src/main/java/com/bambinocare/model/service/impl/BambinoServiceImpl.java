@@ -1,7 +1,9 @@
 package com.bambinocare.model.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,7 +37,7 @@ public class BambinoServiceImpl implements BambinoService {
 	}
 
 	@Override
-	public List<BambinoEntity> findByUser(UserEntity user) {
+	public List<BambinoEntity> findByClientUser(UserEntity user) {
 		return bambinoRepository.findByClientUser(user);
 	}
 
@@ -43,8 +45,9 @@ public class BambinoServiceImpl implements BambinoService {
 	public BambinoEntity findByBambinoIdAndUser(Integer bambinoId, UserEntity user) {
 		return bambinoRepository.findByBambinoIdAndClientUser(bambinoId, user);
 	}
-	
+
 	@Override
+
 	public void removeBambino(Integer bambinoId){
 		bambinoRepository.delete(findByBambinoId(bambinoId));
 	}
@@ -52,6 +55,18 @@ public class BambinoServiceImpl implements BambinoService {
 	@Override
 	public BambinoEntity findByBambinoId(Integer bambinoId) {
 		return bambinoRepository.findByBambinoId(bambinoId);
+	}
+
+}
+	public Set<BambinoEntity> findBambinosByBambinoIdAndUser(List<String> bambinosId, UserEntity user){
+		Set<BambinoEntity> bambinos = new HashSet<>();
+
+		for (String bambinoId: bambinosId) {
+			int bambinoIdInt = Integer.parseInt(bambinoId);
+			bambinos.add(findByBambinoIdAndUser(bambinoIdInt, user));
+		}
+
+		return bambinos;
 	}
 
 }

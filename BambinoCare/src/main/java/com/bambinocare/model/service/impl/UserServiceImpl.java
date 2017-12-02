@@ -18,7 +18,9 @@ import org.springframework.security.core.userdetails.User;
 
 import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
+import com.bambinocare.model.entity.VerificationTokenEntity;
 import com.bambinocare.model.repository.UserRepository;
+import com.bambinocare.model.repository.VerificationTokenRepository;
 import com.bambinocare.model.service.UserService;
 
 @Service("userService")
@@ -27,6 +29,10 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 	@Autowired
 	@Qualifier("userRepository")
 	private UserRepository userRepository;
+	
+	@Autowired
+	@Qualifier("verificationTokenRepository")
+	private VerificationTokenRepository verificationTokenRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -95,4 +101,17 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 		
 		return newUser;
 	}
+	
+	@Override
+	public void createVerificationToken(UserEntity user, String token) {
+		VerificationTokenEntity verificationToken = new VerificationTokenEntity(token, user);
+		
+		verificationTokenRepository.save(verificationToken);
+	}
+	
+	@Override
+	public VerificationTokenEntity getVerificationToken(String verificationToken) {
+		return verificationTokenRepository.findByToken(verificationToken);
+	}
+	
 }

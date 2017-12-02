@@ -27,7 +27,7 @@ public class ClientServiceImpl implements ClientService{
 		RoleEntity roleEntity = new RoleEntity(3, "Cliente");
 		
 		client.getUser().setRole(roleEntity);
-		client.getUser().setEnabled(true);
+		client.getUser().setEnabled(false);
 		
 		UserEntity user = client.getUser();
 		

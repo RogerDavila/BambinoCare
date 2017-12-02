@@ -64,5 +64,5 @@ public class BookingServiceImpl implements BookingService{
 			String... bookingStatusDesc) {
 		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId, bookingStatusDesc);
 	}
-	
+
 }

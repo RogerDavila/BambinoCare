@@ -3,6 +3,7 @@ package com.bambinocare.model.service;
 import java.util.List;
 
 import com.bambinocare.model.entity.UserEntity;
+import com.bambinocare.model.entity.VerificationTokenEntity;
 
 public interface UserService {
 	
@@ -14,5 +15,7 @@ public interface UserService {
 	UserEntity editUser(UserEntity user);
 	boolean userExist(String email);
 	UserEntity updatePassword(String email, String password);
+	void createVerificationToken(UserEntity user, String token);
+	VerificationTokenEntity getVerificationToken(String verificationToken);
 	
 }
