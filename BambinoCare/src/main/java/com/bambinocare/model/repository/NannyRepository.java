@@ -14,5 +14,6 @@ public interface NannyRepository extends JpaRepository<NannyEntity, Serializable
 
 	List<NannyEntity> findAll();
 	NannyEntity findByNannyId(Integer nannyId);
+	NannyEntity findByUserEmail(String email);
 	
 }

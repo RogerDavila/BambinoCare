@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.bambinocare.model.entity.BookingEntity;
+import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.BookingRepository;
 import com.bambinocare.model.service.BookingService;
@@ -63,6 +64,17 @@ public class BookingServiceImpl implements BookingService{
 	public BookingEntity findByBookingIdAndBookingStatusBookingStatusDescNotIn(Integer bookingId,
 			String... bookingStatusDesc) {
 		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId, bookingStatusDesc);
+	}
+
+	@Override
+	public List<BookingEntity> findByNannyAndBookingStatusBookingStatusDesc(NannyEntity nanny, String bookingStatusDesc) {
+		return bookingRepository.findByNannyAndBookingStatusBookingStatusDesc(nanny, bookingStatusDesc);
+	}
+
+	@Override
+	public BookingEntity findByBookingIdAndBookingStatusBookingStatusDescAndNanny(Integer bookingId,
+			String bookingStatusDesc, NannyEntity nanny) {
+		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDescAndNanny(bookingId, bookingStatusDesc, nanny);
 	}
 
 }

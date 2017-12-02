@@ -46,5 +46,10 @@ public class NannyServiceImpl implements NannyService{
 	public void removeNanny(Integer nannyId){
 		nannyRepository.delete(findByNannyId(nannyId));
 	}
+
+	@Override
+	public NannyEntity findByUserEmail(String email) {
+		return nannyRepository.findByUserEmail(email);
+	}
 	
 }

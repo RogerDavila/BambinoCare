@@ -10,4 +10,5 @@ public interface NannyService {
 	NannyEntity createNanny(NannyEntity nanny);
 	NannyEntity editNanny(NannyEntity nanny);
 	void removeNanny(Integer nannyId);
+	NannyEntity findByUserEmail(String email);
 }

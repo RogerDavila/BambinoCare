@@ -2,37 +2,45 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
 <body>
-
 	<div th:fragment="header(username)">
-
 		<div class="nav-wrapper">
-           <a href="#" class="brand-logo center">Bambino</a>
-           <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-           <ul id="nav-mobile" class="right hide-on-med-and-down">
-             <li> <a class="btn-floating btn-medium waves-effect waves-light light-blue accent-4 modal-trigger"
-                                href="#modal1">
-                                  <i class="material-icons flo">person</i>
-                              </a> 
-                              <output  th:text="${username}"></output>
-            </li>
-             <li>
-             	<form th:action="@{/logout}" method="POST">
-						<button type="submit" class="waves-effect waves-teal btn-flat white-text">Cerrar Sesión</button>
-				</form>
-             </li>
-           </ul>
-           <ul class="side-nav" id="mobile-demo">
-             <li><a href="#"><output  th:text="${username}"></output></a></li>
-             <li>
-				<form th:action="@{/logout}" method="POST">
-					<button type="submit" class="btn waves-effect waves-light white-text">Cerrar
-						Sesion</button>
-				</form>
-             </li>
-           </ul>
-         </div>
-
+			<a href="#" class="brand-logo center">Bambino</a> <a href="#"
+				data-activates="mobile-demo" class="button-collapse"><i
+				class="material-icons">menu</i></a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a
+					class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
+					href="#modal1"> <i class="material-icons flo">person</i>
+				</a> <output th:text="${username}"></output></li>
+				<li>
+					<form th:action="@{/logout}" method="POST">
+						<button type="submit"
+							class="waves-effect waves-teal btn-flat white-text">Cerrar
+							Sesión</button>
+					</form>
+				</li>
+			</ul>
+			<ul class="side-nav" id="mobile-demo">
+				<li><a
+					class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
+					href="#modal1"> <i class="material-icons flo">person</i>
+				</a> <output th:text="${username}"></output></li>
+				<li>
+					<form th:action="@{/logout}" method="POST">
+						<button type="submit"
+							class="waves-effect waves-teal btn-flat white-text">Cerrar
+							Sesión</button>
+					</form>
+				</li>
+			</ul>
+		</div>
+		<div class="nav-content">
+			<ul class="tabs tabs-transparent">
+				<li class="tab"><a class="active" href="#Reservaciones">Administrar Reservaciones</a></li>
+				<!--<li class="tab"><a href="#Usuarios">Usuarios</a></li>-->
+				<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
+			</ul>
+		</div>
 	</div>
-
 </body>
 </html>
