@@ -42,4 +42,14 @@ public class EmergencyContactServiceImpl implements EmergencyContactService{
 		return emergencyContactRepository.findByContactIdAndClientUser(contactId, user);
 	}
 	
+	@Override
+	public void removeContact(Integer contactId){
+		emergencyContactRepository.delete(findByContactId(contactId));
+	}
+
+	@Override
+	public EmergencyContactEntity findByContactId(Integer contactId) {
+		return emergencyContactRepository.findByContactId(contactId);
+	}
+	
 }

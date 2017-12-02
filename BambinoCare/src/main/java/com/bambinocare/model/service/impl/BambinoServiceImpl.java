@@ -45,16 +45,27 @@ public class BambinoServiceImpl implements BambinoService {
 	public BambinoEntity findByBambinoIdAndUser(Integer bambinoId, UserEntity user) {
 		return bambinoRepository.findByBambinoIdAndClientUser(bambinoId, user);
 	}
-	
+
 	@Override
+
+	public void removeBambino(Integer bambinoId){
+		bambinoRepository.delete(findByBambinoId(bambinoId));
+	}
+
+	@Override
+	public BambinoEntity findByBambinoId(Integer bambinoId) {
+		return bambinoRepository.findByBambinoId(bambinoId);
+	}
+
+}
 	public Set<BambinoEntity> findBambinosByBambinoIdAndUser(List<String> bambinosId, UserEntity user){
 		Set<BambinoEntity> bambinos = new HashSet<>();
-		
+
 		for (String bambinoId: bambinosId) {
 			int bambinoIdInt = Integer.parseInt(bambinoId);
 			bambinos.add(findByBambinoIdAndUser(bambinoIdInt, user));
 		}
-		
+
 		return bambinos;
 	}
 

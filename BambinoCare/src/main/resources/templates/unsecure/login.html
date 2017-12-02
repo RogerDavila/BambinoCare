@@ -17,24 +17,17 @@
 <body>
 
 	<div th:include="/unsecure/fragments/header :: header"></div>
-	
-	<div id="index-banner" class="parallax-container">
-		<div class="section no-pad-bot">
 
-			<div class="row">
-				<br />
-				<br />
-			</div>
+	<div class="section1 ">
+		<div class="">
+			<br /><br />
 			<div class="row">
 				<div class="col s4"></div>
-				<form class="col white col s4 " th:action="@{/logincheck}"
+				<form class="col white col s4" th:action="@{/logincheck}"
 					method="POST">
 					<input type="hidden" name="${csrf.parametername}"
 						value="${_csrf.token}" />
 					<div class="row center black-text">
-						<p>
-							<br />
-						</p>
 							<h4>Inicio de Sesion</h4>
 					</div>
 
@@ -65,11 +58,6 @@
 				</form>
 				<div class="col s1"></div>
 			</div>
-		</div>
-		<div th:if="${error != null}" id="error"></div>
-		<div class="parallax">
-			<img src="../static/img/home2.jpg" th:src="@{/img/home2.jpg}"
-				alt="Unsplashed background img 1" />
 		</div>
 	</div>
 

@@ -15,4 +15,5 @@ public interface EmergencyContactRepository extends JpaRepository<EmergencyConta
 	List<EmergencyContactEntity> findByClient(ClientEntity client);
 	List<EmergencyContactEntity> findByClientUser(UserEntity user);
 	EmergencyContactEntity findByContactIdAndClientUser(Integer contactId, UserEntity user);
+	EmergencyContactEntity findByContactId(Integer contactId);
 }

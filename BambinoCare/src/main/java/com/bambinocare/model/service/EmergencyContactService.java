@@ -1,7 +1,6 @@
 package com.bambinocare.model.service;
 
 import java.util.List;
-
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.UserEntity;
@@ -12,5 +11,6 @@ public interface EmergencyContactService {
 	List<EmergencyContactEntity> findByUser(UserEntity user);
 	EmergencyContactEntity createContact(EmergencyContactEntity contact);
 	EmergencyContactEntity findByContactIdAndUser(Integer contactId, UserEntity user);
-	
+	EmergencyContactEntity findByContactId(Integer contactId);
+	void removeContact(Integer contactId);
 }

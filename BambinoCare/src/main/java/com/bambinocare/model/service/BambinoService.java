@@ -8,11 +8,14 @@ import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.UserEntity;
 
 public interface BambinoService {
-	
+
 	List<BambinoEntity> findByClient(ClientEntity client);
 	BambinoEntity createBambino(BambinoEntity bambino);
-	List<BambinoEntity> findByClientUser(UserEntity user);
+
 	BambinoEntity findByBambinoIdAndUser(Integer bambinoId, UserEntity user);
+	void removeBambino(Integer bambinoId);
+	BambinoEntity findByBambinoId(Integer bambinoId);
+	List<BambinoEntity> findByClientUser(UserEntity user);
 	Set<BambinoEntity> findBambinosByBambinoIdAndUser(List<String> bambinoIds, UserEntity user);
-	
+
 }
