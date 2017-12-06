@@ -234,16 +234,32 @@
 			*/
 		  $("#duration, input[type='checkbox']")
 		  	.change(function() {
+		  		calculateCost();
+		  		document.getElementById('cost').innerHTML = "Total: $" + totalCost;
+			});
+		  
+		  /*
+			EMPIEZA CALCULO DE COSTOS
+			*/
+			function calculateCost(bambinoQuantity) {
 		  		var sum = 0;
 		  		var duration = $("#duration")
-		  		$( "input[type='checkbox']").each(function(checkbox) {
-				  	if(this.checked){
-						sum += 1;
-				  	}
-				});
+		  		if(!bambinoQuantity){
+		  			totalCost = 0;
+			  		$( "input[type='checkbox']").each(function(checkbox) {
+					  	if(this.checked){
+							sum += 1;
+					  	}
+					});
+		  		}else{
+		  			sum = bambinoQuantity;
+		  		}
 		  		
 		  		if(sum > 3){
-		  			sum = 3;
+		  			console.log("Entra con: " + totalCost);
+		  			sum -= 3;
+					totalCost += calculateCost(sum);
+					sum = 3;
 		  		}
 		  		
 		  			/*<![CDATA[*/
@@ -255,26 +271,25 @@
 		  		}
 		  		
 		  		for(var i = 0; i < costsCurrent.length; i++ ){
-	  				var durationValue = duration[0].value;
-	  				
-	  				if(durationValue != "" && !isNaN(durationValue)){
-		  				if(durationValue > costsCurrent[i].hourQuantity){
-			  				continue;
-		  				}else{
-		  					
-		  					if(durationValue == costsCurrent[i].hourQuantity){
-		  						totalCost = costsCurrent[i].cost * durationValue;
-		  						console.log("El costo es de: " + costsCurrent[i].cost + " porque: bambinosQty: " + costsCurrent[i].bambinoQuantity + " y HoursQty: " +  costsCurrent[i].hourQuantity + " y durationValue: " + durationValue + ".......");
-		  					}else{
-		  						totalCost = costsCurrent[i-1].cost * durationValue;
-		  						console.log("El costo es de: " + costsCurrent[i-1].cost + " porque: bambinosQty: " + costsCurrent[i-1].bambinoQuantity + " y HoursQty: " +  costsCurrent[i-1].hourQuantity + " y durationValue: " + durationValue );
-		  					}
-		  					break;
-		  				}
-	  				}
+						var durationValue = duration[0].value;
+						
+						if(durationValue != "" && !isNaN(durationValue)){
+			  				if(durationValue > costsCurrent[i].hourQuantity){
+				  				continue;
+			  				}else{
+			  					
+			  					if(durationValue == costsCurrent[i].hourQuantity){
+			  						totalCost += costsCurrent[i].cost * durationValue;
+			  					}else{
+			  						totalCost += costsCurrent[i-1].cost * durationValue;
+			  					}
+			  					break;
+			  				}
+						}
 		  		}/*]]>*/
-		  		document.getElementById('cost').innerHTML = "Total: $" + totalCost;
-			});
+		  		//document.getElementById('cost').innerHTML = "Total: $" + totalCost;
+		  		return totalCost;
+			}
 		});
 	</script>
 

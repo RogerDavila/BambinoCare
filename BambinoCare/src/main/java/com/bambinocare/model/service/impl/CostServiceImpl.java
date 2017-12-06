@@ -34,7 +34,13 @@ public class CostServiceImpl implements CostService{
 		if(duration == null || duration == 0) return totalCost;
 		
 		
-		bambinoQuantity = bambinoQuantity > 3 ? 3 : bambinoQuantity;
+		//bambinoQuantity = bambinoQuantity > 3 ? 3 : bambinoQuantity;
+		
+		if(bambinoQuantity > 3) {
+			bambinoQuantity -= 3;
+			totalCost += calculateTotalCost(duration, bambinoQuantity);
+			bambinoQuantity = 3;
+		}
 		
 		List<CostEntity> costs = findByBambinoQuantityOrderByHourQuantity(bambinoQuantity);
 		
@@ -43,9 +49,9 @@ public class CostServiceImpl implements CostService{
 				continue;
 			}else {
 				if(duration.equals(costs.get(i).getHourQuantity())) {
-					totalCost = costs.get(i).getCost() * duration;
+					totalCost += costs.get(i).getCost() * duration;
 				}else {
-					totalCost = costs.get(i-1).getCost() * duration;
+					totalCost += costs.get(i-1).getCost() * duration;
 				}
 				break;
 			}
