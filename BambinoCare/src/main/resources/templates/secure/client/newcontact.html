@@ -4,7 +4,7 @@
 <meta name="viewport"
 	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
 	http-equiv="Content-Type" />
-	
+
 <title>BambinoCare</title>
 
 <!-- CSS  -->
@@ -22,60 +22,64 @@
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div th:include="/secure/client/fragments/header :: header(${usernameLogged})"></div>
+			<div
+				th:include="/secure/client/fragments/header :: header(${usernameLogged})"></div>
 		</nav>
 	</header>
-	<br/><br/><br/>
+	<br />
+	<br />
+	<br />
 	<div class="center grey-text text-darken-3">
 		<h5>Nuevo Contacto de emergencia</h5>
 	</div>
 	<div class="row container">
-		<form class="col s12 white" action="#" th:action="@{/users/newcontact}"
-		th:object="${contact}" method="post" name="bambinoform">
+		<form class="col s12 white" action="#"
+			th:action="@{/users/newcontact}" th:object="${contact}" method="post"
+			name="bambinoform">
 			<div class="row">
 				<div class="input-field col s4">
 					<input id="nombre" type="text" class="validate black-text"
-						required="required"  th:value="${firstname}" th:field = "*{firstname}"/> 
-					<label for="first_name">Nombre</label>
+						required="required" th:value="${firstname}"
+						th:field="*{firstname}" /> <label for="first_name">Nombre</label>
 				</div>
 				<div class="input-field col s4">
 					<input id="last_name" type="text" class="validate black-text"
-						required="required"  th:value="${lastname}" th:field = "*{lastname}" /> 
-						<label for="last_name">Apellidos</label>
+						required="required" th:value="${lastname}" th:field="*{lastname}" />
+					<label for="last_name">Apellidos</label>
 				</div>
 				<div class="input-field col s4">
 					<input id="phone" type="number" class="validate black-text"
-						required="required"  th:value="${phone}" th:field = "*{phone}" /> 
-					<label for="phone">Telefono</label>
+						required="required" th:value="${phone}" th:field="*{phone}" /> <label
+						for="phone">Telefono</label>
 				</div>
 			</div>
 			<div class="row">
 				<div class="input-field col s3">
 					<input id="street" type="text" class="validate black-text"
-						required="required"  th:value="${street}" th:field = "*{street}" /> 
+						required="required" th:value="${street}" th:field="*{street}" />
 					<label for="street">Calle/numero</label>
 				</div>
 				<div class="input-field col s3">
 					<input id="neighborhood" type="text" class="validate black-text"
-						required="required"  th:value="${neighborhood}" th:field = "*{neighborhood}" /> 
-					<label for="neighborhood">Colonia</label>
+						required="required" th:value="${neighborhood}"
+						th:field="*{neighborhood}" /> <label for="neighborhood">Colonia</label>
 				</div>
 				<div class="input-field col s3">
 					<input id="city" type="text" class="validate black-text"
-						required="required"  th:value="${city}" th:field = "*{city}" /> 
-					<label for="city">Municipio</label>
+						required="required" th:value="${city}" th:field="*{city}" /> <label
+						for="city">Municipio</label>
 				</div>
 				<div class="input-field col s3">
 					<input id="state" type="text" class="validate black-text"
-						required="required"  th:value="${state}" th:field = "*{state}" /> 
-					<label for="state">Estado</label>
+						required="required" th:value="${state}" th:field="*{state}" /> <label
+						for="state">Estado</label>
 				</div>
 			</div>
 			<div class="row">
 				<div class="input-field col s4">
 					<input id="relationship" type="text" class="validate black-text"
-						required="required"  th:value="${relationship}" th:field = "*{relationship}" /> 
-					<label for="relationship">Prentesco</label>
+						required="required" th:value="${relationship}"
+						th:field="*{relationship}" /> <label for="relationship">Prentesco</label>
 				</div>
 				<div class="right-align">
 					<a th:href="@{/users/cancel}"
@@ -86,13 +90,11 @@
 				</div>
 			</div>
 		</form>
-	
-		
-		<div class="col s10 red-text" th:if="${error != null}"
-			th:text="${error}"></div>
 
-		<div class="col s10 blue-text" th:if="${result != null}"
-			th:text="${result}"></div>
+
+		<div class="col s10 red-text" id="error" th:if="${error != null}"></div>
+
+		<div class="col s10 blue-text" id="success" th:if="${result != null}"></div>
 	</div>
 
 	<!--  Scripts-->
@@ -101,6 +103,23 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
+		    });
+		  $('#failed')
+		    .show(1000, function() {
+		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
+		    });
+		});
+	</script>
 
 </body>
 </html>

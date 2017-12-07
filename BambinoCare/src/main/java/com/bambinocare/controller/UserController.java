@@ -238,10 +238,11 @@ public class UserController {
 		booking.setClient(client);
 
 		if (bambinoService.findByClient(client).isEmpty()) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+			//mav = new ModelAndView(ViewConstants.CREATE_BAMBINO);
+			mav = new ModelAndView("redirect:/users/createbambinoform");
 			error = "Favor dar de alta a sus bambinos";
 
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			/*List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
@@ -253,7 +254,7 @@ public class UserController {
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
+			mav.addObject("eventTypes", eventTypes);*/
 
 			mav.addObject("error", error);
 
@@ -263,9 +264,10 @@ public class UserController {
 		List<EmergencyContactEntity> emergencyContacts = emergencyContactService.findByClient(client);
 
 		if (emergencyContacts.isEmpty() || emergencyContacts.size() < 2) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+			//mav = new ModelAndView(ViewConstants.CREATE_CONTACT);
+			mav = new ModelAndView("redirect:/users/createcontactform");
 			error = "Favor dar de alta al menos 2 contactos de emergencia";
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			/*List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
@@ -278,7 +280,7 @@ public class UserController {
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
 			mav.addObject("eventTypes", eventTypes);
-
+			*/
 			mav.addObject("error", error);
 
 			return mav;
