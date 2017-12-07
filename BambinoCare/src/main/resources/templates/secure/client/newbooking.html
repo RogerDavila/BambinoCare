@@ -93,7 +93,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col s12" id="cost"></div>
+				<div class="col s12 l4 offset-l5" id="cost"></div>
 			</div>
 
 			<div class="divider"></div>
@@ -238,7 +238,7 @@
 		  $("#duration, input[type='checkbox']")
 		  	.change(function(){
 		  		calculateCost();
-		  		document.getElementById('cost').innerHTML = "Total: $" + totalCost;
+		  		document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
 		  	});
 		  
 		  /*

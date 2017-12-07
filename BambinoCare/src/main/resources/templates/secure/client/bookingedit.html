@@ -79,7 +79,7 @@
 			</div>
 
 			<div class="row">
-				<div id="infobambinos" class="col s6">
+				<div id="infobambinos" class="col s12 l5 offset-l3">
 					<table
 						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
 						<thead>
@@ -104,7 +104,7 @@
 			</div>
 
 			<div class="row">
-				<div class="col s12" id="cost"></div>
+				<div class="col s12 l4 offset-l5" id="cost"></div>
 			</div>
 
 			<div class="divider"></div>
@@ -226,7 +226,7 @@
 			  totalCost = 0.0;
 		  }
 		  
-		  document.getElementById('cost').innerHTML = "Total: $" + totalCost;
+		  document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
 		  
 		  $('#error')
 		    .show(1000, function() {
