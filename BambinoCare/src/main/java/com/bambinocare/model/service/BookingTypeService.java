@@ -7,5 +7,6 @@ import com.bambinocare.model.entity.BookingTypeEntity;
 public interface BookingTypeService {
 
 	List<BookingTypeEntity> findAllBookingTypes();
+	BookingTypeEntity findByBookingTypeId(Integer id);
 	
 }

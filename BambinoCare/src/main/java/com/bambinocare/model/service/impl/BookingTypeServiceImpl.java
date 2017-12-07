@@ -22,4 +22,10 @@ public class BookingTypeServiceImpl implements BookingTypeService{
 		return bookingTypeRepository.findAll();
 	}
 
+	@Override
+	public BookingTypeEntity findByBookingTypeId(Integer id) {
+		return bookingTypeRepository.findByBookingTypeId(id);
+	}
+	
+
 }

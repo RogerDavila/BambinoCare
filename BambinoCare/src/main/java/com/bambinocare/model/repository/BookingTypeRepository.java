@@ -12,5 +12,5 @@ import com.bambinocare.model.entity.BookingTypeEntity;
 public interface BookingTypeRepository extends JpaRepository<BookingTypeEntity, Serializable>{
 
 	List<BookingTypeEntity> findAll();
-	
+	BookingTypeEntity findByBookingTypeId(Integer id);
 }
