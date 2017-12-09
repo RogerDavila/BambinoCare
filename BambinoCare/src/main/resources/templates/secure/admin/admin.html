@@ -15,8 +15,15 @@
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div
-				th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
+			<div th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
+			<div class="nav-content">
+			<ul class="tabs tabs-transparent">
+				<li class="tab"><a class="active" href="#Reservaciones">Administrar Reservaciones</a></li>
+				<!--<li class="tab"><a href="#Usuarios">Usuarios</a></li>-->
+				<li class="tab"><a href="#Nannies">Nannies</a></li>
+				<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
+			</ul>
+		</div>
 		</nav>
 	</header>
 
@@ -121,90 +128,15 @@
 			<div th:if="${result != null}" id="success"></div>
 		</div>
 	</div>
-	<!-- Usuarios inicio  -->
-	<div id="Usuarios" class="col s12 hide">
-		<div class="row">
-			<div class="col s2"></div>
-			<div class="col s8 center">
-				<h4>Usuarios</h4>
-			</div>
-			<div class="col s2">
-				<br /> <a class="btn-floating deep-purple lighten-1 btn-large"><i
-					class="material-icons">add</i></a>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col s1"></div>
-			<div class="col s10">
-				<table
-					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-					<thead>
-						<tr>
-							<th></th>
-							<th>Nombre</th>
-							<th>Tipo de usuario</th>
-							<th>Editar</th>
-							<th>Borrar</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						<tr>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">mood</i></a></td>
-							<td>Erika</td>
-							<td>Admin</td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">edit</i></a></td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">delete</i></a></td>
-						</tr>
-						<tr>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">mood</i></a></td>
-							<td>Ana Karen</td>
-							<td>User</td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">edit</i></a></td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">delete</i></a></td>
-						</tr>
-						<tr>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">mood</i></a></td>
-							<td>Leticia Martinez</td>
-							<td>User</td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">edit</i></a></td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">delete</i></a></td>
-						</tr>
-						<tr>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">mood</i></a></td>
-							<td>Jonathan</td>
-							<td>User</td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">edit</i></a></td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">delete</i></a></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-			<div class="col s1"></div>
-		</div>
-	</div>
 	<!-- Nannies  -->
-	<div id="Nannies" class="col s12">
+	<div id="Nannies" class="container transadmin">
 		<div class="row">
 			<div class="col s2"></div>
 			<div class="col s8 center">
 				<h4>Nannies</h4>
 			</div>
 			<div class="col s2">
-				<br /> <a href="#" th:href="@{/admin/createnannyform}"
+				<br /> <a href="#" th:href="@{/admin/createNannyForm}"
 						class="btn-floating deep-purple lighten-1 btn-large"><i
 						class="material-icons">add</i></a>
 			</div>
@@ -217,40 +149,31 @@
 					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
 					<thead>
 						<tr>
-							<th></th>
 							<th>Nombre</th>
+							<th>Telefono</th>
+							<th>Email</th>
+							<th>Dirrección</th>
+							<th>Estatus</th>
 							<th>Editar</th>
 							<th>Borrar</th>
 						</tr>
 					</thead>
 
 					<tbody>
-						<tr>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">person_pin</i></a></td>
-							<td>Erika</td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">edit</i></a></td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">delete</i></a></td>
-						</tr>
-						<tr>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">person_pin</i></a></td>
-							<td>Ana Karen</td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">edit</i></a></td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">delete</i></a></td>
-						</tr>
-						<tr>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">person_pin</i></a></td>
-							<td>Leticia Martinez</td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">edit</i></a></td>
-							<td><a class="btn-floating deep-purple lighten-1"><i
-									class="material-icons">delete</i></a></td>
+						<tr th:each="nanny : ${nannies}">
+							<td th:text="${nanny == null ? '' : nanny.user.firstname + ' ' + nanny.user.lastname}"></td>
+							<td th:text="${nanny.user.phone}"></td>
+							<td th:text="${nanny.user.email}"></td>
+							<td th:text="${nanny.street + ', ' + nanny.neighborhood + ', ' + nanny.city + ', ' + nanny.state}"></td>
+							<td th:text="${nanny.user.enabled == false ? 'deshabilitado' : 'habilitado'}"></td>
+							<td><a href="#" class="btn-floating deep-purple lighten-1"
+									th:href="@{/admin/editnannyform?nannyId=__${nanny.nannyId}__}">
+										<i class="material-icons">edit</i>
+								</a></td>
+							<td><a href="#" class="btn-floating deep-purple lighten-1"
+									th:href="@{/admin/disableNanny?nannyId=__${nanny.nannyId}__}">
+										<i class="material-icons">delete</i>
+								</a></td>
 						</tr>
 					</tbody>
 				</table>

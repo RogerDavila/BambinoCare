@@ -132,12 +132,12 @@ public class NannyController {
 			model.addAttribute("result", result);
 			model.addAttribute("error", error);
 
-			return ViewConstants.BOOKING_DETAIL_ADMIN_SHOW;
+			return ViewConstants.BOOKING_DETAIL_NANNY_SHOW;
 		} else {
 			error = "No se encontró la reservación solicitada o no tiene permisos para verla";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/nannies/showbookings?error=" + error + "&result=" + result;
 
 	}
 
@@ -186,7 +186,7 @@ public class NannyController {
 			model.addAttribute("result", 0);
 		}
 
-		return "redirect:/nannies/shownannies";
+		return "redirect:/nannies/showbookings";
 	}
 
 	@PostMapping("/createnanny")
@@ -197,17 +197,17 @@ public class NannyController {
 			model.addAttribute("result", 0);
 		}
 
-		return "redirect:/nannies/shownannies";
+		return "redirect:/nannies/showbookings";
 	}
 
 	@GetMapping("/cancel")
 	public String cancel() {
-		return "redirect:/nannies/shownannies";
+		return "redirect:/nannies/showbookings";
 	}
 
 	@GetMapping("/removenanny")
 	public String removeUser(@RequestParam(name = "nannyId", required = true) Integer nannyId) {
 		nannyService.removeNanny(nannyId);
-		return "redirect:/nannies/shownannies";
+		return "redirect:/nannies/showbookings";
 	}
 }
