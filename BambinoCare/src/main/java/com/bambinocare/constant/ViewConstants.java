@@ -6,6 +6,7 @@ public class ViewConstants {
 	public static final String USER_SHOW = "/secure/client/client";
 	public static final String BOOKING_DETAIL_SHOW = "/secure/client/bookingdetail";
 	public static final String BOOKING_DETAIL_ADMIN_SHOW = "/secure/admin/bookingdetail";
+	public static final String BOOKING_DETAIL_NANNY_SHOW = "/secure/nanny/bookingdetail";
 	public static final String ADMIN_VIEW = "/secure/admin/admin";
 	public static final String BOOKING_ADMIN_EDIT = "/secure/admin/bookingedit";
 	public static final String EDIT_BAMBINO = "/secure/client/editbambino";
@@ -22,7 +23,8 @@ public class ViewConstants {
 	public static final String NANNY_EDIT = "/secure/eadminnanny/nannyedit";
 	public static final String NANNY_CREATE = "/secure/adminnanny/nannycreate";
 	public static final String NANNY_ASSIGN = "/secure/admin/nannyassign";
-	public static final String CREATE_NANNY = "";
+	public static final String CREATE_NANNY = "/secure/admin/newnanny";
 	public static final String NANNY_SHOW = "/secure/nanny/nanny";
 	public static final String BOOKING_NANNY_DETAIL_SHOW = "/secure/client/bookingdetail";
+	public static final String NANNY_EDIT_VIEW = "/secure/admin/editnanny";
 }

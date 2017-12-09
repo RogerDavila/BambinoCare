@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.NannyEntity;
+import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.NannyRepository;
 import com.bambinocare.model.service.NannyService;
 
@@ -50,6 +52,12 @@ public class NannyServiceImpl implements NannyService{
 	@Override
 	public NannyEntity findByUserEmail(String email) {
 		return nannyRepository.findByUserEmail(email);
+	}
+	
+	@Override
+	public NannyEntity saveNanny(NannyEntity nanny) {
+		// TODO Auto-generated method stub
+		return nannyRepository.save(nanny);
 	}
 	
 }
