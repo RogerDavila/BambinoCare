@@ -20,6 +20,9 @@
 <link href="../static/css/style.css" th:href="@{/css/style.css}"
 	type="text/css" rel="stylesheet" media="screen,projection" />
 
+<link href="../static/css/wickedpicker.min.css"
+	th:href="@{/css/wickedpicker.min.css}" type="text/css" rel="stylesheet"
+	media="screen,projection" />
 </head>
 <body>
 	<header>
@@ -51,8 +54,9 @@
 
 			<div class="row">
 				<div class="col s6">
-					<label for="duration" class="black-text">Duración</label> <input
-						id="duration" type="number" class="validate black-text"
+					<label for="duration" class="black-text">Duracion</label> <input
+						type="text" name="timepickerwicked"
+						class="timepickerwicked validate black-text" id="duration"
 						th:field="*{duration}" th:value="${duration}" required="required" />
 				</div>
 				<div class="col s3">
@@ -216,16 +220,49 @@
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	<script src="../static/js/wickedpicker.min.js"
+		th:src="@{/js/wickedpicker.min.js}"></script>
 
 	<script th:inline="javascript">
+	var options = {
+			now: "00:00",
+			twentyFour: false,
+			title: "Seleccione duración",
+			twentyFour: true
+		};
+		
+		$('.timepickerwicked').wickedpicker(options);
+	
 	$(function() {
+		  
 		  var totalCost = [[${totalCost}]];
 		  var costs = [[${costs}]];
+		  /*<![CDATA[*/
+		  var originalDuration = $("#duration")[0].defaultValue.split(".");
+		  console.log(originalDuration);
+		  var originalHour = originalDuration[0];
+		  var originalMinute = originalDuration[1];
 		  
+		  if(originalHour < 10){
+			  originalHour = "0" + originalHour;
+		  }
+		  
+		  originalMinute *= 60;
+		  
+		  if(originalMinute < 10){
+			  originalMinute = "0" + originalMinute;
+		  }
+		  
+		  
+		  originalDuration = originalHour + " : " + originalMinute ; 
+		  
+		  
+		  document.getElementById("duration").value = originalDuration;
+			  
 		  if(!totalCost){
 			  totalCost = 0.0;
 		  }
-		  
+		  /*]]>*/
 		  document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
 		  
 		  $('#error')
@@ -258,6 +295,7 @@
 			EMPIEZA CALCULO DE COSTOS
 			*/
 			function calculateCost(bambinoQuantity) {
+			  console.log("Entra");
 		  		var sum = 0;
 		  		var duration = $("#duration")
 		  		if(!bambinoQuantity){
@@ -287,9 +325,9 @@
 		  		}
 		  		
 		  		for(var i = 0; i < costsCurrent.length; i++ ){
-						var durationValue = duration[0].value;
+		  			var durationValue = duration[0].value.split(":")[0];
 						
-						if(durationValue != "" && !isNaN(durationValue)){
+						if(durationValue != "" && !isNaN(durationValue) && durationValue != 0){
 			  				if(durationValue > costsCurrent[i].hourQuantity){
 				  				continue;
 			  				}else{
@@ -306,6 +344,16 @@
 		  		//document.getElementById('cost').innerHTML = "Total: $" + totalCost;
 		  		return totalCost;
 			}
+		  
+			$( "#bookingform" ).submit(function( event ) {
+				  var duration = $("#duration");
+				  var durationValue = duration[0].value.split(":");
+				  var durationHour = parseFloat(durationValue[0]);
+				  var durationMinute = parseFloat(durationValue[1]/60);
+				  durationValue = durationHour + durationMinute;
+				  console.log(`${durationHour}.${durationMinute} = ${durationValue}`);
+				  $("#duration").val(durationValue);
+			});
 		});
 	</script>
 
