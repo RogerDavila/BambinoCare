@@ -22,7 +22,7 @@
 
 	<div class="section1 no-pad-bot">
 		<div class="row container">
-			<br/>
+			<br />
 			<form class="white pad z-depth-5" action="#" id="signupform"
 				th:action="@{/signup/createuserclient}" th:object="${client}"
 				method="post">
@@ -30,8 +30,8 @@
 					<p id="pcenter">
 						<b>¡BIENVENIDOS!</b>
 					</p>
-					<p id="pcenter">Gracias por darnos la oportunidad de
-						atenderte, así como de unirte a nuestra comunidad Bambino Care, a
+					<p id="pcenter">Gracias por darnos la oportunidad de atenderte,
+						así como de unirte a nuestra comunidad Bambino Care, a
 						continuación se desplegará una serie de preguntas como rutina de
 						registro, con el objetivo de validar la información para la
 						seguridad e integridad tanto de tus Bambinos, como de nuestras
@@ -59,25 +59,37 @@
 					</div>
 					<div class="input-field col s4">
 						<input id="neighborhood" type="text" class="validate black-text"
-							th:field="*{neighborhood}" th:value="${neighborhood}" th:required="required" />
-						<label for="neighborhood">Colonia</label>
+							th:field="*{neighborhood}" th:value="${neighborhood}"
+							th:required="required" /> <label for="neighborhood">Colonia</label>
 					</div>
 					<div class="input-field col s4">
+						<select id="city" th:field="*{city.cityId}">
+							<option th:each="city : ${cities}" th:value="${city.cityId}"
+								th:text="${city.cityDesc}" value="${nametype}" th:async="true"></option>
+						</select> <label class="black-text" for="city">Municipio</label>
+					</div>
+					<!-- div class="input-field col s4">
 						<input id="city" type="text" class="validate black-text"
 							th:field="*{city}" th:value="${city}" th:required="required" />
 						<label for="city">Municipio</label>
-					</div>
+					</div-->
 				</div>
 				<div class="row">
 					<div class="input-field col s4">
+						<select id="state" th:field="*{state.stateId}">
+							<option th:each="state : ${states}" th:value="${state.stateId}"
+								th:text="${state.stateDesc}" value="${nametype}" th:async="true"></option>
+						</select> <label class="black-text" for="state">Estado</label>
+					</div>
+					<!-- div class="input-field col s4">
 						<input id="state" type="text" class="validate black-text"
 							th:field="*{state}" th:value="${state}" th:required="required" />
 						<label for="state">Estado</label>
-					</div>
+					</div-->
 					<div class="input-field col s4">
-						<input id="Municipio" type="text" class="validate black-text"
-							th:field="*{job}" th:value="${job}"
-							th:required="required" /> <label for="Municipio">Ocupación</label>
+						<input id="job" type="text" class="validate black-text"
+							th:field="*{job}" th:value="${job}" th:required="required" /> <label
+							for="job">Ocupación</label>
 					</div>
 					<div class="input-field col s4">
 						<input id="Telefono" type="number" class="validate black-text"

@@ -27,20 +27,24 @@ import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
+import com.bambinocare.model.entity.CityEntity;
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.CostEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
+import com.bambinocare.model.entity.StateEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.BambinoService;
 import com.bambinocare.model.service.BookingService;
 import com.bambinocare.model.service.BookingStatusService;
 import com.bambinocare.model.service.BookingTypeService;
+import com.bambinocare.model.service.CityService;
 import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.CostService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EmergencyContactService;
 import com.bambinocare.model.service.EventTypeService;
+import com.bambinocare.model.service.StateService;
 import com.bambinocare.model.service.UserService;
 
 @Controller
@@ -86,6 +90,14 @@ public class UserController {
 	@Autowired
 	@Qualifier("costService")
 	private CostService costService;
+	
+	@Autowired
+	@Qualifier("cityService")
+	private CityService cityService;
+
+	@Autowired
+	@Qualifier("stateService")
+	private StateService stateService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String error,
@@ -95,6 +107,8 @@ public class UserController {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userLogged = userService.findByEmail(user.getUsername());
+		List<CityEntity> cities = cityService.findAll();
+		List<StateEntity> states = stateService.findAll();
 
 		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findByUser(userLogged));
@@ -103,6 +117,8 @@ public class UserController {
 		mav.addObject("client", clientService.findByUser(userLogged));
 		mav.addObject("error", error);
 		mav.addObject("result", result);
+		mav.addObject("cities", cities);
+		mav.addObject("states", states);
 
 		return mav;
 	}

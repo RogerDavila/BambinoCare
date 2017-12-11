@@ -48,6 +48,16 @@ INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(19, 1, 4
 INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(20, 2, 40, 130);
 INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(21, 3, 40, 180);
 
+INSERT INTO city(city_id, city_desc) VALUES (1,'Contry');
+INSERT INTO city(city_id, city_desc) VALUES (2,'Cumbres');
+INSERT INTO city(city_id, city_desc) VALUES (3,'Monterrey');
+INSERT INTO city(city_id, city_desc) VALUES (4,'San Jeronimo');
+INSERT INTO city(city_id, city_desc) VALUES (5,'San Pedro');
+INSERT INTO city(city_id, city_desc) VALUES (6,'Valle Alto');
+INSERT INTO city(city_id, city_desc) VALUES (7,'Valle Poniente');
+
+INSERT INTO state(state_id, state_desc) VALUES (1, 'Nuevo León');
+
 
 
 

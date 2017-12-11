@@ -21,13 +21,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bambinocare.constant.ViewConstants;
 import com.bambinocare.event.OnRegistrationCompleteEvent;
+import com.bambinocare.model.entity.CityEntity;
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.RoleEntity;
+import com.bambinocare.model.entity.StateEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.entity.VerificationTokenEntity;
+import com.bambinocare.model.service.CityService;
 import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.RoleService;
+import com.bambinocare.model.service.StateService;
 import com.bambinocare.model.service.UserService;
 
 @Controller
@@ -52,7 +56,15 @@ public class SignupController {
 	@Autowired
 	@Qualifier("emailService")
 	private EmailService emailService;
+	
+	@Autowired
+	@Qualifier("cityService")
+	private CityService cityService;
 
+	@Autowired
+	@Qualifier("stateService")
+	private StateService stateService;
+	
 	@GetMapping("/signupform")
 	public String showSignupForm(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, Model model) {
@@ -65,11 +77,15 @@ public class SignupController {
 		ClientEntity client = new ClientEntity();
 
 		List<RoleEntity> roles = roleService.findAllRoles();
+		List<CityEntity> cities = cityService.findAll();
+		List<StateEntity> states = stateService.findAll();
 
 		model.addAttribute("error", error);
 		model.addAttribute("result", result);
 		model.addAttribute("roles", roles);
 		model.addAttribute("client", client);
+		model.addAttribute("cities", cities);
+		model.addAttribute("states", states);
 
 		return ViewConstants.SIGNUP_FORM;
 	}
@@ -134,11 +150,15 @@ public class SignupController {
 
 			error = "La contraseña y la confirmación de contraseña no coínciden";
 			List<RoleEntity> roles = roleService.findAllRoles();
+			List<CityEntity> cities = cityService.findAll();
+			List<StateEntity> states = stateService.findAll();
 
 			mav.addObject("error", error);
 			mav.addObject("result", result);
 			mav.addObject("roles", roles);
 			mav.addObject("client", client);
+			model.addAttribute("cities", cities);
+			model.addAttribute("states", states);
 
 			return mav;
 		}
@@ -149,11 +169,15 @@ public class SignupController {
 
 			error = "El email introducido ya existe";
 			List<RoleEntity> roles = roleService.findAllRoles();
+			List<CityEntity> cities = cityService.findAll();
+			List<StateEntity> states = stateService.findAll();
 
 			mav.addObject("error", error);
 			mav.addObject("result", result);
 			mav.addObject("roles", roles);
 			mav.addObject("client", client);
+			model.addAttribute("cities", cities);
+			model.addAttribute("states", states);
 
 			return mav;
 		}

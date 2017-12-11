@@ -18,7 +18,8 @@
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div th:include="/secure/client/fragments/header :: header(${usernameLogged})"></div>
+			<div
+				th:include="/secure/client/fragments/header :: header(${usernameLogged})"></div>
 			<div class="nav-content">
 				<ul class="tabs tabs-transparent">
 					<li class="tab"><a class="active" href="#Reservaciones">Mis
@@ -74,7 +75,7 @@
 										<input type="hidden" name="bookingId"
 											th:value="${booking.bookingId}" />
 										<button type="submit"
-											class="btn-floating deep-purple lighten-1" >
+											class="btn-floating deep-purple lighten-1">
 											<i class="material-icons">event_note</i>
 										</button>
 									</form>
@@ -161,14 +162,17 @@
 								for="neighborhood">Colonia</label>
 						</div>
 						<div class="input-field col s3">
-							<input id="city" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${city}"
-								th:field="*{city}" /> <label for="city">Municipio</label>
+							<select id="city" th:field="*{city.cityId}">
+								<option th:each="city : ${cities}" th:value="${city.cityId}"
+									th:text="${city.cityDesc}" value="${nametype}" th:async="true"></option>
+							</select> <label class="black-text" for="city">Municipio</label>
 						</div>
 						<div class="input-field col s3">
-							<input id="state" type="text" class="validate black-text"
-								required="required" disabled="disabled" th:value="${state}"
-								th:field="*{state}" /> <label for="state">Estado</label>
+							<select id="state" th:field="*{state.stateId}">
+								<option th:each="state : ${states}"
+									th:value="${state.stateId}" th:text="${state.stateDesc}"
+									value="${nametype}" th:async="true"></option>
+							</select> <label class="black-text" for="state">Estado</label>
 						</div>
 					</div>
 					<div class="row">
@@ -231,40 +235,43 @@
 				</div>
 			</div>
 			<div class="row">
-			<table class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-                <thead>
-                  <tr>
-                      <th>Nombre</th>
-                      <th>Apellido</th>
-                      <th>Edad</th>
-                      <th>Grado Escolar</th>
-                      <th>Situacion Medica</th>
-                      <th>Observaciones</th>
-                      <th>Editar</th>
-                      <th>Borrar</th>
-                  </tr>
-                </thead>
-                <tbody>
-					<tr th:each="bambino : ${bambinos}">
-						<td th:text="${bambino.firstname}"></td>
-						<td th:text="${bambino.lastname}"></td>
-						<td th:text="${bambino.age}"></td>
-						<td th:text="${bambino.grade}"></td>
-						<td th:text="${bambino.medicalSituation}"></td>
-						<td th:text="${bambino.comments}"></td>
-						<td><a href="#" class="btn-floating deep-purple lighten-1"
-							th:href="@{/users/editBambinoForm?bambinoId=__${bambino.bambinoId}__}">
-							<i class="material-icons">edit</i>
-							</a>
-						</td>
-						<td>
-							<form method="post" action="#" th:action="@{/users/removeBambino}">
-								<input type="hidden" name="bambinoId" th:value = "${bambino.bambinoId}"/>
-								<button type="submit" class="btn-floating deep-purple lighten-1">
-									<i class="material-icons">delete</i>
-								</button>
-							</form>
-						</td>
+				<table
+					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Apellido</th>
+							<th>Edad</th>
+							<th>Grado Escolar</th>
+							<th>Situacion Medica</th>
+							<th>Observaciones</th>
+							<th>Editar</th>
+							<th>Borrar</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="bambino : ${bambinos}">
+							<td th:text="${bambino.firstname}"></td>
+							<td th:text="${bambino.lastname}"></td>
+							<td th:text="${bambino.age}"></td>
+							<td th:text="${bambino.grade}"></td>
+							<td th:text="${bambino.medicalSituation}"></td>
+							<td th:text="${bambino.comments}"></td>
+							<td><a href="#" class="btn-floating deep-purple lighten-1"
+								th:href="@{/users/editBambinoForm?bambinoId=__${bambino.bambinoId}__}">
+									<i class="material-icons">edit</i>
+							</a></td>
+							<td>
+								<form method="post" action="#"
+									th:action="@{/users/removeBambino}">
+									<input type="hidden" name="bambinoId"
+										th:value="${bambino.bambinoId}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1">
+										<i class="material-icons">delete</i>
+									</button>
+								</form>
+							</td>
 						</tr>
 					</tbody>
 				</table>
@@ -300,29 +307,31 @@
 							<th>Borrar</th>
 						</tr>
 					</thead>
-                 <tbody>
-					<tr th:each="contact : ${contacts}">
-						<td th:text="${contact.firstname}"></td>
-						<td th:text="${contact.lastname}"></td>
-						<td th:text="${contact.phone}"></td>
-						<td th:text="${contact.street}"></td>
-						<td th:text="${contact.neighborhood}"></td>
-						<td th:text="${contact.city}"></td>
-						<td th:text="${contact.state}"></td>
-						<td th:text="${contact.relationship}"></td>
-						<td><a href="#" class="btn-floating deep-purple lighten-1"
-							th:href="@{/users/editcontactForm?contactId=__${contact.contactId}__}">
-							<i class="material-icons">edit</i>
-							</a>
-						</td>
-						<td>
-							<form method="post" action="#" th:action="@{/users/removeContact}">
-								<input type="hidden" name="contactId" th:value = "${contact.contactId}"/>
-								<button type="submit" class="btn-floating deep-purple lighten-1">
-									<i class="material-icons">delete</i>
-								</button>
-							</form>
-						</td>
+					<tbody>
+						<tr th:each="contact : ${contacts}">
+							<td th:text="${contact.firstname}"></td>
+							<td th:text="${contact.lastname}"></td>
+							<td th:text="${contact.phone}"></td>
+							<td th:text="${contact.street}"></td>
+							<td th:text="${contact.neighborhood}"></td>
+							<td th:text="${contact.city}"></td>
+							<td th:text="${contact.state}"></td>
+							<td th:text="${contact.relationship}"></td>
+							<td><a href="#" class="btn-floating deep-purple lighten-1"
+								th:href="@{/users/editcontactForm?contactId=__${contact.contactId}__}">
+									<i class="material-icons">edit</i>
+							</a></td>
+							<td>
+								<form method="post" action="#"
+									th:action="@{/users/removeContact}">
+									<input type="hidden" name="contactId"
+										th:value="${contact.contactId}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1">
+										<i class="material-icons">delete</i>
+									</button>
+								</form>
+							</td>
 						</tr>
 					</tbody>
 				</table>

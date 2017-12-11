@@ -33,14 +33,21 @@ public class ClientEntity {
 	@Column(name="neighborhood", nullable=false)
 	private String neighborhood;
 	
-	@Column(name="city", nullable=false)
-	private String city;
+	@JoinColumn(name="city_id", nullable=false)
+	@OneToOne(fetch = FetchType.EAGER)
+	private CityEntity city;
 	
-	@Column(name="state", nullable=false)
-	private String state;
+	@JoinColumn(name="state_id", nullable=false)
+	@OneToOne(fetch = FetchType.EAGER)
+	private StateEntity state;
 
-	public ClientEntity(Integer clientId, UserEntity user, String job, String street, String neighborhood, String city,
-			String state) {
+	public ClientEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public ClientEntity(Integer clientId, UserEntity user, String job, String street, String neighborhood,
+			CityEntity city, StateEntity state) {
 		super();
 		this.clientId = clientId;
 		this.user = user;
@@ -49,9 +56,6 @@ public class ClientEntity {
 		this.neighborhood = neighborhood;
 		this.city = city;
 		this.state = state;
-	}
-
-	public ClientEntity() {
 	}
 
 	public Integer getClientId() {
@@ -94,19 +98,19 @@ public class ClientEntity {
 		this.neighborhood = neighborhood;
 	}
 
-	public String getCity() {
+	public CityEntity getCity() {
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(CityEntity city) {
 		this.city = city;
 	}
 
-	public String getState() {
+	public StateEntity getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(StateEntity state) {
 		this.state = state;
 	}
 
