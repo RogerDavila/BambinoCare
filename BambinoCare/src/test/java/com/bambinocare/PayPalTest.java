@@ -25,7 +25,7 @@ public class PayPalTest {
 
 	public static void main(String[] args) throws PayPalRESTException {
 		Payment payment = createPayment();
-		executePayment(payment);
+		executePayment();
 	}
 
 	public static Payment createPayment() throws PayPalRESTException {
@@ -90,15 +90,18 @@ public class PayPalTest {
 		return createdPayment;
 	}
 	
-	public static Payment executePayment(Payment payment) throws PayPalRESTException {
+	public static Payment executePayment() throws PayPalRESTException {
 		Payment executedPayment = null;
 		
 		APIContext apiContext = new APIContext(CLIENTID, CLIENTSECRET, MODE);
 		
 		Payment paymentToExecute = new Payment();
-		paymentToExecute.setId("PAY-43Y12505DW234801TLIYLVJQ");
+		//Este imbecil sale de la petición a la url generada arriba (approval_url)
+		paymentToExecute.setId("PAY-43Y12505DW234801TLIYLVJQ"); 
 		
 		PaymentExecution paymentExecution = new PaymentExecution();
+		
+		//Este imbecil sale de la petición a la url generada arriba (approval_url)
 		String payerID = "UNDA2EA58T4M6";
 		
 		System.out.println("PAYERID: " + payerID);
