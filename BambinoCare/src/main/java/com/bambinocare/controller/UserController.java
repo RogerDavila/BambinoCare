@@ -6,14 +6,17 @@ import java.util.Date;
 import java.util.List;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import com.bambinocare.constant.ViewConstants;
 import com.bambinocare.model.entity.BambinoEntity;
@@ -198,7 +202,7 @@ public class UserController {
 
 	@PostMapping("/createbooking")
 	public ModelAndView createBooking(@ModelAttribute(name = "booking") BookingEntity booking,
-			BindingResult bindingResult, Model model) {
+			BindingResult bindingResult, Model model, HttpServletRequest request) {
 
 		ModelAndView mav = new ModelAndView();
 		String error = "";
@@ -385,8 +389,11 @@ public class UserController {
 			return mav;
 		}
 
-		mav = new ModelAndView("redirect:/users/showbookings");
-		mav.addObject("result", result);
+		//mav = new ModelAndView("redirect:/users/showbookings");
+		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+		//mav.addObject("cost", booking.getCost());
+		ModelMap modelmap = mav.getModelMap().addAttribute("cost", booking.getCost());
+		mav = new ModelAndView("redirect:/payments/",modelmap);
 		return mav;
 	}
 
