@@ -35,6 +35,7 @@
 	<br />
 	<br />
 	<div class="row container">
+		<!--  -->
 		<form id="bookingform" class="white pad" action="#"
 			th:action="@{/users/createbooking}" th:object="${booking}"
 			method="post" name="bookingform">
@@ -42,7 +43,7 @@
 				<h5>Nueva Reservación</h5>
 			</div>
 			<div class="row">
-				<div class="col s6">
+				<div class="col s12">
 					<select id="bookingtype" th:field="*{bookingType.bookingTypeId}">
 						<option th:each="bookingType : ${bookingTypes}"
 							th:value="${bookingType.bookingTypeId}"
@@ -70,6 +71,17 @@
 						type="text" pattern="([01]?[0-9]{1}|2[0-3]{1}):[0-5]{1}[0-9]{1}"
 						th:field="*{hour}" th:value="${hour}" class="timepicker"
 						required="required" />
+				</div>
+			</div>
+
+			<div class="row">
+				<div id="paymenttypeinfo" class="col s12">
+					<select id="paymenttype" th:field="*{paymentType.paymentTypeId}">
+						<option th:each="paymentType : ${paymentTypes}"
+							th:value="${paymentType.paymentTypeId}"
+							th:text="${paymentType.paymentTypeDesc}" value="${nametype}"
+							th:async="true"></option>
+					</select> <label class="black-text" for="bookingtype">Forma de pago</label>
 				</div>
 			</div>
 
@@ -202,7 +214,7 @@
 		</form>
 
 		<div th:if="${error != null}" id="error"></div>
-		<div th:if="${result != null}" id="result"></div>
+		<div th:if="${result != null}" id="success"></div>
 	</div>
 
 	<!--  Scripts-->
@@ -241,7 +253,7 @@
 		    });
 		  $('#success')
 		    .show(1000, function() {
-		      Materialize.toast('[[${result}]]',4000,'rounded waves-effect');
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
 		    });
 		  $('#bookingform').bind('submit', function (e) {
 			    var sendbutton = $('#sendbutton');

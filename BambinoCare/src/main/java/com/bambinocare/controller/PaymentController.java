@@ -6,8 +6,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 
 import com.bambinocare.constant.PaypalConstants;
 import com.bambinocare.model.entity.BookingEntity;
@@ -35,12 +38,13 @@ import com.paypal.base.rest.PayPalRESTException;
 
 @Controller
 @RequestMapping("/payments")
-@SessionAttributes("paymentId")
+@SessionAttributes({ "paymentId", "bookingId" })
 public class PaymentController {
 
 	@PostMapping("/")
-	public ModelAndView createPayment(@ModelAttribute(name = "cost") String cost, BindingResult bindingResult,
-			Model model, HttpServletRequest request) {
+	public ModelAndView createPayment(@ModelAttribute(name = "bookingId") Integer bookingId,
+			@ModelAttribute(name = "cost") String cost, BindingResult bindingResult, Model model,
+			HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 
 		Payment createdPayment = null;
@@ -116,7 +120,8 @@ public class PaymentController {
 
 			// Se guarda el PaymentID en sesión para utilizarlo despues de que el usuario
 			// inicie sesión en Paypal
-			model.addAttribute("paymentId",setPaymentId(createdPayment.getId()));
+			model.addAttribute("paymentId", setPaymentId(createdPayment.getId()));
+			model.addAttribute("bookingId", setBookingId(bookingId));
 
 			// Se redirige a la url para que el usuario inicie la sesión en paypal y
 			// autorice el pago.
@@ -134,52 +139,67 @@ public class PaymentController {
 		return paymentId;
 	}
 
+	@ModelAttribute("bookingId")
+	private Integer setBookingId(Integer bookingId) {
+		return bookingId;
+	}
+
 	@GetMapping("/execute")
-	public ModelAndView executePayment(@RequestParam("paymentId") String paymentId,
-			@RequestParam("PayerID") String payerId, @RequestParam("token") String token, Model model) {
+	public ModelAndView executePayment(@RequestParam("paymentId") String paymentId, @ModelAttribute("bookingId") Integer bookingId,
+			@RequestParam("PayerID") String payerId, @RequestParam("token") String token, Model model,
+			HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		String error;
 		String result;
 
 		// Eliminar la variable de sesión
-		model.addAttribute("paymentId",setPaymentId(""));
-		
+		model.addAttribute("paymentId", setPaymentId(""));
+
 		APIContext apiContext = new APIContext(PaypalConstants.CLIENTID, PaypalConstants.CLIENTSECRET,
 				PaypalConstants.MODE);
 
 		if (paymentId == null || paymentId.equals("") || token == null || token.equals("") || payerId == null
 				|| payerId.equals("")) {
-			mav = new ModelAndView("redirect:/users/createbookingform");
-			error = "No se ha podido procesar el pago, intente nuevamente";
-			mav.addObject("error", error);
+			request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+			ModelMap modelmap = mav.getModelMap();
+			modelmap.addAttribute("error", "No se ha podido procesar el pago, intente nuevamente");
+			modelmap.addAttribute("bookingId", bookingId);
+			mav = new ModelAndView("redirect:/users/completebooking", modelmap);
 			return mav;
 		}
-		
+
 		try {
 			Payment payment = Payment.get(apiContext, paymentId);
-			
-			//Generamos un PaymentExecution y seteamos su payerId
+
+			// Generamos un PaymentExecution y seteamos su payerId
 			PaymentExecution paymentExecution = new PaymentExecution();
 			paymentExecution.setPayerId(payerId);
-			
-			//Ejecutamos el pago
+
+			// Ejecutamos el pago
 			Payment paymentExecuted = payment.execute(apiContext, paymentExecution);
-			
-			if(!paymentExecuted.getState().equalsIgnoreCase("approved")) {
-				mav = new ModelAndView("redirect:/users/createbookingform");
-				error = "No se ha podido procesar el pago, intente nuevamente";
-				mav.addObject("error", error);
+
+			if (!paymentExecuted.getState().equalsIgnoreCase("approved")) {
+				request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+				ModelMap modelmap = mav.getModelMap();
+				modelmap.addAttribute("error", "No se ha podido procesar el pago, intente nuevamente");
+				modelmap.addAttribute("bookingId", bookingId);
+				mav = new ModelAndView("redirect:/users/completebooking", modelmap);
 				return mav;
 			}
-			
+
 		} catch (PayPalRESTException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		mav = new ModelAndView("redirect:/users/createbookingform");
 		result = "El pago se ejecuto correctamente";
-		mav.addObject("result", result);
+		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+		ModelMap modelmap = mav.getModelMap();
+		modelmap.addAttribute("result", "El pago se ha realizado exitosamente");
+		modelmap.addAttribute("bookingId", bookingId);
+		mav.addObject("result",result);
+		mav.addObject("bookingId",bookingId);
+		mav = new ModelAndView("forward:/users/completebooking", modelmap);
 		return mav;
 	}
 

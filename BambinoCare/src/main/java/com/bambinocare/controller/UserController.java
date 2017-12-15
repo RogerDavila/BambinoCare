@@ -8,6 +8,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.hibernate.boot.jaxb.hbm.spi.ResultSetMappingBindingDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,6 +38,7 @@ import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.CostEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
+import com.bambinocare.model.entity.PaymentTypeEntity;
 import com.bambinocare.model.entity.StateEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.BambinoService;
@@ -48,6 +51,7 @@ import com.bambinocare.model.service.CostService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EmergencyContactService;
 import com.bambinocare.model.service.EventTypeService;
+import com.bambinocare.model.service.PaymentTypeService;
 import com.bambinocare.model.service.StateService;
 import com.bambinocare.model.service.UserService;
 
@@ -94,7 +98,7 @@ public class UserController {
 	@Autowired
 	@Qualifier("costService")
 	private CostService costService;
-	
+
 	@Autowired
 	@Qualifier("cityService")
 	private CityService cityService;
@@ -102,6 +106,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("stateService")
 	private StateService stateService;
+
+	@Autowired
+	@Qualifier("paymentTypeService")
+	private PaymentTypeService paymentTypeService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String error,
@@ -184,6 +192,7 @@ public class UserController {
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 		List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+		List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
 
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 
@@ -193,6 +202,7 @@ public class UserController {
 		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("costs", costs);
 		model.addAttribute("totalCost", booking.getCost());
+		model.addAttribute("paymentTypes", paymentTypes);
 
 		model.addAttribute("result", result);
 		model.addAttribute("error", error);
@@ -231,11 +241,13 @@ public class UserController {
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
 
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
 			mav.addObject("costs", costs);
 			mav.addObject("totalCost", booking.getCost());
+			mav.addObject("paymentTypes", paymentTypes);
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -253,30 +265,38 @@ public class UserController {
 			return mav;
 		}
 
+		if (booking.getPaymentType() == null) {
+			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+			error = "Favor de verificar la forma de pago";
+
+			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
+
+			mav.addObject("allbambinos", bambinos);
+			mav.addObject("usernameLogged", userEntity.getFirstname());
+			mav.addObject("costs", costs);
+			mav.addObject("totalCost", booking.getCost());
+			mav.addObject("paymentTypes", paymentTypes);
+
+			mav.addObject("booking", booking);
+			mav.addObject("bookingTypes", bookingTypes);
+			mav.addObject("eventTypes", eventTypes);
+
+			mav.addObject("error", error);
+
+			return mav;
+		}
+
 		ClientEntity client = clientService.findByUserEmail(user.getUsername());
 
 		booking.setClient(client);
 
 		if (bambinoService.findByClient(client).isEmpty()) {
-			// mav = new ModelAndView(ViewConstants.CREATE_BAMBINO);
 			mav = new ModelAndView("redirect:/users/createbambinoform");
 			error = "Favor dar de alta a sus bambinos";
-
-			/*
-			 * List<BookingTypeEntity> bookingTypes =
-			 * bookingTypeService.findAllBookingTypes(); List<EventTypeEntity> eventTypes =
-			 * eventTypeService.findAllEventTypes(); List<BambinoEntity> bambinos =
-			 * bambinoService.findByClientUser(userEntity); List<CostEntity> costs =
-			 * costService.findAllByOrderByHourQuantity();
-			 * 
-			 * mav.addObject("allbambinos", bambinos); mav.addObject("usernameLogged",
-			 * userEntity.getFirstname()); mav.addObject("costs", costs);
-			 * mav.addObject("totalCost", booking.getCost());
-			 * 
-			 * mav.addObject("booking", booking); mav.addObject("bookingTypes",
-			 * bookingTypes); mav.addObject("eventTypes", eventTypes);
-			 */
-
 			mav.addObject("error", error);
 
 			return mav;
@@ -285,23 +305,8 @@ public class UserController {
 		List<EmergencyContactEntity> emergencyContacts = emergencyContactService.findByClient(client);
 
 		if (emergencyContacts.isEmpty() || emergencyContacts.size() < 2) {
-			// mav = new ModelAndView(ViewConstants.CREATE_CONTACT);
 			mav = new ModelAndView("redirect:/users/createcontactform");
 			error = "Favor dar de alta al menos 2 contactos de emergencia";
-			/*
-			 * List<BookingTypeEntity> bookingTypes =
-			 * bookingTypeService.findAllBookingTypes(); List<EventTypeEntity> eventTypes =
-			 * eventTypeService.findAllEventTypes(); List<BambinoEntity> bambinos =
-			 * bambinoService.findByClientUser(userEntity); List<CostEntity> costs =
-			 * costService.findAllByOrderByHourQuantity();
-			 * 
-			 * mav.addObject("allbambinos", bambinos); mav.addObject("usernameLogged",
-			 * userEntity.getFirstname()); mav.addObject("costs", costs);
-			 * mav.addObject("totalCost", booking.getCost());
-			 * 
-			 * mav.addObject("booking", booking); mav.addObject("bookingTypes",
-			 * bookingTypes); mav.addObject("eventTypes", eventTypes);
-			 */
 			mav.addObject("error", error);
 
 			return mav;
@@ -322,11 +327,13 @@ public class UserController {
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
 
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
 			mav.addObject("costs", costs);
 			mav.addObject("totalCost", booking.getCost());
+			mav.addObject("paymentTypes", paymentTypes);
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -346,11 +353,13 @@ public class UserController {
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
 
 			mav.addObject("allbambinos", bambinos);
 			mav.addObject("usernameLogged", userEntity.getFirstname());
 			mav.addObject("costs", costs);
 			mav.addObject("totalCost", booking.getCost());
+			mav.addObject("paymentTypes", paymentTypes);
 
 			mav.addObject("booking", booking);
 			mav.addObject("bookingTypes", bookingTypes);
@@ -361,27 +370,49 @@ public class UserController {
 			return mav;
 		}
 
-		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
+		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Pendiente Pago");
 		booking.setBookingStatus(bookingStatus);
 
 		booking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
 
 		booking.setDate(getDate(booking.getDate(), 1));
+		BookingEntity bookingCreated = bookingService.createBooking(booking);
+		if (bookingCreated != null) {
+			/*
+			 * try { emailService.sendHTMLMessage("rogerdavila.stech@gmail.com",
+			 * "BambinoCare - Nueva reservación", getBookingHTML(booking)); } catch
+			 * (MessagingException e) { e.printStackTrace(); }
+			 * 
+			 * emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(),
+			 * "BambinoCare - Nueva reservación",
+			 * "Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
+			 * +
+			 * "recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n"
+			 * + "a tu hogar.");
+			 */
 
-		if (bookingService.createBooking(booking) != null) {
-			try {
-				emailService.sendHTMLMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
-						getBookingHTML(booking));
-			} catch (MessagingException e) {
-				e.printStackTrace();
+			String paymentTypeDesc = paymentTypeService.findByPaymentTypeId(booking.getPaymentType().getPaymentTypeId())
+					.getPaymentTypeDesc();
+
+			// Si el método de pago es Paypal
+			if (paymentTypeDesc.equalsIgnoreCase("Paypal")) {
+				request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
+				ModelMap modelmap = mav.getModelMap();
+				modelmap.addAttribute("cost", bookingCreated.getCost());
+				modelmap.addAttribute("bookingId", bookingCreated.getBookingId());
+				mav = new ModelAndView("redirect:/payments/", modelmap);
+				return mav;
 			}
 
-			emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación",
-					"Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
-							+ "recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n"
-							+ "a tu hogar.");
+			// Si el método de pago es Deposito cuenta bancaria
+			if (paymentTypeDesc.equalsIgnoreCase("Pago en Oxxo o a cuenta Bancaria")) {
+				return mav;
+			}
 
-			result = "La reservación se ha realizado exitosamente.";
+			// Si el método de pago es efectivo
+			if (paymentTypeDesc.equalsIgnoreCase("Pago en efectivo")) {
+				return mav;
+			}
 		} else {
 			mav = new ModelAndView("redirect:/users/createbookingform");
 			error = "No se ha podido realizar la reservación, intente nuevamente";
@@ -389,12 +420,47 @@ public class UserController {
 			return mav;
 		}
 
-		//mav = new ModelAndView("redirect:/users/showbookings");
-		request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
-		//mav.addObject("cost", booking.getCost());
-		ModelMap modelmap = mav.getModelMap().addAttribute("cost", booking.getCost());
-		mav = new ModelAndView("redirect:/payments/",modelmap);
 		return mav;
+	}
+
+	@GetMapping("/completebooking")
+	public ModelAndView completeBooking(@RequestAttribute("bookingId") int bookingId,
+			@RequestAttribute(name = "error", required = false) String error,
+			Model model) {
+		ModelAndView mav = new ModelAndView();
+		BookingEntity booking = bookingService.findByBookingId(bookingId);
+
+		if (error != null) {
+			mav = new ModelAndView("redirect:/users/showbookings?error=" + error);
+			return mav;
+		}
+
+		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
+
+		booking.setBookingStatus(bookingStatus);
+
+		if (bookingService.createBooking(booking) == null) {
+			error = "Ocurrió un error al guardar la reservación";
+			mav = new ModelAndView("redirect:/users/showbookings?error=" + error);
+			return mav;
+		}
+
+		try {
+			emailService.sendHTMLMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
+					getBookingHTML(booking));
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+
+		emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación",
+				"Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
+						+ "recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n"
+						+ "a tu hogar.");
+		
+		String result = "La reservación se realizó exitosamente.";
+		mav = new ModelAndView("redirect:/users/showbookings?result=" + result);
+		return mav;
+		
 	}
 
 	public String getBookingHTML(BookingEntity booking) {
@@ -451,11 +517,13 @@ public class UserController {
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
 		List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+		List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
 
 		model.addAttribute("allbambinos", bambinos);
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 		model.addAttribute("costs", costs);
 		model.addAttribute("totalCost", booking.getCost());
+		model.addAttribute("paymentTypes", paymentTypes);
 
 		model.addAttribute("booking", booking);
 		model.addAttribute("bookingTypes", bookingTypes);

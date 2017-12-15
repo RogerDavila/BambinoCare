@@ -12,10 +12,11 @@ INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (1, 'Bambin
 INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (3, 'Bambino Events');
 INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (4, 'Bambino ASAP');*/
 
-INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (1, 'Abierta');
-INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (2, 'Agendada');
-INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (3, 'Rechazada');
-INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (4, 'Cancelada');
+INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (1, 'Pendiente Pago');
+INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (2, 'Abierta');
+INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (3, 'Agendada');
+INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (4, 'Rechazada');
+INSERT INTO booking_status (booking_status_id, booking_status_desc) VALUES (5, 'Cancelada');
 
 INSERT INTO event_type (event_type_id,event_type_desc) VALUES (1,'XV');
 INSERT INTO event_type (event_type_id,event_type_desc) VALUES (2,'Boda');
@@ -58,6 +59,6 @@ INSERT INTO city(city_id, city_desc) VALUES (7,'Valle Poniente');
 
 INSERT INTO state(state_id, state_desc) VALUES (1, 'Nuevo León');
 
-
-
-
+INSERT INTO payment_type(payment_type_id, payment_type_desc) VALUES (1, 'Paypal');
+INSERT INTO payment_type(payment_type_id, payment_type_desc) VALUES (2, 'Pago en Oxxo o a cuenta Bancaria');
+INSERT INTO payment_type(payment_type_id, payment_type_desc) VALUES (3, 'Pago en efectivo');

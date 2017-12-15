@@ -76,12 +76,20 @@ public class BookingEntity {
 	@Transient
 	private EventEntity event;
 	
+	@JoinColumn(name = "payment_type_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	private PaymentTypeEntity paymentType;
+	
 	@Transient
 	private List<String> bambinoId;
 	
+	public BookingEntity() {
+	}
+
 	public BookingEntity(Integer bookingId, ClientEntity client, Set<BambinoEntity> bambino,
 			BookingTypeEntity bookingType, Date date, String hour, Double duration, BookingStatusEntity bookingStatus,
-			NannyEntity nanny, Double cost, TutoryEntity tutory, EventEntity event, List<String> bambinoId) {
+			NannyEntity nanny, Double cost, TutoryEntity tutory, EventEntity event, PaymentTypeEntity paymentType,
+			List<String> bambinoId) {
 		super();
 		this.bookingId = bookingId;
 		this.client = client;
@@ -95,10 +103,8 @@ public class BookingEntity {
 		this.cost = cost;
 		this.tutory = tutory;
 		this.event = event;
+		this.paymentType = paymentType;
 		this.bambinoId = bambinoId;
-	}
-
-	public BookingEntity() {
 	}
 
 	public Integer getBookingId() {
@@ -115,6 +121,14 @@ public class BookingEntity {
 
 	public void setClient(ClientEntity client) {
 		this.client = client;
+	}
+
+	public Set<BambinoEntity> getBambino() {
+		return bambino;
+	}
+
+	public void setBambino(Set<BambinoEntity> bambino) {
+		this.bambino = bambino;
 	}
 
 	public BookingTypeEntity getBookingType() {
@@ -189,12 +203,12 @@ public class BookingEntity {
 		this.event = event;
 	}
 
-	public Set<BambinoEntity> getBambino() {
-		return bambino;
+	public PaymentTypeEntity getPaymentType() {
+		return paymentType;
 	}
 
-	public void setBambino(Set<BambinoEntity> bambino) {
-		this.bambino = bambino;
+	public void setPaymentType(PaymentTypeEntity paymentType) {
+		this.paymentType = paymentType;
 	}
 
 	public List<String> getBambinoId() {
@@ -204,4 +218,5 @@ public class BookingEntity {
 	public void setBambinoId(List<String> bambinoId) {
 		this.bambinoId = bambinoId;
 	}
+
 }
