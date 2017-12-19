@@ -237,6 +237,19 @@
 			</div>
 		</div>
 	</div>
+	
+	<div id="bambinomodal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<h4>Atención</h4>
+				<p>Recuerda que por cada 3 bambinos se estará cobrando una bambinaia extra</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#!"
+					class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+			</div>
+		</div>
+	</div>
 
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
@@ -248,7 +261,7 @@
 		th:src="@{/js/wickedpicker.min.js}"></script>
 
 	<script th:inline="javascript">
-	
+	var showMessage = 0;
 	var options = {
 		now: "00:00",
 		twentyFour: false,
@@ -306,14 +319,18 @@
 		  		}else{
 		  			sum = bambinoQuantity;
 		  		}
-		  		
+		  		/*<![CDATA[*/
 		  		if(sum > 3){
+		  			if(showMessage < 1){
+		  				$('#bambinomodal').modal('open');
+		  			}
+		  			showMessage += 1;
 		  			sum -= 3;
 					totalCost += calculateCost(sum);
 					sum = 3;
 		  		}
 		  		
-		  			/*<![CDATA[*/
+		  			
 		  		var costsCurrent = [];
 		  		for(var cost of costs){
 		  			if(cost.bambinoQuantity == sum){
