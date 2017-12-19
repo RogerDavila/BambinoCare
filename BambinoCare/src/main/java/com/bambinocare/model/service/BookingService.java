@@ -29,5 +29,7 @@ public interface BookingService {
 
 	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescAndNanny(Integer bookingId,
 			String bookingStatusDesc, NannyEntity nanny);
+	
+	void delete(BookingEntity bookingEntity);
 
 }

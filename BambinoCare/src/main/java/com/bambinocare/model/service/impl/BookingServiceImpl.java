@@ -77,4 +77,9 @@ public class BookingServiceImpl implements BookingService{
 		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDescAndNanny(bookingId, bookingStatusDesc, nanny);
 	}
 
+	@Override
+	public void delete(BookingEntity bookingEntity) {
+		bookingRepository.delete(bookingEntity);
+	}
+
 }

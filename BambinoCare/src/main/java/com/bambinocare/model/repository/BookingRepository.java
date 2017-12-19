@@ -30,5 +30,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Serializ
 
 	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescAndNanny(Integer bookingId,
 			String bookingStatusDesc, NannyEntity nanny);
+	
+	void delete(BookingEntity bookingEntity);
 
 }

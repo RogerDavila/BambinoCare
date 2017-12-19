@@ -8,7 +8,6 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.boot.jaxb.hbm.spi.ResultSetMappingBindingDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
@@ -216,7 +216,6 @@ public class UserController {
 
 		ModelAndView mav = new ModelAndView();
 		String error = "";
-		String result = "";
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
@@ -378,19 +377,6 @@ public class UserController {
 		booking.setDate(getDate(booking.getDate(), 1));
 		BookingEntity bookingCreated = bookingService.createBooking(booking);
 		if (bookingCreated != null) {
-			/*
-			 * try { emailService.sendHTMLMessage("rogerdavila.stech@gmail.com",
-			 * "BambinoCare - Nueva reservación", getBookingHTML(booking)); } catch
-			 * (MessagingException e) { e.printStackTrace(); }
-			 * 
-			 * emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(),
-			 * "BambinoCare - Nueva reservación",
-			 * "Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
-			 * +
-			 * "recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n"
-			 * + "a tu hogar.");
-			 */
-
 			String paymentTypeDesc = paymentTypeService.findByPaymentTypeId(booking.getPaymentType().getPaymentTypeId())
 					.getPaymentTypeDesc();
 
@@ -406,11 +392,23 @@ public class UserController {
 
 			// Si el método de pago es Deposito cuenta bancaria
 			if (paymentTypeDesc.equalsIgnoreCase("Pago en Oxxo o a cuenta Bancaria")) {
+				ModelMap modelmap = mav.getModelMap();
+				modelmap.addAttribute("result", "La reservación se ha realizado exitosamente");
+				modelmap.addAttribute("bookingId", bookingCreated.getBookingId());
+				mav.addObject("result","El pago se ha realizado exitosamente");
+				mav.addObject("bookingId", bookingCreated.getBookingId());
+				mav = new ModelAndView("forward:/users/completebooking", modelmap);
 				return mav;
 			}
 
 			// Si el método de pago es efectivo
 			if (paymentTypeDesc.equalsIgnoreCase("Pago en efectivo")) {
+				ModelMap modelmap = mav.getModelMap();
+				modelmap.addAttribute("result", "La reservación se ha realizado exitosamente");
+				modelmap.addAttribute("bookingId", bookingCreated.getBookingId());
+				mav.addObject("result","El pago se ha realizado exitosamente");
+				mav.addObject("bookingId", bookingCreated.getBookingId());
+				mav = new ModelAndView("forward:/users/completebooking", modelmap);
 				return mav;
 			}
 		} else {
@@ -423,26 +421,31 @@ public class UserController {
 		return mav;
 	}
 
-	@GetMapping("/completebooking")
+	@RequestMapping(value="completebooking", method= {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView completeBooking(@RequestAttribute("bookingId") int bookingId,
 			@RequestAttribute(name = "error", required = false) String error,
 			Model model) {
 		ModelAndView mav = new ModelAndView();
 		BookingEntity booking = bookingService.findByBookingId(bookingId);
+		
+		String paymentType = paymentTypeService.findByPaymentTypeId(booking.getPaymentType().getPaymentTypeId()).getPaymentTypeDesc();
+		
+		if(paymentType.equalsIgnoreCase("Paypal")) {
+			if (error != null) {
+				bookingService.delete(booking);
+				mav = new ModelAndView("redirect:/users/showbookings?error=" + error);
+				return mav;
+			}
 
-		if (error != null) {
-			mav = new ModelAndView("redirect:/users/showbookings?error=" + error);
-			return mav;
-		}
+			BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
 
-		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
+			booking.setBookingStatus(bookingStatus);
 
-		booking.setBookingStatus(bookingStatus);
-
-		if (bookingService.createBooking(booking) == null) {
-			error = "Ocurrió un error al guardar la reservación";
-			mav = new ModelAndView("redirect:/users/showbookings?error=" + error);
-			return mav;
+			if (bookingService.createBooking(booking) == null) {
+				error = "Ocurrió un error al guardar la reservación";
+				mav = new ModelAndView("redirect:/users/showbookings?error=" + error);
+				return mav;
+			}
 		}
 
 		try {
@@ -456,11 +459,11 @@ public class UserController {
 				"Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
 						+ "recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n"
 						+ "a tu hogar.");
-		
+
 		String result = "La reservación se realizó exitosamente.";
 		mav = new ModelAndView("redirect:/users/showbookings?result=" + result);
 		return mav;
-		
+
 	}
 
 	public String getBookingHTML(BookingEntity booking) {
@@ -489,7 +492,7 @@ public class UserController {
 
 	}
 
-	@GetMapping("/editbookingform")
+	@RequestMapping(name="/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, @RequestParam(required = true) Integer bookingId,
 			Model model) {
@@ -600,8 +603,8 @@ public class UserController {
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
 					"El usuario " + oldBooking.getClient().getUser().getEmail()
-							+ " ha modificado la reservación del día " + oldBooking.getDate()
-							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com");
+					+ " ha modificado la reservación del día " + oldBooking.getDate()
+					+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com");
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
@@ -720,9 +723,9 @@ public class UserController {
 
 				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
 						"El usuario " + booking.getClient().getUser().getEmail()
-								+ " ha cancelado su reservación del día " + booking.getDate()
-								+ " Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+						+ " ha cancelado su reservación del día " + booking.getDate()
+						+ " Puedes revisar el detalle en"
+						+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
 
 			} else {
 				error = "No se permiten cancelaciones de reservación";

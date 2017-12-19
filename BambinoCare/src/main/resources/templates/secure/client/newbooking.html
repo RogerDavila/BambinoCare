@@ -44,13 +44,14 @@
 			</div>
 			<div class="row">
 				<div class="col s12">
-					<select id="bookingtype" th:field="*{bookingType.bookingTypeId}">
+					<label class="black-text" for="bookingtype">Tipo de
+						Reservación</label> <select id="bookingtype"
+						th:field="*{bookingType.bookingTypeId}">
 						<option th:each="bookingType : ${bookingTypes}"
 							th:value="${bookingType.bookingTypeId}"
 							th:text="${bookingType.bookingTypeDesc}" value="${nametype}"
 							th:async="true"></option>
-					</select> <label class="black-text" for="bookingtype">Tipo de
-						Reservación</label>
+					</select>
 				</div>
 			</div>
 
@@ -76,12 +77,13 @@
 
 			<div class="row">
 				<div id="paymenttypeinfo" class="col s12">
-					<select id="paymenttype" th:field="*{paymentType.paymentTypeId}">
+					<label class="black-text" for="paymenttype">Forma de pago</label> <select
+						id="paymenttype" th:field="*{paymentType.paymentTypeId}">
 						<option th:each="paymentType : ${paymentTypes}"
 							th:value="${paymentType.paymentTypeId}"
 							th:text="${paymentType.paymentTypeDesc}" value="${nametype}"
 							th:async="true"></option>
-					</select> <label class="black-text" for="bookingtype">Forma de pago</label>
+					</select>
 				</div>
 			</div>
 
@@ -217,6 +219,25 @@
 		<div th:if="${result != null}" id="success"></div>
 	</div>
 
+	<div id="paymentmodal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<h4>Instrucciones para realizar el pago</h4>
+				<p>Para realizar el pago, por favor acuda a la sucursal de Oxxo
+					mas cercana con la siguiente información:</p>
+				<p>Banco: Santander</p>
+				<p>Movimiento: Déposito a tarjeta de Débito</p>
+				<p>Nombre de Beneficiario: Erika Yaimeé Rodríguez Rodríguez</p>
+				<p>Número de cuenta: 5579 1001 7184 6510</p>
+				<p>Número de Referencia: 99999999999</p>
+			</div>
+			<div class="modal-footer">
+				<a href="#!"
+					class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+			</div>
+		</div>
+	</div>
+
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
@@ -328,8 +349,20 @@
 				  durationValue = durationHour + durationMinute;
 				  console.log(`${durationHour}.${durationMinute} = ${durationValue}`);
 				  $("#duration").val(durationValue);
+				  
+				  var paymenttype = $('#paymenttype option:selected').text();
+				    
+				  if(paymenttype != 'Paypal'){
+				  	$('#paymentmodal').modal('open');
+				  	event.preventDefault();
+				  }
+				  
 			});
 
+			$("#btn-confirm").click(function(){
+				$('#paymentmodal').modal('close');
+			});
+			
 		});
 	
 	

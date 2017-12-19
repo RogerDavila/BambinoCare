@@ -188,7 +188,6 @@ public class PaymentController {
 			}
 
 		} catch (PayPalRESTException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

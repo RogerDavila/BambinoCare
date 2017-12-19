@@ -16,14 +16,13 @@ public class PaymentTypeEntity {
 	@Column(name="payment_type_id",unique=true,nullable = false)
 	private Integer paymentTypeId;
 	
-	@Column(name="payment_type_desc", nullable=false,length=45)
+	@Column(name="payment_type_desc", nullable=false)
 	private String paymentTypeDesc;
 
 	public PaymentTypeEntity() {
 	}
 
 	public PaymentTypeEntity(Integer paymentTypeId, String paymentTypeDesc) {
-		super();
 		this.paymentTypeId = paymentTypeId;
 		this.paymentTypeDesc = paymentTypeDesc;
 	}
