@@ -492,7 +492,7 @@ public class UserController {
 
 	}
 
-	@RequestMapping(name="/editbookingform")
+	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
 			@RequestParam(required = false) String error, @RequestParam(required = true) Integer bookingId,
 			Model model) {

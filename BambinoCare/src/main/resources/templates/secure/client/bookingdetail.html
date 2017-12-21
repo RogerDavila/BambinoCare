@@ -95,7 +95,7 @@
 							<tr th:each="bambinoclient : ${allbambinos}">
 								<td><input type="checkbox" class="filled-in"
 									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
-									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
+									name="bambino" disabled="disabled"/> <label th:for="${#ids.prev('bambinoId')}"></label></td>
 								<td
 									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
 							</tr>
