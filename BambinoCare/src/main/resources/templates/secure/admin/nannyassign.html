@@ -27,8 +27,8 @@
 		</nav>
 	</header>
 	<div class="row container">
-		<form id="bookingform" class="white pad" action="#" th:action="@{/admin/approvebooking}"
-			th:object="${nanny}" method="post" name="bookingform">
+		<form id="nannyform" class="white pad" action="#" th:action="@{/admin/approvebooking}"
+			th:object="${nanny}" method="post" name="nannyform">
 			<div class="center grey-text text-darken-3">
 				<h5>Asignar Bambinaia</h5>
 			</div>
@@ -78,7 +78,7 @@
 		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
 		    });
 
-		  $('#bookingform').bind('submit', function (e) {
+		  $('#nannyform').bind('submit', function (e) {
 			  	console.log('Entra');
 			    var sendbutton = $('#sendbutton');
 			    var cancelbutton = $('#cancelbutton');
