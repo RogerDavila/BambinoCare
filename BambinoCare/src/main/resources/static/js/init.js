@@ -77,7 +77,7 @@
       window.location.href = "http://localhost:8080/#Servicios";
     });
 
-    $('#inicio')
+    $('#inicio, #logo-container')
     .click(function() {
     	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#";

@@ -6,25 +6,32 @@
 	<div th:fragment="header(username)">
 
 		<div class="nav-wrapper">
-			<a href="#" class="brand-logo center">Bambino</a> <a href="#"
+			<a id="logo-container" href="#"
+				class="brand-logo hide-on-med-and-down"><img
+				src="../static/img/Logo1.png" th:src="@{/img/Logo1.png}"
+				style="width: 260px; height: 64px;" /></a> <a href="#"
 				data-activates="mobile-demo" class="button-collapse"><i
 				class="material-icons">menu</i></a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a
 					class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
 					href="#modal1"> <i class="material-icons flo">person</i>
-				</a><output  th:text="${username}"></output></li>
+				</a>
+				<output th:text="${username}"></output></li>
 				<li>
 					<form th:action="@{/logout}" method="POST">
-						<button type="submit" class="waves-effect waves-teal btn-flat white-text">Cerrar Sesión</button>
+						<button type="submit"
+							class="waves-effect waves-teal btn-flat white-text">Cerrar
+							Sesión</button>
 					</form>
 				</li>
 			</ul>
 			<ul class="side-nav" id="mobile-demo">
-				<li><a href="#"><output  th:text="${username}"></output></a></li>
+				<li><a href="#"><output th:text="${username}"></output></a></li>
 				<li>
 					<form th:action="@{/logout}" method="POST">
-						<button type="submit" class="btn waves-effect waves-light white-text">Cerrar
+						<button type="submit"
+							class="btn waves-effect waves-light white-text">Cerrar
 							Sesion</button>
 					</form>
 				</li>

@@ -4,7 +4,10 @@
 <body>
 	<div th:fragment="header(username)">
 		<div class="nav-wrapper">
-			<a href="#" class="brand-logo center">Bambino</a> <a href="#"
+			<a id="logo-container" href="#"
+				class="brand-logo hide-on-med-and-down"><img
+				src="../static/img/Logo1.png" th:src="@{/img/Logo1.png}"
+				style="width: 260px; height: 64px;" /></a><a href="#"
 				data-activates="mobile-demo" class="button-collapse"><i
 				class="material-icons">menu</i></a>
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -36,7 +39,8 @@
 		</div>
 		<div class="nav-content">
 			<ul class="tabs tabs-transparent">
-				<li class="tab"><a class="active" href="#Reservaciones">Administrar Reservaciones</a></li>
+				<li class="tab"><a class="active" href="#Reservaciones">Administrar
+						Reservaciones</a></li>
 				<!--<li class="tab"><a href="#Usuarios">Usuarios</a></li>-->
 				<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
 			</ul>
