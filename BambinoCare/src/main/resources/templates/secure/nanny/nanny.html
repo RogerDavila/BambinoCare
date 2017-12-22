@@ -35,7 +35,7 @@
 					<thead>
 						<tr>
 							<th>Reservacion</th>
-							<th>nannye</th>
+							<th>Cliente</th>
 							<th>Fecha</th>
 							<th>Hora</th>
 							<th>Tipo</th>
@@ -43,7 +43,6 @@
 							<th class="hide" colspan="2">Aprobar/Rechazar</th>
 							<th>Nanny</th>
 							<th>Duración</th>
-							<th>Costo</th>
 							<th class="hide">Editar</th>
 							<th class="hide">Borrar</th>
 						</tr>
@@ -63,7 +62,7 @@
 								</form>
 							</td>
 							<td
-								th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname} "></td>
+								th:text="${booking.client == null ? '' : booking.client.user.firstname + ' ' + booking.client.user.lastname} "></td>
 							<td th:text="${booking.date}"></td>
 							<td th:text="${booking.hour}"></td>
 							<td
@@ -99,7 +98,6 @@
 							<td
 								th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
 							<td th:text="${booking.duration}"></td>
-							<td th:text="${booking.cost}"></td>
 							<td class="hide"><a href="#" class="btn-floating deep-purple lighten-1"
 								th:href="@{/admin/editbookingform?bookingId=__${booking.bookingId}__}">
 									<i class="material-icons">edit</i>
