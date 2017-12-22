@@ -395,7 +395,7 @@ public class UserController {
 				ModelMap modelmap = mav.getModelMap();
 				modelmap.addAttribute("result", "La reservación se ha realizado exitosamente");
 				modelmap.addAttribute("bookingId", bookingCreated.getBookingId());
-				mav.addObject("result","El pago se ha realizado exitosamente");
+				mav.addObject("result", "El pago se ha realizado exitosamente");
 				mav.addObject("bookingId", bookingCreated.getBookingId());
 				mav = new ModelAndView("forward:/users/completebooking", modelmap);
 				return mav;
@@ -406,7 +406,7 @@ public class UserController {
 				ModelMap modelmap = mav.getModelMap();
 				modelmap.addAttribute("result", "La reservación se ha realizado exitosamente");
 				modelmap.addAttribute("bookingId", bookingCreated.getBookingId());
-				mav.addObject("result","El pago se ha realizado exitosamente");
+				mav.addObject("result", "El pago se ha realizado exitosamente");
 				mav.addObject("bookingId", bookingCreated.getBookingId());
 				mav = new ModelAndView("forward:/users/completebooking", modelmap);
 				return mav;
@@ -421,16 +421,16 @@ public class UserController {
 		return mav;
 	}
 
-	@RequestMapping(value="completebooking", method= {RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value = "completebooking", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView completeBooking(@RequestAttribute("bookingId") int bookingId,
-			@RequestAttribute(name = "error", required = false) String error,
-			Model model) {
+			@RequestAttribute(name = "error", required = false) String error, Model model) {
 		ModelAndView mav = new ModelAndView();
 		BookingEntity booking = bookingService.findByBookingId(bookingId);
-		
-		String paymentType = paymentTypeService.findByPaymentTypeId(booking.getPaymentType().getPaymentTypeId()).getPaymentTypeDesc();
-		
-		if(paymentType.equalsIgnoreCase("Paypal")) {
+
+		String paymentType = paymentTypeService.findByPaymentTypeId(booking.getPaymentType().getPaymentTypeId())
+				.getPaymentTypeDesc();
+
+		if (paymentType.equalsIgnoreCase("Paypal")) {
 			if (error != null) {
 				bookingService.delete(booking);
 				mav = new ModelAndView("redirect:/users/showbookings?error=" + error);
@@ -480,14 +480,15 @@ public class UserController {
 
 		return "<html><body><p>El usuario " + booking.getClient().getUser().getEmail()
 				+ " ha agendado una nueva cita: </p><table border=\"1\">"
-				+ "<thead><tr><th>Cliente</th><th>Servicio</th><th>Bambinos</th><th>Edades</th>"
+				+ "<thead><tr><th>Nombre del Cliente</th><th>Email del Cliente</th><th>Servicio</th><th>Bambinos</th><th>Edades</th>"
 				+ "<th>Fecha</th><th>Horario</th><th>Lugar</th></tr></thead><tbody><tr><td>"
-				+ booking.getClient().getUser().getEmail() + "</td><td>" + bookingType.getBookingTypeDesc()
-				+ "</td><td>" + bambinos.substring(0, bambinos.length() - 1) + "</td><td>"
-				+ bambinosAges.substring(0, bambinosAges.length() - 1) + "</td><td>" + booking.getDate() + "</td><td>"
-				+ booking.getDuration() + "</td><td>" + booking.getClient().getStreet()
-				+ booking.getClient().getNeighborhood() + booking.getClient().getState() + "</td></tr>"
-				+ "</tbody></table><p>Puedes revisar el detalle en"
+				+ booking.getClient().getUser().getFirstname() + " " + booking.getClient().getUser().getLastname()
+				+ "</td><td>" + booking.getClient().getUser().getEmail() + "</td><td>"
+				+ bookingType.getBookingTypeDesc() + "</td><td>" + bambinos.substring(0, bambinos.length() - 1)
+				+ "</td><td>" + bambinosAges.substring(0, bambinosAges.length() - 1) + "</td><td>" + booking.getDate()
+				+ "</td><td>" + booking.getDuration() + "</td><td>" + booking.getClient().getStreet() + " "
+				+ booking.getClient().getNeighborhood() + " " + booking.getClient().getState().getStateDesc()
+				+ "</td></tr>" + "</tbody></table><p>Puedes revisar el detalle en"
 				+ " la siguiente liga: \n\r \n\r www.bambinocare.com</p></body></html>";
 
 	}
@@ -603,8 +604,8 @@ public class UserController {
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
 					"El usuario " + oldBooking.getClient().getUser().getEmail()
-					+ " ha modificado la reservación del día " + oldBooking.getDate()
-					+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com");
+							+ " ha modificado la reservación del día " + oldBooking.getDate()
+							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com");
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
@@ -723,9 +724,9 @@ public class UserController {
 
 				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
 						"El usuario " + booking.getClient().getUser().getEmail()
-						+ " ha cancelado su reservación del día " + booking.getDate()
-						+ " Puedes revisar el detalle en"
-						+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+								+ " ha cancelado su reservación del día " + booking.getDate()
+								+ " Puedes revisar el detalle en"
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
 
 			} else {
 				error = "No se permiten cancelaciones de reservación";
