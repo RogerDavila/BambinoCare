@@ -424,6 +424,7 @@ public class UserController {
 	@RequestMapping(value = "completebooking", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView completeBooking(@RequestAttribute("bookingId") int bookingId,
 			@RequestAttribute(name = "error", required = false) String error, Model model) {
+
 		ModelAndView mav = new ModelAndView();
 		BookingEntity booking = bookingService.findByBookingId(bookingId);
 

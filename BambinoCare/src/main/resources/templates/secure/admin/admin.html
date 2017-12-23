@@ -8,22 +8,26 @@
 <link type="text/css" rel="stylesheet"
 	href="../static/css/materialize.min.css"
 	th:href="@{/css/materialize.min.css}" media="screen,projection" />
-
+<link type="text/css" rel="stylesheet"
+	href="../static/css/dataTables.material.min.css"
+	th:href="@{/css/dataTables.material.min.css}" media="screen,projection" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
 
 <body>
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
-			<div th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
+			<div
+				th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
 			<div class="nav-content">
-			<ul class="tabs tabs-transparent">
-				<li class="tab"><a class="active" href="#Reservaciones">Administrar Reservaciones</a></li>
-				<!--<li class="tab"><a href="#Usuarios">Usuarios</a></li>-->
-				<li class="tab"><a href="#Nannies">Nannies</a></li>
-				<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
-			</ul>
-		</div>
+				<ul class="tabs tabs-transparent">
+					<li class="tab"><a class="active" href="#Reservaciones">Administrar
+							Reservaciones</a></li>
+					<!--<li class="tab"><a href="#Usuarios">Usuarios</a></li>-->
+					<li class="tab"><a href="#Nannies">Nannies</a></li>
+					<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
+				</ul>
+			</div>
 		</nav>
 	</header>
 
@@ -37,7 +41,7 @@
 		<div class="row">
 			<div class="col s1"></div>
 			<div class="col s10">
-				<table
+				<table id="bookingtable"
 					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
 					<thead>
 						<tr>
@@ -51,8 +55,8 @@
 							<th>Nanny</th>
 							<th>Duración</th>
 							<th>Costo</th>
-							<th>Editar</th>
-							<th>Borrar</th>
+							<th colspan="3">Acciones</th>
+							<th></th>
 						</tr>
 					</thead>
 
@@ -83,7 +87,9 @@
 									<input type="hidden" name="bookingId"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
-										class="btn-floating deep-purple lighten-1"
+										class="btn-floating deep-purple lighten-1 tooltipped"
+										data-position="bottom" data-tooltip="Cancelar"
+										data-delay="50"
 										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
 										<i class="material-icons">check</i>
 									</button>
@@ -95,7 +101,9 @@
 									<input type="hidden" name="bookingId"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
-										class="btn-floating deep-purple lighten-1"
+										class="btn-floating deep-purple lighten-1 tooltipped"
+										data-position="bottom" data-tooltip="Rechazar"
+										data-delay="50"
 										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
 										<i class="material-icons">clear</i>
 									</button>
@@ -107,7 +115,9 @@
 								th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
 							<td th:text="${booking.duration}"></td>
 							<td th:text="${booking.cost}"></td>
-							<td><a href="#" class="btn-floating deep-purple lighten-1"
+							<td><a href="#" class="btn-floating deep-purple lighten-1 tooltipped"
+										data-position="bottom" data-tooltip="Editar"
+										data-delay="50"
 								th:href="@{/admin/editbookingform?bookingId=__${booking.bookingId}__}">
 									<i class="material-icons">edit</i>
 							</a></td>
@@ -115,10 +125,25 @@
 									<input type="hidden" name="bookingId"
 										th:value="${booking.bookingId}" />
 									<button type="submit"
-										class="btn-floating deep-purple lighten-1">
+										class="btn-floating deep-purple lighten-1 tooltipped"
+										data-position="bottom" data-tooltip="Cancelar"
+										data-delay="50">
 										<i class="material-icons">delete</i>
 									</button>
 								</form></td>
+							<td><form th:action="@{/admin/acceptpayment}" method="post">
+									<input type="hidden" name="bookingId"
+										th:value="${booking.bookingId}" />
+									<button type="submit"
+										class="btn-floating deep-purple lighten-1 tooltipped"
+										data-position="bottom" data-tooltip="Pago Realizado"
+										data-delay="50"
+										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Pendiente Pago'} ? 'disabled'">
+										<i class="material-icons">attach_money</i>
+									</button>
+								</form></td>
+							<!-- assignment_turned_in attach_money -->
+							<td></td>
 						</tr>
 					</tbody>
 				</table>
@@ -137,8 +162,8 @@
 			</div>
 			<div class="col s2">
 				<br /> <a href="#" th:href="@{/admin/createNannyForm}"
-						class="btn-floating deep-purple lighten-1 btn-large"><i
-						class="material-icons">add</i></a>
+					class="btn-floating deep-purple lighten-1 btn-large"><i
+					class="material-icons">add</i></a>
 			</div>
 		</div>
 
@@ -161,19 +186,22 @@
 
 					<tbody>
 						<tr th:each="nanny : ${nannies}">
-							<td th:text="${nanny == null ? '' : nanny.user.firstname + ' ' + nanny.user.lastname}"></td>
+							<td
+								th:text="${nanny == null ? '' : nanny.user.firstname + ' ' + nanny.user.lastname}"></td>
 							<td th:text="${nanny.user.phone}"></td>
 							<td th:text="${nanny.user.email}"></td>
-							<td th:text="${nanny.street + ', ' + nanny.neighborhood + ', ' + nanny.city + ', ' + nanny.state}"></td>
-							<td th:text="${nanny.user.enabled == false ? 'deshabilitado' : 'habilitado'}"></td>
+							<td
+								th:text="${nanny.street + ', ' + nanny.neighborhood + ', ' + nanny.city + ', ' + nanny.state}"></td>
+							<td
+								th:text="${nanny.user.enabled == false ? 'deshabilitado' : 'habilitado'}"></td>
 							<td><a href="#" class="btn-floating deep-purple lighten-1"
-									th:href="@{/admin/editnannyform?nannyId=__${nanny.nannyId}__}">
-										<i class="material-icons">edit</i>
-								</a></td>
+								th:href="@{/admin/editnannyform?nannyId=__${nanny.nannyId}__}">
+									<i class="material-icons">edit</i>
+							</a></td>
 							<td><a href="#" class="btn-floating deep-purple lighten-1"
-									th:href="@{/admin/disableNanny?nannyId=__${nanny.nannyId}__}">
-										<i class="material-icons">delete</i>
-								</a></td>
+								th:href="@{/admin/disableNanny?nannyId=__${nanny.nannyId}__}">
+									<i class="material-icons">delete</i>
+							</a></td>
 						</tr>
 					</tbody>
 				</table>
@@ -238,8 +266,7 @@
 					</div>
 					<div class="input-field col s4">
 						<input id="phone" type="number" class="validate black-text"
-							required="required" disabled="disabled" /> <label
-							for="phone">Telefono</label>
+							required="required" disabled="disabled" /> <label for="phone">Telefono</label>
 					</div>
 					<div class="input-field col s4">
 						<input id="email" type="email" class="validate black-text"
@@ -262,14 +289,24 @@
 				../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}">
 				</script>
+
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
+
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+
+	<script src="../static/js/jquery.dataTables.min.js"
+		th:src="@{/js/jquery.dataTables.min.js}"></script>
+
+	<script src="../static/js/dataTables.material.min.js"
+		th:src="@{/js/dataTables.material.min.js}"></script>
+		
+	<script src="../static/js/initdatatable.js" th:src="@{/js/initdatatable.js}"></script>
+
 	<script th:inline="javascript">
      $(document).ready(function(){
        $('.modal').modal();
      });
-
  	
 	$(function() {
 		  $('#error')

@@ -76,6 +76,12 @@ public class BookingServiceImpl implements BookingService{
 			String bookingStatusDesc, NannyEntity nanny) {
 		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDescAndNanny(bookingId, bookingStatusDesc, nanny);
 	}
+	
+	@Override
+	public BookingEntity findByBookingIdAndBookingStatusBookingStatusDesc(Integer bookingId,
+			String bookingStatusDesc) {
+		return bookingRepository.findByBookingIdAndBookingStatusBookingStatusDesc(bookingId, bookingStatusDesc);
+	}
 
 	@Override
 	public void delete(BookingEntity bookingEntity) {

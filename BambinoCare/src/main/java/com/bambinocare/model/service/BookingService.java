@@ -27,9 +27,12 @@ public interface BookingService {
 
 	List<BookingEntity> findByNannyAndBookingStatusBookingStatusDesc(NannyEntity nanny, String bookingTypeDesc);
 
-	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescAndNanny(Integer bookingId,
-			String bookingStatusDesc, NannyEntity nanny);
-	
+	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescAndNanny(Integer bookingId, String bookingStatusDesc,
+			NannyEntity nanny);
+
+	BookingEntity findByBookingIdAndBookingStatusBookingStatusDesc(Integer bookingId,
+			String bookingStatusDesc);
+
 	void delete(BookingEntity bookingEntity);
 
 }

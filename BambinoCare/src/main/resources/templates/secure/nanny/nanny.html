@@ -30,7 +30,7 @@
 		<div class="row">
 			<div class="col s1"></div>
 			<div class="col s10">
-				<table
+				<table id="bookingtable"
 					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
 					<thead>
 						<tr>
@@ -197,7 +197,17 @@
 				</script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
+		
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	
+		<script src="../static/js/jquery.dataTables.min.js"
+		th:src="@{/js/jquery.dataTables.min.js}"></script>
+
+	<script src="../static/js/dataTables.material.min.js"
+		th:src="@{/js/dataTables.material.min.js}"></script>
+		
+	<script src="../static/js/initdatatable.js" th:src="@{/js/initdatatable.js}"></script>
+	
 	<script th:inline="javascript">
      $(document).ready(function(){
        $('.modal').modal();

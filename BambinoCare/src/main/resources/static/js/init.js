@@ -1,7 +1,6 @@
 (function($){
   $(function(){
 
-
     $('.button-collapse').sideNav({
         closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
       }
@@ -113,7 +112,7 @@
       window.location.href = "http://localhost:8080/#Nosotros";
     });
     
-    $('#paymentmodal').modal({
+    $('#paymentmodal, #cashmodal').modal({
         dismissible: true, // Modal can be dismissed by clicking outside of the modal
         opacity: .5, // Opacity of modal background
         //inDuration: 300, // Transition in duration

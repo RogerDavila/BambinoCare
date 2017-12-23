@@ -28,9 +28,11 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Serializ
 
 	List<BookingEntity> findByNannyAndBookingStatusBookingStatusDesc(NannyEntity nanny, String bookingStatusDesc);
 
-	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescAndNanny(Integer bookingId,
-			String bookingStatusDesc, NannyEntity nanny);
-	
+	BookingEntity findByBookingIdAndBookingStatusBookingStatusDescAndNanny(Integer bookingId, String bookingStatusDesc,
+			NannyEntity nanny);
+
+	BookingEntity findByBookingIdAndBookingStatusBookingStatusDesc(Integer bookingId, String bookingStatusDesc);
+
 	void delete(BookingEntity bookingEntity);
 
 }
