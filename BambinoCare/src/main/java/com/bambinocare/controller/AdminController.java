@@ -1,5 +1,7 @@
 package com.bambinocare.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -339,11 +341,21 @@ public class AdminController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido agendada";
 
+				Date date = booking.getDate();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				LocalDate datetime = LocalDate.parse(date.toString(), formatter);
+				String dateStr = datetime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+				String initialTime = booking.getHour();
+				Double duration = booking.getDuration();
+
+				String finalTime = bookingService.getFinalHour(initialTime, duration);
+
 				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
-						"Reservación Agendada",
-						"Su reservación del día del día " + booking.getDate()
-								+ "  ha sido agendada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+						"Reservación Confirmada",
+						"Su reservación ha sido confirmada. Puede ingresar a su perfil para verificar la información de la Bambinaia que estará asistiendo a la cita en el horario de "
+								+ initialTime + " a " + finalTime + " el día " + dateStr + " \r\n"
+								+ "\r\nAgradecemos su preferencia.\r\n");
 
 			} else {
 				error = "No se permite agendar esta reservación";
@@ -644,15 +656,16 @@ public class AdminController {
 			@RequestAttribute(name = "error", required = false) String error, Model model) {
 
 		ModelAndView mav = new ModelAndView();
-		//BookingEntity booking = bookingService.findByBookingId(bookingId);
-		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDesc(bookingId, "Pendiente Pago");
+		// BookingEntity booking = bookingService.findByBookingId(bookingId);
+		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDesc(bookingId,
+				"Pendiente Pago");
 
-		if(booking == null) {
+		if (booking == null) {
 			error = "No se puede aprobar el pago para este servicio";
 			mav = new ModelAndView("redirect:/admin/showbookings?error=" + error);
 			return mav;
 		}
-		
+
 		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Abierta");
 		booking.setBookingStatus(bookingStatus);
 

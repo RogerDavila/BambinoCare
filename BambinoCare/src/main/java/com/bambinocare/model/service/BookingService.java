@@ -34,5 +34,7 @@ public interface BookingService {
 			String bookingStatusDesc);
 
 	void delete(BookingEntity bookingEntity);
+	
+	String getFinalHour(String initialTime, Double duration);
 
 }
