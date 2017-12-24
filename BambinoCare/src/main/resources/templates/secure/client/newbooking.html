@@ -356,7 +356,10 @@
 		  		}
 		  		
 		  		for(var i = 0; i < costsCurrent.length; i++ ){
-						var durationValue = duration[0].value.split(":")[0];		
+		  			  var durationValue = duration[0].value.split(":");
+					  var durationHour = parseFloat(durationValue[0]);
+					  var durationMinute = parseFloat(durationValue[1]/60);
+					  durationValue = durationHour + durationMinute;		
 						if(durationValue != "" && !isNaN(durationValue) && durationValue != 0){
 			  				if(durationValue > costsCurrent[i].hourQuantity){
 				  				continue;
