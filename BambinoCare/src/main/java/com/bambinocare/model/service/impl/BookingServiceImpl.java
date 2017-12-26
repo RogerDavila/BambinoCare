@@ -10,9 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.NannyEntity;
+import com.bambinocare.model.entity.ParameterEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.BookingRepository;
 import com.bambinocare.model.service.BookingService;
+import com.bambinocare.model.service.ParameterService;
 
 @Service("bookingService")
 public class BookingServiceImpl implements BookingService {
@@ -20,6 +22,10 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	@Qualifier("bookingRepository")
 	private BookingRepository bookingRepository;
+
+	@Autowired
+	@Qualifier("parameterService")
+	private ParameterService parameterService;
 
 	@Override
 	public List<BookingEntity> findAllBookings() {
@@ -125,13 +131,13 @@ public class BookingServiceImpl implements BookingService {
 
 		return calendar.getTime();
 	}
-	
+
 	@Override
-	public boolean isValideDate (Date date, String hour) {
+	public boolean isValideDate(Date date, String hour) {
 		boolean isValideDate = false;
-		
+
 		String[] initialHourAux = hour.split(":");
-		
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(getDate(date, 1));
 		calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(initialHourAux[0]));
@@ -139,13 +145,46 @@ public class BookingServiceImpl implements BookingService {
 
 		Calendar newCalendar = Calendar.getInstance();
 		newCalendar.add(Calendar.HOUR_OF_DAY, 24);
-		
-		if(calendar.after(newCalendar)) {
+
+		if (calendar.after(newCalendar)) {
 			isValideDate = true;
 		}
-		
+
 		return isValideDate;
-		
+
 	}
-	
+
+	@Override
+	public boolean isValideHour(String hour) {
+
+		boolean isValideHour = false;
+
+		if (hour == null || hour.equals("")) {
+			return isValideHour;
+		}
+
+		ParameterEntity parameterOpeningHour = parameterService.findByParameterKey("Hora Apertura");
+		ParameterEntity parameterClosingHour = parameterService.findByParameterKey("Hora Cierre");
+
+		if (parameterOpeningHour.getParameterValue().equals("")) {
+			parameterOpeningHour.setParameterValue("00:00");
+		}
+
+		if (parameterClosingHour.getParameterValue().equals("")) {
+			parameterClosingHour.setParameterValue("24:00");
+		}
+
+		String serviceHour = hour.split(":")[0];
+		String openingHour = parameterOpeningHour.getParameterValue().split(":")[0];
+		String closingHour = parameterClosingHour.getParameterValue().split(":")[0];
+
+		if (Integer.parseInt(serviceHour) >= Integer.parseInt(openingHour)
+				&& Integer.parseInt(serviceHour) <= Integer.parseInt(closingHour)) {
+			isValideHour = true;
+		}
+
+		return isValideHour;
+
+	}
+
 }

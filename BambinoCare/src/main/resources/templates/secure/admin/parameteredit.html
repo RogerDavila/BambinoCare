@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
+	http-equiv="Content-Type" />
+
+<title>BambinoCare</title>
+
+<!-- CSS  -->
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet" />
+
+<link type="text/css" rel="stylesheet"
+	href="../static/css/materialize.css" th:href="@{/css/materialize.css}"
+	media="screen,projection" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	type="text/css" rel="stylesheet" media="screen,projection" />
+
+<link href="../static/css/wickedpicker.min.css"
+	th:href="@{/css/wickedpicker.min.css}" type="text/css" rel="stylesheet"
+	media="screen,projection" />
+
+</head>
+<body>
+	<header>
+		<nav class="nav-extended deep-purple accent-1">
+			<div
+				th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
+		</nav>
+	</header>
+	<div class="row container">
+		<form id="parameterform" class="white pad" action="#"
+			th:action="@{/admin/editparameter}" th:object="${parameter}"
+			method="post" name="parameterform">
+			<div class="center grey-text text-darken-3">
+				<h5>Editar Parametro</h5>
+			</div>
+			<input type="hidden" th:value="${parameterId}"
+				th:field="*{parameterId}" />
+			<div class="row">
+				<div class="input-field col s4">
+					<input id="parameterKey" type="text" class="validate black-text"
+						required="required" disabled="disabled"
+						th:value="${parameterKey}" th:field="*{parameterKey}" /> <label
+						for="phone">Nombre de parametro</label>
+				</div>
+				<div class="input-field col s4">
+					<input id="parameterValue" type="text" class="validate black-text"
+						required="required"
+						th:value="${parameterValue}" th:field="*{parameterValue}" /> <label
+						for="phone">Valor de parametro</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="right-align" style="">
+					<a id="cancelbutton" th:href="@{/admin/cancel}"
+						class="waves-effect waves-light btn deep-purple accent-2">
+						Cancelar </a>
+
+
+					<button id="sendbutton"
+						class="btn waves-effect waves-light deep-purple accent-2"
+						type="submit" name="action">Enviar</button>
+				</div>
+			</div>
+		</form>
+		<div th:if="${error != null}" id="error"></div>
+		<div th:if="${result != null}" id="result"></div>
+	</div>
+
+	<!--  Scripts-->
+	<script src="../static/js/jquery-3.2.1.min.js"
+		th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script src="../static/js/materialize.js"
+		th:src="@{/js/materialize.js}"></script>
+	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	<script src="../static/js/wickedpicker.min.js"
+		th:src="@{/js/wickedpicker.min.js}"></script>
+
+	<script th:inline="javascript">
+	$(function() {
+		  $('#error')
+		    .show(1000, function() {
+		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		    });
+		  $('#success')
+		    .show(1000, function() {
+		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
+		    });
+		});
+	</script>
+
+</body>
+</html>

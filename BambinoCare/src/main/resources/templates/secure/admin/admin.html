@@ -26,6 +26,7 @@
 					<!--<li class="tab"><a href="#Usuarios">Usuarios</a></li>-->
 					<li class="tab"><a href="#Nannies">Nannies</a></li>
 					<li class="tab"><a href="#MiPerfil">Mi Perfil</a></li>
+					<li class="tab"><a href="#parameters">Configurar Servicio</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -88,8 +89,7 @@
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Cancelar"
-										data-delay="50"
+										data-position="bottom" data-tooltip="Cancelar" data-delay="50"
 										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
 										<i class="material-icons">check</i>
 									</button>
@@ -102,8 +102,7 @@
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Rechazar"
-										data-delay="50"
+										data-position="bottom" data-tooltip="Rechazar" data-delay="50"
 										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
 										<i class="material-icons">clear</i>
 									</button>
@@ -115,9 +114,9 @@
 								th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
 							<td th:text="${booking.duration}"></td>
 							<td th:text="${booking.cost}"></td>
-							<td><a href="#" class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Editar"
-										data-delay="50"
+							<td><a href="#"
+								class="btn-floating deep-purple lighten-1 tooltipped"
+								data-position="bottom" data-tooltip="Editar" data-delay="50"
 								th:href="@{/admin/editbookingform?bookingId=__${booking.bookingId}__}">
 									<i class="material-icons">edit</i>
 							</a></td>
@@ -126,8 +125,7 @@
 										th:value="${booking.bookingId}" />
 									<button type="submit"
 										class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Cancelar"
-										data-delay="50">
+										data-position="bottom" data-tooltip="Cancelar" data-delay="50">
 										<i class="material-icons">delete</i>
 									</button>
 								</form></td>
@@ -284,6 +282,45 @@
 		</div>
 	</div>
 
+	<!-- Parameters -->
+	<div id="parameters" class="container">
+		<div class="row">
+			<div class="col s12 center">
+				<h4>Configuraciones del servicio</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col s1"></div>
+			<div class="col s10">
+				<table id="parameterstable"
+					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+					<thead>
+						<tr>
+							<th>Id</th>
+							<th>Llave</th>
+							<th>Valor</th>
+							<th>Editar</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<tr th:each="parameter : ${parameters}">
+							<td th:text="${parameter.parameterId}"></td>
+							<td th:text="${parameter.parameterKey}"></td>
+							<td th:text="${parameter.parameterValue}"></td>
+							<td><a href="#"
+								class="btn-floating deep-purple lighten-1 tooltipped"
+								data-position="bottom" data-tooltip="Editar" data-delay="50"
+								th:href="@{/admin/editparameterform?parameterId=__${parameter.parameterId}__}">
+									<i class="material-icons">edit</i>
+							</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
 
 	<script src="
 				../static/js/jquery-3.2.1.min.js"
@@ -300,8 +337,9 @@
 
 	<script src="../static/js/dataTables.material.min.js"
 		th:src="@{/js/dataTables.material.min.js}"></script>
-		
-	<script src="../static/js/initdatatable.js" th:src="@{/js/initdatatable.js}"></script>
+
+	<script src="../static/js/initdatatable.js"
+		th:src="@{/js/initdatatable.js}"></script>
 
 	<script th:inline="javascript">
      $(document).ready(function(){
@@ -319,6 +357,5 @@
 		    });
 		});
      </script>
-
 </body>
 </html>

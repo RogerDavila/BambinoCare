@@ -41,5 +41,7 @@ public interface BookingService {
 	Date getDate(Date date, int days);
 	
 	boolean isValideDate (Date date, String hour);
+	
+	boolean isValideHour (String hour);
 
 }

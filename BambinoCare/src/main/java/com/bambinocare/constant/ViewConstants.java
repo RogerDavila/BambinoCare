@@ -27,4 +27,5 @@ public class ViewConstants {
 	public static final String NANNY_SHOW = "/secure/nanny/nanny";
 	public static final String BOOKING_NANNY_DETAIL_SHOW = "/secure/client/bookingdetail";
 	public static final String NANNY_EDIT_VIEW = "/secure/admin/editnanny";
+	public static final String PARAMETER_ADMIN_EDIT = "/secure/admin/parameteredit";
 }

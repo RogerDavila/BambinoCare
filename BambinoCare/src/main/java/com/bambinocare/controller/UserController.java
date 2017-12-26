@@ -50,6 +50,7 @@ import com.bambinocare.model.service.CostService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EmergencyContactService;
 import com.bambinocare.model.service.EventTypeService;
+import com.bambinocare.model.service.ParameterService;
 import com.bambinocare.model.service.PaymentTypeService;
 import com.bambinocare.model.service.StateService;
 import com.bambinocare.model.service.UserService;
@@ -109,6 +110,10 @@ public class UserController {
 	@Autowired
 	@Qualifier("paymentTypeService")
 	private PaymentTypeService paymentTypeService;
+	
+	@Autowired
+	@Qualifier("parameterService")
+	private ParameterService parameterService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String error,
@@ -267,31 +272,7 @@ public class UserController {
 			mav.addObject("error", error);
 
 			return mav;
-		} /*
-			 * else if (getDate(booking.getDate(),
-			 * 1).before(getDate(Calendar.getInstance().getTime(), 0))) { mav = new
-			 * ModelAndView(ViewConstants.BOOKING_CREATE); error =
-			 * "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
-			 * 
-			 * List<BookingTypeEntity> bookingTypes =
-			 * bookingTypeService.findAllBookingTypes(); List<EventTypeEntity> eventTypes =
-			 * eventTypeService.findAllEventTypes(); List<BambinoEntity> bambinos =
-			 * bambinoService.findByClientUser(userEntity); List<CostEntity> costs =
-			 * costService.findAllByOrderByHourQuantity(); List<PaymentTypeEntity>
-			 * paymentTypes = paymentTypeService.findAll();
-			 * 
-			 * mav.addObject("allbambinos", bambinos); mav.addObject("usernameLogged",
-			 * userEntity.getFirstname()); mav.addObject("costs", costs);
-			 * mav.addObject("totalCost", booking.getCost()); mav.addObject("paymentTypes",
-			 * paymentTypes);
-			 * 
-			 * mav.addObject("booking", booking); mav.addObject("bookingTypes",
-			 * bookingTypes); mav.addObject("eventTypes", eventTypes);
-			 * 
-			 * mav.addObject("error", error);
-			 * 
-			 * return mav; }
-			 */
+		} 
 
 		if (booking.getHour() == null || booking.getHour().equals("")) {
 			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
@@ -320,6 +301,30 @@ public class UserController {
 			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
 			error = "La reservación debe realizarse al menos 24 horas antes de la fecha solictada, le sugerimos revisar el servicio Bambino ASAP";
 
+			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
+			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
+
+			mav.addObject("allbambinos", bambinos);
+			mav.addObject("usernameLogged", userEntity.getFirstname());
+			mav.addObject("costs", costs);
+			mav.addObject("totalCost", booking.getCost());
+			mav.addObject("paymentTypes", paymentTypes);
+
+			mav.addObject("booking", booking);
+			mav.addObject("bookingTypes", bookingTypes);
+			mav.addObject("eventTypes", eventTypes);
+
+			mav.addObject("error", error);
+
+			return mav;
+		} else if (!bookingService.isValideHour(booking.getHour())) {
+			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+			String serviceHour = parameterService.findByParameterKey("Hora Apertura").getParameterValue();
+			error = "Por el momento el horario para el servicio es a partir de las " + serviceHour + " hrs";
+			
 			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);

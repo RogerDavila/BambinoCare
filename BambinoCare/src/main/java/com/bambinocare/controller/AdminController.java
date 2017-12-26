@@ -31,6 +31,7 @@ import com.bambinocare.model.entity.BookingTypeEntity;
 import com.bambinocare.model.entity.CostEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.NannyEntity;
+import com.bambinocare.model.entity.ParameterEntity;
 import com.bambinocare.model.entity.RoleEntity;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.service.BambinoService;
@@ -41,6 +42,7 @@ import com.bambinocare.model.service.CostService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EventTypeService;
 import com.bambinocare.model.service.NannyService;
+import com.bambinocare.model.service.ParameterService;
 import com.bambinocare.model.service.UserService;
 
 @Controller
@@ -83,6 +85,10 @@ public class AdminController {
 	@Qualifier("costService")
 	private CostService costService;
 
+	@Autowired
+	@Qualifier("parameterService")
+	private ParameterService parameterService;
+
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String error,
 			@RequestParam(required = false) String result) {
@@ -94,6 +100,7 @@ public class AdminController {
 
 		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findAllBookings());
+		mav.addObject("parameters", parameterService.findAllParameters());
 		mav.addObject("nannies", nannyService.findAllNannies());
 		mav.addObject("error", error);
 		mav.addObject("result", result);
@@ -190,6 +197,26 @@ public class AdminController {
 		return ViewConstants.BOOKING_ADMIN_EDIT;
 	}
 
+	@GetMapping("/editparameterform")
+	public String showEditParameter(@RequestParam(required = false) String result,
+			@RequestParam(required = false) String error, @RequestParam(required = true) Integer parameterId,
+			Model model) {
+
+		ParameterEntity parameter = parameterService.findByParameterId(parameterId);
+
+		if (parameter == null) {
+			error = "El parametro solicitado no existe";
+			return "redirect:/admin/showbookings?error=" + error;
+		}
+
+		model.addAttribute("parameter", parameter);
+
+		model.addAttribute("result", result);
+		model.addAttribute("error", error);
+
+		return ViewConstants.PARAMETER_ADMIN_EDIT;
+	}
+
 	@PostMapping("/editbooking")
 	public ModelAndView editBooking(@ModelAttribute(name = "booking") BookingEntity booking,
 			BindingResult bindingResult, Model model) {
@@ -213,7 +240,8 @@ public class AdminController {
 			mav.addObject("error", error);
 			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
-		} else if (getDate(booking.getDate(), 1).before(getDate(Calendar.getInstance().getTime(), 0))) {
+		} else if (bookingService.getDate(booking.getDate(), 1)
+				.before(bookingService.getDate(Calendar.getInstance().getTime(), 0))) {
 			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("error", error);
@@ -250,7 +278,7 @@ public class AdminController {
 		}
 
 		oldBooking.setDuration(booking.getDuration());
-		oldBooking.setDate(getDate(booking.getDate(), 1));
+		oldBooking.setDate(bookingService.getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
 		oldBooking.setBambino(booking.getBambino());
 		oldBooking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
@@ -264,6 +292,40 @@ public class AdminController {
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
+		}
+
+		mav = new ModelAndView("redirect:/admin/showbookings");
+		mav.addObject("error", error);
+		mav.addObject("result", result);
+		return mav;
+	}
+
+	@PostMapping("/editparameter")
+	public ModelAndView editParameter(@ModelAttribute(name = "parameter") ParameterEntity parameter,
+			BindingResult bindingResult, Model model) {
+
+		ModelAndView mav = new ModelAndView();
+		
+		String error = "";
+		String result = "";
+
+		String parameterValue = parameter.getParameterValue();
+		
+		if (parameterValue == null) {
+			error = "Favor de verificar el campo Valor de Parametro";
+			mav = new ModelAndView("redirect:/admin/editparameterform");
+			mav.addObject("error", error);
+			mav.addObject("parameterId", parameter.getParameterId());
+			return mav;
+		}
+
+		ParameterEntity oldParameter = parameterService.findByParameterId(parameter.getParameterId());
+		oldParameter.setParameterValue(parameterValue);
+		
+		if (parameterService.createParameter(oldParameter) != null) {
+			result = "El parametro fue modificada con éxito!";
+		} else {
+			result = "Ocurrió un error al intentar editar el parametro, vuelva a intentarlo";
 		}
 
 		mav = new ModelAndView("redirect:/admin/showbookings");
@@ -679,15 +741,6 @@ public class AdminController {
 		mav = new ModelAndView("redirect:/admin/showbookings?result=" + result);
 		return mav;
 
-	}
-
-	public static Date getDate(Date date, int days) {
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(date);
-		calendar.add(Calendar.DAY_OF_YEAR, days);
-
-		return calendar.getTime();
 	}
 
 }
