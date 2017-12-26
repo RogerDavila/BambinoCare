@@ -49,16 +49,20 @@ INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(19, 1, 4
 INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(20, 2, 40, 130);
 INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(21, 3, 40, 180);
 
-INSERT INTO city(city_id, city_desc) VALUES (1,'Contry');
-INSERT INTO city(city_id, city_desc) VALUES (2,'Cumbres');
-INSERT INTO city(city_id, city_desc) VALUES (3,'Monterrey');
-INSERT INTO city(city_id, city_desc) VALUES (4,'San Jeronimo');
-INSERT INTO city(city_id, city_desc) VALUES (5,'San Pedro');
-INSERT INTO city(city_id, city_desc) VALUES (6,'Valle Alto');
-INSERT INTO city(city_id, city_desc) VALUES (7,'Valle Poniente');
+INSERT INTO city(city_id, city_desc) VALUES (1,'Monterrey');
+INSERT INTO city(city_id, city_desc) VALUES (2,'San Pedro');
+INSERT INTO city(city_id, city_desc) VALUES (3,'Santa Catarina');
+
+INSERT INTO neighborhood(neighborhood_id, neighborhood_desc, city_id) VALUES (1,'Contry', 1);
+INSERT INTO neighborhood(neighborhood_id, neighborhood_desc, city_id) VALUES (2,'Valle Alto', 1);
+INSERT INTO neighborhood(neighborhood_id, neighborhood_desc, city_id) VALUES (3,'San Jerónimo', 1);
+INSERT INTO neighborhood(neighborhood_id, neighborhood_desc, city_id) VALUES (4,'Cumbres', 1);
 
 INSERT INTO state(state_id, state_desc) VALUES (1, 'Nuevo León');
 
 INSERT INTO payment_type(payment_type_id, payment_type_desc) VALUES (1, 'Paypal');
 INSERT INTO payment_type(payment_type_id, payment_type_desc) VALUES (2, 'Pago en Oxxo o a cuenta Bancaria');
 INSERT INTO payment_type(payment_type_id, payment_type_desc) VALUES (3, 'Pago en efectivo');
+
+INSERT INTO parameter(parameter_id, parameter_key, parameter_value) VALUES (1, 'Hora Apertura', '14:00');
+INSERT INTO parameter(parameter_id, parameter_key, parameter_value) VALUES (2, 'Hora Cierre', '');
