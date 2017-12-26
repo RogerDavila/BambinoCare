@@ -278,136 +278,134 @@
 		th:src="@{/js/wickedpicker.min.js}"></script>
 
 	<script th:inline="javascript">
-	var showMessage = 0;
-	var options = {
-		now: "00:00",
-		twentyFour: false,
-		title: "Seleccione duración",
-		twentyFour: true
-	};
+		var showMessage = 0;
+		var options = {
+		    now: "00:00",
+		    twentyFour: false,
+		    title: "Seleccione duración",
+		    twentyFour: true
+		};
 	
-	$('.timepickerwicked').wickedpicker(options);
+		$('.timepickerwicked').wickedpicker(options);
 	
-	$(function() {
-		 var totalCost = [[${totalCost}]];
-		  var costs = [[${costs}]];
-		  
-		  if(!totalCost){
-			  totalCost = 0.0;
-		  }
-		  
-		  calculateCost();
-		  
-		  $('#error')
-		    .show(1000, function() {
-		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
+		$(function () {
+		    var totalCost = [[${ totalCost }]];
+		    var costs = [[${ costs }]];
+	
+		    if (!totalCost) {
+		        totalCost = 0.0;
+		    }
+	
+		    calculateCost();
+	
+		    $('#error')
+		        .show(1000, function () {
+		            Materialize.toast([[${ error }]], 4000, 'rounded waves-effect');
+		        });
+		    $('#success')
+		        .show(1000, function () {
+		            Materialize.toast([[${ result }]], 4000, 'rounded waves-effect');
+		        });
+		    $('#bookingform').bind('submit', function (e) {
+		        var sendbutton = $('#sendbutton');
+		        var cancelbutton = $('#cancelbutton');
+		        sendbutton.prop('disabled', true);
+		        cancelbutton.addClass('disabled');
 		    });
-		  $('#success')
-		    .show(1000, function() {
-		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
+	
+		    $("#duration, input[type='checkbox']")
+		        .change(function () {
+		            calculateCost();
+		            document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
+		        });
+	
+		    /*
+		      EMPIEZA CALCULO DE COSTOS
+		      */
+		    function calculateCost(bambinoQuantity) {
+		        var sum = 0;
+		        var duration = $("#duration");
+	
+		        if (!bambinoQuantity) {
+		            totalCost = 0;
+		            $("input[type='checkbox']").each(function (checkbox) {
+		                if (this.checked) {
+		                    sum += 1;
+		                }
+		            });
+		        } else {
+		            sum = bambinoQuantity;
+		        }
+		        /*<![CDATA[*/
+		        if (sum > 3) {
+		            if (showMessage < 1) {
+		                $('#bambinomodal').modal('open');
+		            }
+		            showMessage += 1;
+		            sum -= 3;
+		            totalCost += calculateCost(sum);
+		            sum = 3;
+		        }
+	
+	
+		        var costsCurrent = [];
+		        for (var cost of costs) {
+		            if (cost.bambinoQuantity == sum) {
+		                costsCurrent.push(cost);
+		            }
+		        }
+	
+		        for (var i = 0; i < costsCurrent.length; i++) {
+		            var durationValue = duration[0].value.split(":");
+		            var durationHour = parseFloat(durationValue[0]);
+		            var durationMinute = parseFloat(durationValue[1] / 60);
+		            durationValue = durationHour + durationMinute;
+		            if (durationValue != "" && !isNaN(durationValue) && durationValue != 0) {
+		                if (durationValue > costsCurrent[i].hourQuantity) {
+		                    continue;
+		                } else {
+	
+		                    if (durationValue == costsCurrent[i].hourQuantity) {
+		                        totalCost += costsCurrent[i].cost * durationValue;
+		                    } else {
+		                        totalCost += costsCurrent[i - 1].cost * durationValue;
+		                    }
+		                    break;
+		                }
+		            }
+		        }/*]]>*/
+		        //document.getElementById('cost').innerHTML = "Total: $" + totalCost;
+		        return totalCost;
+		    }
+	
+		    $("#bookingform").submit(function (event) {
+		        var duration = $("#duration");
+		        var durationValue = duration[0].value.split(":");
+		        var durationHour = parseFloat(durationValue[0]);
+		        var durationMinute = parseFloat(durationValue[1] / 60);
+		        durationValue = durationHour + durationMinute;
+		        console.log(`${durationHour}.${durationMinute} = ${durationValue}`);
+		        $("#duration").val(durationValue);
+	
+		        var paymenttype = $('#paymenttype option:selected').text();
+	
+		        console.log(paymenttype);
+	
+		        if (paymenttype == 'Pago en Oxxo o a cuenta Bancaria') {
+		            $('#paymentmodal').modal('open');
+		            event.preventDefault();
+		        } else if (paymenttype == 'Pago en efectivo') {
+		            $('#cashmodal').modal('open');
+		            event.preventDefault();
+		        }
+	
 		    });
-		  $('#bookingform').bind('submit', function (e) {
-			    var sendbutton = $('#sendbutton');
-			    var cancelbutton = $('#cancelbutton');
-			    sendbutton.prop('disabled', true);
-			    cancelbutton.addClass('disabled');
-			});
-		 
-		  $("#duration, input[type='checkbox']")
-		  	.change(function(){
-		  		calculateCost();
-		  		document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
-		  	});
-		  
-		  /*
-			EMPIEZA CALCULO DE COSTOS
-			*/
-			function calculateCost(bambinoQuantity) {
-		  		var sum = 0;
-		  		var duration = $("#duration");
-		  		
-		  		if(!bambinoQuantity){
-		  			totalCost = 0;
-			  		$( "input[type='checkbox']").each(function(checkbox) {
-					  	if(this.checked){
-							sum += 1;
-					  	}
-					});
-		  		}else{
-		  			sum = bambinoQuantity;
-		  		}
-		  		/*<![CDATA[*/
-		  		if(sum > 3){
-		  			if(showMessage < 1){
-		  				$('#bambinomodal').modal('open');
-		  			}
-		  			showMessage += 1;
-		  			sum -= 3;
-					totalCost += calculateCost(sum);
-					sum = 3;
-		  		}
-		  		
-		  			
-		  		var costsCurrent = [];
-		  		for(var cost of costs){
-		  			if(cost.bambinoQuantity == sum){
-		  				costsCurrent.push(cost);
-		  			}
-		  		}
-		  		
-		  		for(var i = 0; i < costsCurrent.length; i++ ){
-		  			  var durationValue = duration[0].value.split(":");
-					  var durationHour = parseFloat(durationValue[0]);
-					  var durationMinute = parseFloat(durationValue[1]/60);
-					  durationValue = durationHour + durationMinute;		
-						if(durationValue != "" && !isNaN(durationValue) && durationValue != 0){
-			  				if(durationValue > costsCurrent[i].hourQuantity){
-				  				continue;
-			  				}else{
-			  					
-			  					if(durationValue == costsCurrent[i].hourQuantity){
-			  						totalCost += costsCurrent[i].cost * durationValue;
-			  					}else{
-			  						totalCost += costsCurrent[i-1].cost * durationValue;
-			  					}
-			  					break;
-			  				}
-						}
-		  		}/*]]>*/
-		  		//document.getElementById('cost').innerHTML = "Total: $" + totalCost;
-		  		return totalCost;
-			}
-		  
-			$( "#bookingform" ).submit(function( event ) {
-				  var duration = $("#duration");
-				  var durationValue = duration[0].value.split(":");
-				  var durationHour = parseFloat(durationValue[0]);
-				  var durationMinute = parseFloat(durationValue[1]/60);
-				  durationValue = durationHour + durationMinute;
-				  console.log(`${durationHour}.${durationMinute} = ${durationValue}`);
-				  $("#duration").val(durationValue);
-				  
-				  var paymenttype = $('#paymenttype option:selected').text();
-				 	
-				  console.log(paymenttype);
-				 
-				  if(paymenttype == 'Pago en Oxxo o a cuenta Bancaria'){
-				  	$('#paymentmodal').modal('open');
-				  	event.preventDefault();
-				  } else if (paymenttype == 'Pago en efectivo'){
-					  $('#cashmodal').modal('open');
-					  	event.preventDefault();
-				  }
-				  
-			});
-
-			$("#btn-confirm").click(function(){
-				$('#paymentmodal').modal('close');
-			});
-			
+	
+		    $("#btn-confirm").click(function () {
+		        $('#paymentmodal').modal('close');
+		    });
+	
 		});
-	
-	
 	</script>
 
 </body>

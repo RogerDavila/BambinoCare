@@ -1,6 +1,7 @@
 package com.bambinocare.model.service.impl;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,4 +116,36 @@ public class BookingServiceImpl implements BookingService {
 		return finalTime;
 	}
 
+	@Override
+	public Date getDate(Date date, int days) {
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DAY_OF_YEAR, days);
+
+		return calendar.getTime();
+	}
+	
+	@Override
+	public boolean isValideDate (Date date, String hour) {
+		boolean isValideDate = false;
+		
+		String[] initialHourAux = hour.split(":");
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(getDate(date, 1));
+		calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(initialHourAux[0]));
+		calendar.set(Calendar.MINUTE, Integer.parseInt(initialHourAux[1]));
+
+		Calendar newCalendar = Calendar.getInstance();
+		newCalendar.add(Calendar.HOUR_OF_DAY, 24);
+		
+		if(calendar.after(newCalendar)) {
+			isValideDate = true;
+		}
+		
+		return isValideDate;
+		
+	}
+	
 }

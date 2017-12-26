@@ -1,5 +1,6 @@
 package com.bambinocare.model.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.bambinocare.model.entity.BookingEntity;
@@ -36,5 +37,9 @@ public interface BookingService {
 	void delete(BookingEntity bookingEntity);
 	
 	String getFinalHour(String initialTime, Double duration);
+	
+	Date getDate(Date date, int days);
+	
+	boolean isValideDate (Date date, String hour);
 
 }
