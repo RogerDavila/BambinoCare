@@ -5,6 +5,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -38,9 +39,17 @@ public class EmailServiceImpl implements EmailService {
 	}
 
 	@Override
-	public void sendMessageWithAttachment(String to, String subject, String text, String pathToAttachment) {
-		// TODO Auto-generated method stub
+	public void sendMessageWithAttachment(String to, String subject, String text, String attachmentFilename) throws MessagingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message,true);
+		String pathToAttachment = "/static/img/mail/" + attachmentFilename;
 		
+		helper.setSubject(subject);
+		helper.setTo(to);
+		helper.setText(text, true);
+		helper.addInline(attachmentFilename, new ClassPathResource(pathToAttachment));
+		
+		javaMailSender.send(message);
 	}
 
 	@Override

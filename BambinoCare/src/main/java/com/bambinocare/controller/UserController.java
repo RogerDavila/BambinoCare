@@ -534,14 +534,12 @@ public class UserController {
 		try {
 			emailService.sendHTMLMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
 					getBookingHTML(booking));
+			
+			emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación",
+					"<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>","reservacion.jpg");
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
-
-		emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación",
-				"Hemos recibido tu reservación y estamos buscando tu mejor opción. En breve\n"
-						+ "recibirás un correo para informarte el perfil de la Bambinaia que estará asistiendo\n"
-						+ "a tu hogar.");
 
 		String result = "La reservación se realizó exitosamente.";
 		mav = new ModelAndView("redirect:/users/showbookings?result=" + result);
@@ -572,7 +570,7 @@ public class UserController {
 				+ "</td><td>" + booking.getDuration() + "</td><td>" + booking.getClient().getStreet() + " "
 				+ booking.getClient().getNeighborhood() + " " + booking.getClient().getState().getStateDesc()
 				+ "</td></tr>" + "</tbody></table><p>Puedes revisar el detalle en"
-				+ " la siguiente liga: \n\r \n\r localhost:8080</p></body></html>";
+				+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx</p></body></html>";
 
 	}
 
@@ -689,7 +687,7 @@ public class UserController {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
 					"El usuario " + oldBooking.getClient().getUser().getEmail()
 							+ " ha modificado la reservación del día " + oldBooking.getDate()
-							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
+							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
@@ -705,50 +703,51 @@ public class UserController {
 	public String edituser(@ModelAttribute(name = "client") ClientEntity client, BindingResult bindingResult,
 			Model model) {
 
-		String error = "";
-		String result = "";
+		String empty = "";
+		String error = empty;
+		String result = empty;
 
-		if (client.getUser().getEmail() == null || client.getUser().getEmail().equals("")) {
+		if (client.getUser().getEmail() == null || client.getUser().getEmail().equals(empty)) {
 			error = "Favor de verificar el email";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getUser().getFirstname() == null || client.getUser().getFirstname().equals("")) {
+		if (client.getUser().getFirstname() == null || client.getUser().getFirstname().equals(empty)) {
 			error = "Favor de verificar el Nombre";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getUser().getLastname() == null || client.getUser().getLastname().equals("")) {
+		if (client.getUser().getLastname() == null || client.getUser().getLastname().equals(empty)) {
 			error = "Favor de verificar el Apellido";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getUser().getPhone() == null || client.getUser().getPhone().equals("")) {
+		if (client.getUser().getPhone() == null || client.getUser().getPhone().equals(empty)) {
 			error = "Favor de verificar el email";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getStreet() == null || client.getStreet().equals("")) {
+		if (client.getStreet() == null || client.getStreet().equals(empty)) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getNeighborhood() == null || client.getNeighborhood().equals("")) {
+		if (client.getNeighborhood() == null || client.getNeighborhood().equals(empty)) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getCity() == null || client.getCity().equals("")) {
+		if (client.getCity() == null || client.getCity().equals(empty)) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getState() == null || client.getState().equals("")) {
+		if (client.getState() == null || client.getState().equals(empty)) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
 
-		if (client.getJob() == null || client.getJob().equals("")) {
+		if (client.getJob() == null || client.getJob().equals(empty)) {
 			error = "Favor de verificar el campo Fecha";
 			return "redirect:/users/showbookings?error=" + error;
 		}
@@ -810,7 +809,7 @@ public class UserController {
 						"El usuario " + booking.getClient().getUser().getEmail()
 								+ " ha cancelado su reservación del día " + booking.getDate()
 								+ " Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r localhost:8080");
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 
 			} else {
 				error = "No se permiten cancelaciones de reservación";

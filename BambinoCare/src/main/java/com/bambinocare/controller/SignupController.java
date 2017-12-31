@@ -218,15 +218,7 @@ public class SignupController {
 		userService.editUser(user);
 
 		try {
-			emailService.sendHTMLMessage(user.getEmail(), "BambinoCare - Registro Exitoso",
-					"<html><body><div style='text-align:center'><b>Agradecemos tu preferencia</b></div><br />"
-							+ "<div style='text-align:center'>"
-							+ "Te agradecemos por habernos seleccionado como tus Bambinaias para el cuidado<br />"
-							+ "e integridad de tus Bambinos. A partir de ahora formas parte de la comunidad<br />"
-							+ "Bambino Care y podrás tener acceso a nuestro sistema y conocer todos nuestros<br />"
-							+ "servicios, así como hacer reservaciones y contar con atención personalizada.<br />"
-							+ "</div>" + "<br />"
-							+ "<div style='text-align:center'><b>¡GRACIAS!</b></div></body></html>");
+			emailService.sendMessageWithAttachment(user.getEmail(), "BambinoCare - Registro Exitoso", "<html><body><img src='cid:registro.jpg'/></body></html>", "registro.jpg");
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
