@@ -7,6 +7,10 @@
     );
 
     $('.parallax').parallax();
+    
+    $('.slider').slider();
+    
+    $('.scrollspy').scrollSpy();
 
     $('.pushpin-demo-nav').pushpin({
       top: 30,
@@ -19,14 +23,10 @@
     $("#save").hide();
     $("#cancel").hide();
     $("#editPerfil").click(function(){
-      $(":disabled").prop("disabled", false);
+      $("#MiPerfil input").prop("disabled", false);
       $("#save").show();
       $("#cancel").show();
     });
-    //$("#save").click(function(){
-    	//$("#save").prop("disabled", true);
-    	//$("#cancel").prop("disabled", true);
-    //});
 
     $('.datepicker').pickadate({
       selectMonths: true, // Creates a dropdown to control month
@@ -115,8 +115,6 @@
     $('#paymentmodal, #cashmodal').modal({
         dismissible: true, // Modal can be dismissed by clicking outside of the modal
         opacity: .5, // Opacity of modal background
-        //inDuration: 300, // Transition in duration
-        //outDuration: 200, // Transition out duration
         startingTop: '4%', // Starting top style attribute
         endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
@@ -142,6 +140,8 @@
         }
       }
     );
+    
+    
 
   });
 })(jQuery);

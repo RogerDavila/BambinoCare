@@ -5,106 +5,115 @@
  *
  * Made By MaterializeCSS.com
  */
- 
-   html {
-    font-family: sans-serif;
-  }
-
- .blk{
-   display: inline;
- }
-
-.posi{
-  position: absolute;
+html {
+	font-family: sans-serif;
 }
 
-.hr{
-    min-height: 80px;
+.blk {
+	display: inline;
+}
+
+.posi {
+	position: absolute;
+}
+
+.hr {
+	min-height: 80px;
 }
 
 p {
-  line-height: 2rem;
+	line-height: 2rem;
 }
 
 .button-collapse {
-  color: white;
+	color: white;
 }
 
-body{
-  background-color: white;
+body {
+	background-color: white;
 }
 
-.pad{
-  padding: 20px;
+.pad {
+	padding: 20px;
 }
 
-.section1{
+.section1 {
 	height: 100%;
 	width: 100%;
-	background: url("../img/BkgHome2.jpg");
-    background-size: repeat;
-    height:90vh;
+	background: url("../img/BkgHome.jpg");
 }
 
 #sidenav-overlay {
 	z-index: -1;
 }
 
-.transhome{
+.transhome {
 	background-color: rgba(255, 255, 255, 0.5);
 }
 
 @media only screen and (max-width : 992px) {
-  .parallax-container .section {
-    /* position: absolute; */
-    top: 40%;
-  }
-  #index-banner .section {
-    top: 10%;
-  }
+	.parallax-container .section {
+		/* position: absolute; */
+		top: 40%;
+	}
+	#index-banner .section {
+		top: 10%;
+	}
 }
 
 @media only screen and (max-width : 600px) {
-  #index-banner .section {
-    top: 0;
-  }
+	#index-banner .section {
+		top: 0;
+	}
 }
 
 .icon-block {
-  padding: 0 15px;
+	padding: 0 15px;
 }
+
 .icon-block .material-icons {
-  font-size: inherit;
+	font-size: inherit;
 }
 
 footer.page-footer {
-  margin: 0;
+	margin: 0;
 }
 
 /*Class for when element is above threshold*/
 .pin-top {
-  position: relative;
+	position: relative;
 }
 
 /*Class for when element is below threshold*/
 .pin-bottom {
-  position: relative;
+	position: relative;
 }
 
 /* Class for when element is pinned¨*/
 .pinned {
-  position: fixed;
+	position: fixed;
 }
 
-.checkbox-purple[type="checkbox"].filled-in:checked + label:after{
-     border: 2px solid #9C27B0;
-     background-color: #9C27B0;
+.checkbox-purple[type="checkbox"].filled-in:checked+label:after {
+	border: 2px solid #9C27B0;
+	background-color: #9C27B0;
 }
 
 .listcare {
 	list-style-type: square;
-	}
+}
 
 #pcenter {
 	text-align: center;
+}
+.slides{
+	height: 90vh !important;
+	width: 100%
+}
+.slider{
+	height: 90vh !important;
+}
+.indicators{
+	position:absoulute;
+	z-index: 5;
 }

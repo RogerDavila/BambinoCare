@@ -288,7 +288,7 @@ public class AdminController {
 					"Reservación Modificada",
 					"Su reservación del día " + oldBooking.getDate()
 							+ "ha sido modificada. Puedes revisar el detalle en"
-							+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+							+ " la siguiente liga: \n\r \n\r localhost:8080");
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
@@ -355,7 +355,7 @@ public class AdminController {
 						"Reservación Cancelada",
 						"Su reservación del día del día " + booking.getDate()
 								+ "  ha sido cancelada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+								+ " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
 				error = "No se permiten cancelaciones de reservación";
@@ -450,7 +450,7 @@ public class AdminController {
 						"Reservación Rechazada",
 						"Su reservación del día " + booking.getDate()
 								+ "  ha sido rechazada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r www.bambinocare.com");
+								+ " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
 				error = "No se permite rechazar la reservación solicitada";

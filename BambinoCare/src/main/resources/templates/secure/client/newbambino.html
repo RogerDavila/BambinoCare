@@ -19,23 +19,21 @@
 	type="text/css" rel="stylesheet" media="screen,projection" />
 
 </head>
-<body>
+<body class="section1">
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
 			<div
 				th:include="/secure/client/fragments/header :: header(${usernameLogged})"></div>
 		</nav>
 	</header>
-	<br />
-	<br />
-	<br />
-	<div class="center grey-text text-darken-3">
-		<h5>Nuevo Bambino</h5>
-	</div>
+	<div class="row"></div>
 	<div class="row container">
-		<form class="col s12 white" action="#"
+		<form class="col s12 white pad z-depth-5" action="#"
 			th:action="@{/users/newbambino}" th:object="${bambino}" method="post"
 			name="bambinoform">
+			<div class="center grey-text text-darken-3">
+				<h4>Nuevo Bambino</h4>
+			</div>
 			<div class="row">
 				<div class="input-field col s3">
 					<input id="first_name" type="text" class="validate black-text"

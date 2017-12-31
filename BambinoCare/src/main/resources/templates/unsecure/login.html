@@ -14,16 +14,16 @@
 <link href="../static/css/style.css" th:href="@{/css/style.css}"
 	type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
-<body>
+<body class="section1">
 
 	<div th:include="/unsecure/fragments/header :: header"></div>
 
-	<div class="section1 ">
+	<div>
 		<div class="">
 			<br /><br />
 			<div class="row">
 				<div class="col s4"></div>
-				<form class="col white col s4" th:action="@{/logincheck}"
+				<form class="col white col s4 z-depth-5" th:action="@{/logincheck}"
 					method="POST">
 					<input type="hidden" name="${csrf.parametername}"
 						value="${_csrf.token}" />

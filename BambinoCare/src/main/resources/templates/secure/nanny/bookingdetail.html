@@ -19,19 +19,20 @@
 	type="text/css" rel="stylesheet" media="screen,projection" />
 
 </head>
-<body>
+<body class="section1">
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
 			<div
 				th:include="/secure/admin/fragments/header :: header(${usernameLogged})"></div>
 		</nav>
 	</header>
+	<div class="row"></div>
 	<div class="row container">
-		<form id="bookingform" class="white pad" action="#"
+		<form id="bookingform" class="white pad z-depth-5" action="#"
 			th:action="@{/admin/editbooking}" th:object="${booking}"
 			method="post" name="bookingform">
 			<div class="center grey-text text-darken-3">
-				<h5>Ver Reservación</h5>
+				<h4>Ver Reservación</h4>
 			</div>
 			<input type="hidden" th:value="${bookingId}" th:field="*{bookingId}" />
 

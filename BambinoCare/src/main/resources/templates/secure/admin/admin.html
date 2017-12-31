@@ -12,9 +12,12 @@
 	href="../static/css/dataTables.material.min.css"
 	th:href="@{/css/dataTables.material.min.css}" media="screen,projection" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	type="text/css" rel="stylesheet" media="screen,projection" />
 </head>
 
-<body>
+<body class="section1">
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
 			<div
@@ -30,201 +33,214 @@
 				</ul>
 			</div>
 		</nav>
+
+
+
+
 	</header>
 
 	<div id="Reservaciones" class="col s12">
-		<div class="row">
-			<div class="col s12 center">
-				<h4>Administrar Reservaciones</h4>
+		<div class="row"></div>
+		<div class="white pad z-depth-5">
+			<div class="row">
+				<div class="col s12 center">
+					<h4>Administrar Reservaciones</h4>
+				</div>
 			</div>
-		</div>
 
-		<div class="row">
-			<div class="col s1"></div>
-			<div class="col s10">
-				<table id="bookingtable"
-					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-					<thead>
-						<tr>
-							<th>Reservacion</th>
-							<th>Cliente</th>
-							<th>Fecha</th>
-							<th>Hora</th>
-							<th>Tipo</th>
-							<th>Estatus</th>
-							<th colspan="2">Aprobar/Rechazar</th>
-							<th>Nanny</th>
-							<th>Duración</th>
-							<th>Costo</th>
-							<th colspan="3">Acciones</th>
-							<th></th>
-						</tr>
-					</thead>
+			<div class="row">
+				<div class="col s1"></div>
+				<div class="col s12">
+					<table id="bookingtable"
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th>Reservacion</th>
+								<th>Cliente</th>
+								<th>Fecha</th>
+								<th>Hora</th>
+								<th>Tipo</th>
+								<th>Estatus</th>
+								<th colspan="2">Aprobar/Rechazar</th>
+								<th>Nanny</th>
+								<th>Duración</th>
+								<th>Costo</th>
+								<th colspan="3">Acciones</th>
+								<th></th>
+							</tr>
+						</thead>
 
-					<tbody>
+						<tbody>
 
-						<tr th:each="booking : ${bookings}">
-							<td>
-								<form th:action="@{/admin/showbookingdetail}" method="POST">
-									<input type="hidden" name="bookingId"
-										th:value="${booking.bookingId}" />
-									<button type="submit"
-										class="btn-floating deep-purple lighten-1">
-										<i class="material-icons">event_note</i>
-									</button>
-								</form>
-							</td>
-							<td
-								th:text="${booking.client == null ? '' : booking.client.user.firstname} "></td>
-							<td th:text="${booking.date}"></td>
-							<td th:text="${booking.hour}"></td>
-							<td
-								th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
-							<td
-								th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
-							<td>
+							<tr th:each="booking : ${bookings}">
+								<td>
+									<form th:action="@{/admin/showbookingdetail}" method="POST">
+										<input type="hidden" name="bookingId"
+											th:value="${booking.bookingId}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1">
+											<i class="material-icons">event_note</i>
+										</button>
+									</form>
+								</td>
+								<td
+									th:text="${booking.client == null ? '' : booking.client.user.firstname} "></td>
+								<td th:text="${booking.date}"></td>
+								<td th:text="${booking.hour}"></td>
+								<td
+									th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
+								<td
+									th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
+								<td>
 
-								<form th:action="@{/admin/approvebooking}" method="post">
-									<input type="hidden" name="bookingId"
-										th:value="${booking.bookingId}" />
-									<button type="submit"
-										class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Cancelar" data-delay="50"
-										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
-										<i class="material-icons">check</i>
-									</button>
-								</form>
-							</td>
-							<td>
+									<form th:action="@{/admin/approvebooking}" method="post">
+										<input type="hidden" name="bookingId"
+											th:value="${booking.bookingId}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1 tooltipped"
+											data-position="bottom" data-tooltip="Cancelar"
+											data-delay="50"
+											th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
+											<i class="material-icons">check</i>
+										</button>
+									</form>
+								</td>
+								<td>
 
-								<form th:action="@{/admin/rejectbooking}" method="post">
-									<input type="hidden" name="bookingId"
-										th:value="${booking.bookingId}" />
-									<button type="submit"
-										class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Rechazar" data-delay="50"
-										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
-										<i class="material-icons">clear</i>
-									</button>
-								</form>
+									<form th:action="@{/admin/rejectbooking}" method="post">
+										<input type="hidden" name="bookingId"
+											th:value="${booking.bookingId}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1 tooltipped"
+											data-position="bottom" data-tooltip="Rechazar"
+											data-delay="50"
+											th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Abierta'} ? 'disabled'">
+											<i class="material-icons">clear</i>
+										</button>
+									</form>
 
 
-							</td>
-							<td
-								th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
-							<td th:text="${booking.duration}"></td>
-							<td th:text="${booking.cost}"></td>
-							<td><a href="#"
-								class="btn-floating deep-purple lighten-1 tooltipped"
-								data-position="bottom" data-tooltip="Editar" data-delay="50"
-								th:href="@{/admin/editbookingform?bookingId=__${booking.bookingId}__}">
-									<i class="material-icons">edit</i>
-							</a></td>
-							<td><form th:action="@{/admin/cancelbooking}" method="post">
-									<input type="hidden" name="bookingId"
-										th:value="${booking.bookingId}" />
-									<button type="submit"
-										class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Cancelar" data-delay="50">
-										<i class="material-icons">delete</i>
-									</button>
-								</form></td>
-							<td><form th:action="@{/admin/acceptpayment}" method="post">
-									<input type="hidden" name="bookingId"
-										th:value="${booking.bookingId}" />
-									<button type="submit"
-										class="btn-floating deep-purple lighten-1 tooltipped"
-										data-position="bottom" data-tooltip="Pago Realizado"
-										data-delay="50"
-										th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Pendiente Pago'} ? 'disabled'">
-										<i class="material-icons">attach_money</i>
-									</button>
-								</form></td>
-							<!-- assignment_turned_in attach_money -->
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
+								</td>
+								<td
+									th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
+								<td th:text="${booking.duration}"></td>
+								<td th:text="${booking.cost}"></td>
+								<td><a href="#"
+									class="btn-floating deep-purple lighten-1 tooltipped"
+									data-position="bottom" data-tooltip="Editar" data-delay="50"
+									th:href="@{/admin/editbookingform?bookingId=__${booking.bookingId}__}">
+										<i class="material-icons">edit</i>
+								</a></td>
+								<td><form th:action="@{/admin/cancelbooking}" method="post">
+										<input type="hidden" name="bookingId"
+											th:value="${booking.bookingId}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1 tooltipped"
+											data-position="bottom" data-tooltip="Cancelar"
+											data-delay="50">
+											<i class="material-icons">delete</i>
+										</button>
+									</form></td>
+								<td><form th:action="@{/admin/acceptpayment}" method="post">
+										<input type="hidden" name="bookingId"
+											th:value="${booking.bookingId}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1 tooltipped"
+											data-position="bottom" data-tooltip="Pago Realizado"
+											data-delay="50"
+											th:classappend="${booking.bookingStatus.bookingStatusDesc != 'Pendiente Pago'} ? 'disabled'">
+											<i class="material-icons">attach_money</i>
+										</button>
+									</form></td>
+								<!-- assignment_turned_in attach_money -->
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col s1"></div>
+				<div th:if="${error != null}" id="error"></div>
+				<div th:if="${result != null}" id="success"></div>
 			</div>
-			<div class="col s1"></div>
-			<div th:if="${error != null}" id="error"></div>
-			<div th:if="${result != null}" id="success"></div>
 		</div>
 	</div>
 	<!-- Nannies  -->
 	<div id="Nannies" class="container transadmin">
-		<div class="row">
-			<div class="col s2"></div>
-			<div class="col s8 center">
-				<h4>Nannies</h4>
+		<div class="row"></div>
+		<div class="white pad z-depth-5">
+			<div class="row">
+				<div class="col s2"></div>
+				<div class="col s8 center">
+					<h4>Bambinaias</h4>
+				</div>
+				<div class="col s2">
+					<br /> <a href="#" th:href="@{/admin/createNannyForm}"
+						class="btn-floating deep-purple lighten-1 btn-large"><i
+						class="material-icons">add</i></a>
+				</div>
 			</div>
-			<div class="col s2">
-				<br /> <a href="#" th:href="@{/admin/createNannyForm}"
-					class="btn-floating deep-purple lighten-1 btn-large"><i
-					class="material-icons">add</i></a>
-			</div>
-		</div>
 
-		<div class="row">
-			<div class="col s1"></div>
-			<div class="col s10">
-				<table
-					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Telefono</th>
-							<th>Email</th>
-							<th>Dirrección</th>
-							<th>Estatus</th>
-							<th>Editar</th>
-							<th>Borrar</th>
-						</tr>
-					</thead>
+			<div class="row">
+				<div class="col s1"></div>
+				<div class="col s10">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Telefono</th>
+								<th>Email</th>
+								<th>Dirrección</th>
+								<th>Estatus</th>
+								<th>Editar</th>
+								<th>Borrar</th>
+							</tr>
+						</thead>
 
-					<tbody>
-						<tr th:each="nanny : ${nannies}">
-							<td
-								th:text="${nanny == null ? '' : nanny.user.firstname + ' ' + nanny.user.lastname}"></td>
-							<td th:text="${nanny.user.phone}"></td>
-							<td th:text="${nanny.user.email}"></td>
-							<td
-								th:text="${nanny.street + ', ' + nanny.neighborhood + ', ' + nanny.city + ', ' + nanny.state}"></td>
-							<td
-								th:text="${nanny.user.enabled == false ? 'deshabilitado' : 'habilitado'}"></td>
-							<td><a href="#" class="btn-floating deep-purple lighten-1"
-								th:href="@{/admin/editnannyform?nannyId=__${nanny.nannyId}__}">
-									<i class="material-icons">edit</i>
-							</a></td>
-							<td><a href="#" class="btn-floating deep-purple lighten-1"
-								th:href="@{/admin/disableNanny?nannyId=__${nanny.nannyId}__}">
-									<i class="material-icons">delete</i>
-							</a></td>
-						</tr>
-					</tbody>
-				</table>
+						<tbody>
+							<tr th:each="nanny : ${nannies}">
+								<td
+									th:text="${nanny == null ? '' : nanny.user.firstname + ' ' + nanny.user.lastname}"></td>
+								<td th:text="${nanny.user.phone}"></td>
+								<td th:text="${nanny.user.email}"></td>
+								<td
+									th:text="${nanny.street + ', ' + nanny.neighborhood + ', ' + nanny.city + ', ' + nanny.state}"></td>
+								<td
+									th:text="${nanny.user.enabled == false ? 'deshabilitado' : 'habilitado'}"></td>
+								<td><a href="#" class="btn-floating deep-purple lighten-1"
+									th:href="@{/admin/editnannyform?nannyId=__${nanny.nannyId}__}">
+										<i class="material-icons">edit</i>
+								</a></td>
+								<td><a href="#" class="btn-floating deep-purple lighten-1"
+									th:href="@{/admin/disableNanny?nannyId=__${nanny.nannyId}__}">
+										<i class="material-icons">delete</i>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="col s1"></div>
 			</div>
-			<div class="col s1"></div>
 		</div>
 	</div>
 
 	<!-- User Profile -->
 	<div id="MiPerfil" class="container">
+		<div class="row"></div>
 		<div class="row">
-			<div class="col s10">
-				<br />
-				<h5>Datos Personales</h5>
-			</div>
-			<div class="col s2">
-				<br /> <a id="editPerfil"
-					class="btn-floating deep-purple lighten-1 btn-large"><i
-					class="material-icons">edit</i></a>
-			</div>
-		</div>
-
-		<div class="row">
-			<form class="col s12 white" th:action="@{/users/edituser}"
-				method="post" name="bookingform">
+			<form class="col s12 white pad z-depth-5"
+				th:action="@{/users/edituser}" method="post" name="bookingform">
+				<div class="row">
+					<div class="col s2"></div>
+					<div class="col s8 center">
+						<h4>Datos Personales</h4>
+					</div>
+					<div class="col s2">
+						<br /> <a id="editPerfil"
+							class="btn-floating deep-purple lighten-1 btn-large"><i
+							class="material-icons">edit</i></a>
+					</div>
+				</div>
 				<div class="row">
 					<div class="input-field col s6">
 						<input id="nombre" type="text" class="validate black-text"
@@ -284,39 +300,42 @@
 
 	<!-- Parameters -->
 	<div id="parameters" class="container">
-		<div class="row">
-			<div class="col s12 center">
-				<h4>Configuraciones del servicio</h4>
+		<div class="row"></div>
+		<div class="white pad z-depth-5">
+			<div class="row">
+				<div class="col s12 center">
+					<h4>Configuraciones del servicio</h4>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col s1"></div>
-			<div class="col s10">
-				<table id="parameterstable"
-					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-					<thead>
-						<tr>
-							<th>Id</th>
-							<th>Llave</th>
-							<th>Valor</th>
-							<th>Editar</th>
-						</tr>
-					</thead>
+			<div class="row">
+				<div class="col s1"></div>
+				<div class="col s10">
+					<table id="parameterstable"
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>Llave</th>
+								<th>Valor</th>
+								<th>Editar</th>
+							</tr>
+						</thead>
 
-					<tbody>
-						<tr th:each="parameter : ${parameters}">
-							<td th:text="${parameter.parameterId}"></td>
-							<td th:text="${parameter.parameterKey}"></td>
-							<td th:text="${parameter.parameterValue}"></td>
-							<td><a href="#"
-								class="btn-floating deep-purple lighten-1 tooltipped"
-								data-position="bottom" data-tooltip="Editar" data-delay="50"
-								th:href="@{/admin/editparameterform?parameterId=__${parameter.parameterId}__}">
-									<i class="material-icons">edit</i>
-							</a></td>
-						</tr>
-					</tbody>
-				</table>
+						<tbody>
+							<tr th:each="parameter : ${parameters}">
+								<td th:text="${parameter.parameterId}"></td>
+								<td th:text="${parameter.parameterKey}"></td>
+								<td th:text="${parameter.parameterValue}"></td>
+								<td><a href="#"
+									class="btn-floating deep-purple lighten-1 tooltipped"
+									data-position="bottom" data-tooltip="Editar" data-delay="50"
+									th:href="@{/admin/editparameterform?parameterId=__${parameter.parameterId}__}">
+										<i class="material-icons">edit</i>
+								</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

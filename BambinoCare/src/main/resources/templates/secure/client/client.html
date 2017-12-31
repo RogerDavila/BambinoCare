@@ -13,11 +13,14 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<link href="../static/css/style.css" th:href="@{/css/style.css}"
+	type="text/css" rel="stylesheet" media="screen,projection" />
+
 <title>BambinoCare</title>
 
 </head>
 
-<body>
+<body class="section1">
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
 			<div
@@ -36,88 +39,91 @@
 
 	<div>
 		<div id="Reservaciones" class="col s12">
-			<div class="row">
-				<div class="col s2"></div>
-				<div class="col s8 center">
-					<h5>Mis Reservaciones</h5>
-				</div>
-				<div class="col s2">
-					<br /> <a href="#" th:href="@{/users/createbookingform}"
-						class="btn-floating deep-purple lighten-1 btn-large"><i
-						class="material-icons">add</i></a>
-				</div>
-			</div>
-
+			<div class="row"></div>
 			<div class="row">
 				<div class="col s1"></div>
-				<div class="col s10">
-					<table id="bookingtable"
-						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Usuario</th>
-								<th>Tipo de Reservación</th>
-								<th>Fecha</th>
-								<th>Hora</th>
-								<th>Duración</th>
-								<th>Estatus</th>
-								<th>Nanny</th>
-								<th>Costo</th>
-								<th>Tutorias</th>
-								<th>Eventos</th>
-								<th colspan="2" align="left">Acciones</th>
-								<th></th>
-							</tr>
-						</thead>
+				<div class="col s10 white pad z-depth-5">
+					<div class="row">
+						<div class="col s10 center">
+							<h4>Mis Reservaciones</h4>
+						</div>
+						<div class="col s2">
+							<br /> <a href="#" th:href="@{/users/createbookingform}"
+								class="btn-floating deep-purple lighten-1 btn-large"><i
+								class="material-icons">add</i></a>
+						</div>
+						<div class="col s12">
+							<table id="bookingtable"
+								class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+								<thead>
+									<tr>
+										<th></th>
+										<th>Usuario</th>
+										<th>Tipo de Reservación</th>
+										<th>Fecha</th>
+										<th>Hora</th>
+										<th>Duración</th>
+										<th>Estatus</th>
+										<th>Nanny</th>
+										<th>Costo</th>
+										<th>Tutorias</th>
+										<th>Eventos</th>
+										<th colspan="2" align="left">Acciones</th>
+										<th></th>
+									</tr>
+								</thead>
 
-						<tbody>
-							<tr th:each="booking : ${bookings}">
-								<td>
-									<form th:action="@{/users/showbookingdetail}" method="POST">
-										<input type="hidden" name="bookingId"
-											th:value="${booking.bookingId}" />
-										<button type="submit"
+								<tbody>
+									<tr th:each="booking : ${bookings}">
+										<td>
+											<form th:action="@{/users/showbookingdetail}" method="POST">
+												<input type="hidden" name="bookingId"
+													th:value="${booking.bookingId}" />
+												<button type="submit"
+													class="btn-floating deep-purple lighten-1 tooltipped"
+													data-position="bottom" data-tooltip="Ver Reservación"
+													data-delay="50">
+													<i class="material-icons">event_note</i>
+												</button>
+											</form>
+										</td>
+										<td
+											th:text="${booking.client == null ? '' : booking.client.user.firstname} "></td>
+										<td
+											th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
+										<td th:text="${booking.date}"></td>
+										<td th:text="${booking.hour}"></td>
+										<td th:text="${booking.duration}"></td>
+										<td
+											th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
+										<td
+											th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
+										<td th:text="${booking.cost}"></td>
+										<td th:text="${booking.tutory}"></td>
+										<td th:text="${booking.event}"></td>
+										<td><a href="#"
 											class="btn-floating deep-purple lighten-1 tooltipped"
-											data-position="bottom" data-tooltip="Ver Reservación" data-delay="50">
-											<i class="material-icons">event_note</i>
-										</button>
-									</form>
-								</td>
-								<td
-									th:text="${booking.client == null ? '' : booking.client.user.firstname} "></td>
-								<td
-									th:text="${booking.bookingType == null ? '' : booking.bookingType.bookingTypeDesc}"></td>
-								<td th:text="${booking.date}"></td>
-								<td th:text="${booking.hour}"></td>
-								<td th:text="${booking.duration}"></td>
-								<td
-									th:text="${booking.bookingStatus == null ? '' : booking.bookingStatus.bookingStatusDesc}"></td>
-								<td
-									th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
-								<td th:text="${booking.cost}"></td>
-								<td th:text="${booking.tutory}"></td>
-								<td th:text="${booking.event}"></td>
-								<td><a href="#"
-									class="btn-floating deep-purple lighten-1 tooltipped"
-									data-position="bottom" data-tooltip="Editar" data-delay="50"
-									th:href="@{/users/editbookingform?bookingId=__${booking.bookingId}__}">
-										<i class="material-icons">edit</i>
-								</a></td>
-								<td><form th:action="@{/users/cancelbooking}" method="post">
-										<input type="hidden" name="bookingId"
-											th:value="${booking.bookingId}" />
-										<button type="submit"
-											class="btn-floating deep-purple lighten-1 tooltipped"
-											data-position="bottom" data-tooltip="Cancelar"
-											data-delay="50">
-											<i class="material-icons">delete</i>
-										</button>
-									</form></td>
-								<td></td>
-							</tr>
-						</tbody>
-					</table>
+											data-position="bottom" data-tooltip="Editar" data-delay="50"
+											th:href="@{/users/editbookingform?bookingId=__${booking.bookingId}__}">
+												<i class="material-icons">edit</i>
+										</a></td>
+										<td><form th:action="@{/users/cancelbooking}"
+												method="post">
+												<input type="hidden" name="bookingId"
+													th:value="${booking.bookingId}" />
+												<button type="submit"
+													class="btn-floating deep-purple lighten-1 tooltipped"
+													data-position="bottom" data-tooltip="Cancelar"
+													data-delay="50">
+													<i class="material-icons">delete</i>
+												</button>
+											</form></td>
+										<td></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
 				<div class="col s1"></div>
 				<div id="error" th:if="${error != null}"></div>
@@ -126,21 +132,21 @@
 		</div>
 		<!-- User Profile -->
 		<div id="MiPerfil" class="container">
-			<div class="row">
-				<div class="col s10">
-					<br />
-					<h5>Datos Personales</h5>
-				</div>
-				<div class="col s2">
-					<br /> <a id="editPerfil"
-						class="btn-floating deep-purple lighten-1 btn-large"><i
-						class="material-icons">edit</i></a>
-				</div>
-			</div>
+			<div class="row"></div>
 
 			<div class="row">
-				<form class="col s12 white" th:action="@{/users/edituser}"
+				<form class="white pad z-depth-5" th:action="@{/users/edituser}"
 					th:object="${client}" method="post" name="clientform">
+					<div class="row">
+						<div class="col s10 center">
+							<h4>Datos Personales</h4>
+						</div>
+						<div class="col s2">
+							<br /> <a id="editPerfil"
+								class="btn-floating deep-purple lighten-1 btn-large"><i
+								class="material-icons">edit</i></a>
+						</div>
+					</div>
 					<div class="row">
 						<div class="input-field col s6">
 							<input type="hidden" th:value="${clientId}"
@@ -230,119 +236,122 @@
 		</div>
 		<!-- MisBambinos -->
 		<div id="MisBambinos" class="container">
-			<div class="row">
-				<div class="col s10">
-					<br />
-					<h5>Mis Bambinos</h5>
+			<div class="row"></div>
+			<div class="white pad z-depth-5">
+				<div class="row">
+					<div class="col s10 center">
+						<h4>Mis Bambinos</h4>
+					</div>
+					<div class="col s2">
+						<br /> <a id="editPerfil" th:href="@{/users/createbambinoform}"
+							class="btn-floating deep-purple lighten-1 btn-large"> <i
+							class="material-icons">add</i>
+						</a>
+					</div>
 				</div>
-				<div class="col s2">
-					<br /> <a id="editPerfil" th:href="@{/users/createbambinoform}"
-						class="btn-floating deep-purple lighten-1 btn-large"> <i
-						class="material-icons">add</i>
-					</a>
+				<div class="row">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Edad</th>
+								<th>Grado Escolar</th>
+								<th>Situacion Medica</th>
+								<th>Observaciones</th>
+								<th>Editar</th>
+								<th>Borrar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="bambino : ${bambinos}">
+								<td th:text="${bambino.firstname}"></td>
+								<td th:text="${bambino.lastname}"></td>
+								<td th:text="${bambino.age}"></td>
+								<td th:text="${bambino.grade}"></td>
+								<td th:text="${bambino.medicalSituation}"></td>
+								<td th:text="${bambino.comments}"></td>
+								<td><a href="#" class="btn-floating deep-purple lighten-1"
+									th:href="@{/users/editBambinoForm?bambinoId=__${bambino.bambinoId}__}">
+										<i class="material-icons">edit</i>
+								</a></td>
+								<td>
+									<form method="post" action="#"
+										th:action="@{/users/removeBambino}">
+										<input type="hidden" name="bambinoId"
+											th:value="${bambino.bambinoId}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1">
+											<i class="material-icons">delete</i>
+										</button>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<div class="row">
-				<table
-					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Apellido</th>
-							<th>Edad</th>
-							<th>Grado Escolar</th>
-							<th>Situacion Medica</th>
-							<th>Observaciones</th>
-							<th>Editar</th>
-							<th>Borrar</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="bambino : ${bambinos}">
-							<td th:text="${bambino.firstname}"></td>
-							<td th:text="${bambino.lastname}"></td>
-							<td th:text="${bambino.age}"></td>
-							<td th:text="${bambino.grade}"></td>
-							<td th:text="${bambino.medicalSituation}"></td>
-							<td th:text="${bambino.comments}"></td>
-							<td><a href="#" class="btn-floating deep-purple lighten-1"
-								th:href="@{/users/editBambinoForm?bambinoId=__${bambino.bambinoId}__}">
-									<i class="material-icons">edit</i>
-							</a></td>
-							<td>
-								<form method="post" action="#"
-									th:action="@{/users/removeBambino}">
-									<input type="hidden" name="bambinoId"
-										th:value="${bambino.bambinoId}" />
-									<button type="submit"
-										class="btn-floating deep-purple lighten-1">
-										<i class="material-icons">delete</i>
-									</button>
-								</form>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
 		</div>
 		<div id="Contactos" class="container">
-			<div class="row">
-				<div class="col s10">
-					<br />
-					<h5>Contactos de emergencia</h5>
+			<div class="row"></div>
+			<div class="white pad z-depth-5">
+				<div class="row">
+					<div class="col center s10">
+						<h4>Contactos de emergencia</h4>
+					</div>
+					<div class="col s2">
+						<br /> <a id="editPerfil" th:href="@{/users/createcontactform}"
+							class="btn-floating deep-purple lighten-1 btn-large"> <i
+							class="material-icons">add</i>
+						</a>
+					</div>
 				</div>
-				<div class="col s2">
-					<br /> <a id="editPerfil" th:href="@{/users/createcontactform}"
-						class="btn-floating deep-purple lighten-1 btn-large"> <i
-						class="material-icons">add</i>
-					</a>
+				<div class="row">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Apellido</th>
+								<th>Telefono</th>
+								<th>Calle</th>
+								<th>Colonia</th>
+								<th>Estado</th>
+								<th>Parentesco</th>
+								<th>Editar</th>
+								<th>Borrar</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="contact : ${contacts}">
+								<td th:text="${contact.firstname}"></td>
+								<td th:text="${contact.lastname}"></td>
+								<td th:text="${contact.phone}"></td>
+								<td th:text="${contact.street}"></td>
+								<td th:text="${contact.neighborhood}"></td>
+								<td th:text="${contact.city}"></td>
+								<td th:text="${contact.state}"></td>
+								<td th:text="${contact.relationship}"></td>
+								<td><a href="#" class="btn-floating deep-purple lighten-1"
+									th:href="@{/users/editcontactForm?contactId=__${contact.contactId}__}">
+										<i class="material-icons">edit</i>
+								</a></td>
+								<td>
+									<form method="post" action="#"
+										th:action="@{/users/removeContact}">
+										<input type="hidden" name="contactId"
+											th:value="${contact.contactId}" />
+										<button type="submit"
+											class="btn-floating deep-purple lighten-1">
+											<i class="material-icons">delete</i>
+										</button>
+									</form>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-			</div>
-			<div class="row">
-				<table
-					class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Apellido</th>
-							<th>Telefono</th>
-							<th>Calle</th>
-							<th>Colonia</th>
-							<th>Estado</th>
-							<th>Parentesco</th>
-							<th>Editar</th>
-							<th>Borrar</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="contact : ${contacts}">
-							<td th:text="${contact.firstname}"></td>
-							<td th:text="${contact.lastname}"></td>
-							<td th:text="${contact.phone}"></td>
-							<td th:text="${contact.street}"></td>
-							<td th:text="${contact.neighborhood}"></td>
-							<td th:text="${contact.city}"></td>
-							<td th:text="${contact.state}"></td>
-							<td th:text="${contact.relationship}"></td>
-							<td><a href="#" class="btn-floating deep-purple lighten-1"
-								th:href="@{/users/editcontactForm?contactId=__${contact.contactId}__}">
-									<i class="material-icons">edit</i>
-							</a></td>
-							<td>
-								<form method="post" action="#"
-									th:action="@{/users/removeContact}">
-									<input type="hidden" name="contactId"
-										th:value="${contact.contactId}" />
-									<button type="submit"
-										class="btn-floating deep-purple lighten-1">
-										<i class="material-icons">delete</i>
-									</button>
-								</form>
-							</td>
-						</tr>
-					</tbody>
-				</table>
 			</div>
 		</div>
 	</div>
@@ -360,8 +369,9 @@
 
 	<script src="../static/js/dataTables.material.min.js"
 		th:src="@{/js/dataTables.material.min.js}"></script>
-		
-	<script src="../static/js/initdatatable.js" th:src="@{/js/initdatatable.js}"></script>
+
+	<script src="../static/js/initdatatable.js"
+		th:src="@{/js/initdatatable.js}"></script>
 
 	<script th:inline="javascript">
 	$(function() {
