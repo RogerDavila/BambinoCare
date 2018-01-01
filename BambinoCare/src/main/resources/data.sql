@@ -25,7 +25,7 @@ INSERT INTO event_type (event_type_id,event_type_desc) VALUES (4,'Reunión Famil
 INSERT INTO event_type (event_type_id,event_type_desc) VALUES (5,'Reunión de Negocios');
 
 INSERT INTO user(user_id,email,password,role_id,enabled,firstname,lastname,phone)VALUES(4,'erika.rodriguez@bambinocare.com','$2a$10$4/gq4pJ45ymHDb43HNDuU.AC8RgiE.6gQZPzMmXbMIOTwR9Shq5WC',2,true,'Erika', 'Rodriguez', '8120658867');
-INSERT INTO nanny(nanny_id, age, bambino_reason, course, children_reason, hobbies, comments, qualities, street, degree, school, neighborhood, city, user_id,curp_file, ife_file,degree_file,state) VALUES(1,23,'Observación','NA','','','','','','','','','',4, null, null,null,'state');
+INSERT INTO nanny(nanny_id, age, bambino_reason, career,hobbies, qualities, street, school, neighborhood, city, user_id,curp_file, ife_file,degree_file,state) VALUES(1,23,'Me gustan los niños','Licenciatura de Educación Preescolar','Leer','Trabajo bajo presión','Vasconcelos 314','UDEM','Los Sabinos','San Pedro Garza García',4, '', '',null,'Nuevo León');
 
 INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(1, 1, 1, 140);
 INSERT INTO cost(cost_id, bambino_quantity, hour_quantity, cost) VALUES(2, 2, 1, 190);

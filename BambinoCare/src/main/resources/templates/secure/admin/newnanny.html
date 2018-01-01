@@ -93,9 +93,9 @@
 							th:field="*{state}" /> <label for="state">Estado</label>
 					</div>
 					<div class="input-field col s4">
-						<input id="degree" type="text" class="validate black-text"
-							required="required"  th:value="${nanny.degree}"
-							th:field="*{degree}" /> <label for="degree">Ultimo Grado de estudios</label>
+						<input id="career" type="text" class="validate black-text"
+							required="required"  th:value="${nanny.career}"
+							th:field="*{career}" /> <label for="career">Carrera</label>
 					</div>
 					<div class="input-field col s4">
 						<input id="school" type="text" class="validate black-text"
@@ -106,11 +106,6 @@
 				</div>
 				<div class="row">
 					<div class="input-field col s4">
-						<textarea id="course" class="materialize-textarea"
-						th:field="*{course}" th:value="${nanny.course}" data-length="120"></textarea>
-						<label for="course">Certificaciones o Capacitaciones</label>
-					</div>
-					<div class="input-field col s4">
 						<textarea id="qualities" class="materialize-textarea"
 						th:field="*{qualities}" th:value="${qualities}" data-length="120"></textarea>
 						<label for="qualities">Habilidades o Cualidades</label>
@@ -120,23 +115,10 @@
 							th:field="*{hobbies}" th:value="${nanny.hobbies}" data-length="120"></textarea>
 						<label for="hobbies">Pasatiempos</label>
 					</div>
-				</div>
-				<div class="row">
-					
 					<div class="input-field col s4">
 						<textarea id="bambinoReason" class="materialize-textarea"
 							th:field="*{bambinoReason}" th:value="${nanny.bambinoReason}" data-length="120"></textarea>
 						<label for="bambinoReason">Razones por las cuales les gustaria pertenecer a BambinoCare:</label>
-					</div>
-					<div class="input-field col s4">
-						<textarea id="childrenReason" class="materialize-textarea"
-							th:field="*{childrenReason}" th:value="${nanny.childrenReason}" data-length="120"></textarea>
-						<label for="childrenReason">Razones por las cuales consideran que trabajar con niños es su vocación:</label>
-					</div>
-					<div class="input-field col s4">
-						<textarea id="comments" class="materialize-textarea"
-							th:field="*{comments}" th:value="${nanny.comments}" data-length="120"></textarea>
-						<label for="comments">Observaciones:</label>
 					</div>
 				</div>
 				<div class="row">

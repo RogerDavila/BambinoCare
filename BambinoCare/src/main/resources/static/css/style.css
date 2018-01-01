@@ -106,14 +106,31 @@ footer.page-footer {
 #pcenter {
 	text-align: center;
 }
-.slides{
+
+.slides {
 	height: 90vh !important;
 	width: 100%
 }
-.slider{
+
+.slider {
 	height: 90vh !important;
 }
-.indicators{
-	position:absoulute;
+
+.indicators {
+	position: absoulute;
 	z-index: 5;
+}
+
+.input-field input:focus+label {
+	color: #7c4dff !important;
+}
+
+/* label underline focus color */
+.input-field input:focus {
+	border-bottom: 1px solid #7c4dff !important;
+	box-shadow: 0 1px 0 0 #7c4dff !important;
+}
+
+.dropdown-content li > a, .dropdown-content li > span{
+	color: #7c4dff
 }

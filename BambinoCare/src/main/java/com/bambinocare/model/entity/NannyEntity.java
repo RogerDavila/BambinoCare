@@ -38,14 +38,11 @@ public class NannyEntity {
 	@Column(name = "state", nullable = false)
 	private String state;
 
-	@Column(name = "degree", nullable = false)
-	private String degree;
+	@Column(name = "career", nullable = false)
+	private String career;
 
 	@Column(name = "school", nullable = false)
 	private String school;
-
-	@Column(name = "course", nullable = false)
-	private String course;
 
 	@Column(name = "qualities", nullable = false)
 	private String qualities;
@@ -56,23 +53,17 @@ public class NannyEntity {
 	@Column(name = "bambino_reason", nullable = false)
 	private String bambinoReason;
 
-	@Column(name = "children_reason", nullable = false)
-	private String childrenReason;
-
-	@Column(name = "comments", nullable = false)
-	private String comments;
-
-	@Column(name = "ife_file", nullable = true)
+	@Column(name = "ife_file", nullable = false)
 	private byte[] ifeFile;
 
-	@Column(name = "curp_file", nullable = true)
+	@Column(name = "curp_file", nullable = false)
 	private byte[] curpFile;
 
 	@Column(name = "degree_file", nullable = true)
 	private byte[] degreeFile;
 
 	public NannyEntity(Integer nannyId, UserEntity user, Integer age, String street, String neighborhood, String city,
-			String state, String degree, String school, String course, String qualities, String hobbies,
+			String state, String career, String school, String course, String qualities, String hobbies,
 			String bambinoReason, String childrenReason, String comments, byte[] ifeFile, byte[] curpFile,
 			byte[] degreeFile) {
 		super();
@@ -83,14 +74,11 @@ public class NannyEntity {
 		this.neighborhood = neighborhood;
 		this.city = city;
 		this.state = state;
-		this.degree = degree;
+		this.career = career;
 		this.school = school;
-		this.course = course;
 		this.qualities = qualities;
 		this.hobbies = hobbies;
 		this.bambinoReason = bambinoReason;
-		this.childrenReason = childrenReason;
-		this.comments = comments;
 		this.ifeFile = ifeFile;
 		this.curpFile = curpFile;
 		this.degreeFile = degreeFile;
@@ -159,12 +147,12 @@ public class NannyEntity {
 		this.state = state;
 	}
 
-	public String getDegree() {
-		return degree;
+	public String getCareer() {
+		return career;
 	}
 
-	public void setDegree(String degree) {
-		this.degree = degree;
+	public void setCareer(String career) {
+		this.career = career;
 	}
 
 	public String getSchool() {
@@ -173,14 +161,6 @@ public class NannyEntity {
 
 	public void setSchool(String school) {
 		this.school = school;
-	}
-
-	public String getCourse() {
-		return course;
-	}
-
-	public void setCourse(String course) {
-		this.course = course;
 	}
 
 	public String getQualities() {
@@ -205,22 +185,6 @@ public class NannyEntity {
 
 	public void setBambinoReason(String bambinoReason) {
 		this.bambinoReason = bambinoReason;
-	}
-
-	public String getChildrenReason() {
-		return childrenReason;
-	}
-
-	public void setChildrenReason(String childrenReason) {
-		this.childrenReason = childrenReason;
-	}
-
-	public String getComments() {
-		return comments;
-	}
-
-	public void setComments(String comments) {
-		this.comments = comments;
 	}
 
 	public byte[] getIfeFile() {
