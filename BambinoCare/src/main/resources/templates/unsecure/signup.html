@@ -57,13 +57,15 @@
 							th:field="*{street}" th:value="${street}" th:required="required" />
 						<label for="street_num">Calle - Numero</label>
 					</div>
-					<div class="input-field col s4">
-						<input id="neighborhood" type="text" class="validate black-text"
-							th:field="*{neighborhood}" th:value="${neighborhood}"
-							th:required="required" /> <label for="neighborhood">Colonia</label>
+					<div class="input-field col s4" id="neighborhood-div">
+						<input id="neighborhood-input" type="text"
+							class="validate black-text" th:field="*{neighborhood}"
+							th:value="${neighborhood}" th:required="required" /> <label
+							for="neighborhood-input" id="neighborhood-label">Colonia</label>
 					</div>
 					<div class="input-field col s4">
 						<select id="city" th:field="*{city.cityId}">
+							<option value="">Selecciona el municipio</option>
 							<option th:each="city : ${cities}" th:value="${city.cityId}"
 								th:text="${city.cityDesc}" value="${nametype}" th:async="true"></option>
 						</select> <label class="black-text" for="city">Municipio</label>
@@ -127,9 +129,7 @@
 
 				<div class="row">
 
-					<div th:if="${error != null}" id="error"></div>
-					<div th:if="${result == '1'}" id="success"></div>
-					<div th:if="${result == '0'}" id="failed"></div>
+					<div th:if="${result}" id="result"></div>
 
 
 					<div class="col offset-s10 s2 right-align ">
@@ -142,28 +142,33 @@
 		</div>
 	</div>
 
+	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 
 	<script th:inline="javascript">
 	$(function() {
-		  $('#error')
-		    .show(1000, function() {
-		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
-		    });
-		  $('#success')
-		    .show(1000, function() {
-		      Materialize.toast('Usuario registrado con éxito!',4000,'rounded waves-effect');
-		    });
-		  $('#failed')
-		    .show(1000, function() {
-		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
-		    });
-
+		  /*$('#city').change(
+			function() {
+				var city = $(this).find('option:selected').text();
+				
+				if(city == 'Monterrey'){
+					$('#neighborhood-label').remove();
+					$('#neighborhood-input').remove();
+					
+					$('#neighborhood-div').append('<select id="neighborhood-input"></select>');
+					$('#neighborhood-input').append('<option value="">Selecciona el municipio</option>');
+					/*<option th:each="city : ${cities}" th:value="${city.cityId}"
+						th:text="${city.cityDesc}" value="${nametype}" th:async="true"></option>
+					$('#neighborhood-div').append('<label class="black-text" for="neighborhood-input" id="neighborhood-label">Municipio</label>');
+				}
+			}	  
+		  );*/
 		  $('#signupform').bind('submit', function (e) {
 			  	console.log('Entra');
 			    var sendbutton = $('#sendbutton');

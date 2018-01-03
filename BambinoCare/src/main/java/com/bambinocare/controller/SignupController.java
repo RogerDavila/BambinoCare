@@ -56,7 +56,7 @@ public class SignupController {
 	@Autowired
 	@Qualifier("emailService")
 	private EmailService emailService;
-	
+
 	@Autowired
 	@Qualifier("cityService")
 	private CityService cityService;
@@ -64,10 +64,9 @@ public class SignupController {
 	@Autowired
 	@Qualifier("stateService")
 	private StateService stateService;
-	
+
 	@GetMapping("/signupform")
-	public String showSignupForm(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, Model model) {
+	public String showSignupForm(@RequestParam(required = false) String result, Model model) {
 
 		if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get()
 				.getAuthority().equals("ROLE_ANONYMOUS")) {
@@ -80,7 +79,6 @@ public class SignupController {
 		List<CityEntity> cities = cityService.findAll();
 		List<StateEntity> states = stateService.findAll();
 
-		model.addAttribute("error", error);
 		model.addAttribute("result", result);
 		model.addAttribute("roles", roles);
 		model.addAttribute("client", client);
@@ -96,64 +94,62 @@ public class SignupController {
 
 		ModelAndView mav = new ModelAndView();
 
-		String error = null;
 		String result = null;
 
 		if (client.getUser() == null) {
-			error = "Favor de verificar el campo usuario";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo usuario";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getUser().getFirstname() == null || client.getUser().getFirstname().equals("")) {
-			error = "Favor de verificar el campo Nombre";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Nombre";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getUser().getLastname() == null || client.getUser().getLastname().equals("")) {
-			error = "Favor de verificar el campo Apellido";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Apellido";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getUser().getPhone() == null || client.getUser().getPhone().equals("")) {
-			error = "Favor de verificar el campo Telefono";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Telefono";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getStreet() == null || client.getStreet().equals("")) {
-			error = "Favor de verificar el campo Calle";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Calle";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getNeighborhood() == null || client.getNeighborhood().equals("")) {
-			error = "Favor de verificar el campo Colonia";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Colonia";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getCity() == null || client.getCity().equals("")) {
-			error = "Favor de verificar el campo Municipio";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Municipio";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getState() == null || client.getState().equals("")) {
-			error = "Favor de verificar el campo Estado";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Estado";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getJob() == null || client.getJob().equals("")) {
-			error = "Favor de verificar el campo Ocupacion";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Ocupacion";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getUser().getEmail() == null || client.getUser().getEmail().equals("")) {
-			error = "Favor de verificar el campo Correo";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Correo";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 		if (client.getUser().getPassword() == null || client.getUser().getPassword().equals("")) {
-			error = "Favor de verificar el campo Contraseña";
-			return new ModelAndView("redirect:/signup/signupform?error=" + error);
+			result = "Favor de verificar el campo Contraseña";
+			return new ModelAndView("redirect:/signup/signupform?result=" + result);
 		}
 
 		if (!client.getUser().getPasswordConfirm().equals(client.getUser().getPassword())) {
 
 			mav = new ModelAndView(ViewConstants.SIGNUP_FORM);
 
-			error = "La contraseña y la confirmación de contraseña no coínciden";
+			result = "La contraseña y la confirmación de contraseña no coínciden";
 			List<RoleEntity> roles = roleService.findAllRoles();
 			List<CityEntity> cities = cityService.findAll();
 			List<StateEntity> states = stateService.findAll();
 
-			mav.addObject("error", error);
 			mav.addObject("result", result);
 			mav.addObject("roles", roles);
 			mav.addObject("client", client);
@@ -167,12 +163,11 @@ public class SignupController {
 
 			mav = new ModelAndView(ViewConstants.SIGNUP_FORM);
 
-			error = "El email introducido ya existe";
+			result = "El email introducido ya existe";
 			List<RoleEntity> roles = roleService.findAllRoles();
 			List<CityEntity> cities = cityService.findAll();
 			List<StateEntity> states = stateService.findAll();
 
-			mav.addObject("error", error);
 			mav.addObject("result", result);
 			mav.addObject("roles", roles);
 			mav.addObject("client", client);
@@ -183,7 +178,7 @@ public class SignupController {
 		}
 
 		if (clientService.createClient(client) != null) {
-			result = "1";
+			result = "Usuario registrado con éxito!. En breve recibirás un correo de confirmación de tu cuenta, con la que tendrás acceso a promociones y mejores tarifas, podrás realizar tus reservaciones de una manera sencilla y recibirás información importante.";
 
 			UserEntity user = client.getUser();
 
@@ -194,7 +189,7 @@ public class SignupController {
 				eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, appUrl));
 			}
 		} else {
-			result = "0";
+			result = "Ocurrió un error al intentar registrar el usuario, por favor intente nuevamente";
 		}
 
 		mav.setViewName("redirect:/signup/signupform?result=" + result);
@@ -218,7 +213,8 @@ public class SignupController {
 		userService.editUser(user);
 
 		try {
-			emailService.sendMessageWithAttachment(user.getEmail(), "BambinoCare - Registro Exitoso", "<html><body><img src='cid:registro.jpg'/></body></html>", "registro.jpg");
+			emailService.sendMessageWithAttachment(user.getEmail(), "BambinoCare - Registro Exitoso",
+					"<html><body><img src='cid:registro.jpg'/></body></html>", "registro.jpg");
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

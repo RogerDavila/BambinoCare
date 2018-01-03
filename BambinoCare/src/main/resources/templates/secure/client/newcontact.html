@@ -89,35 +89,17 @@
 			</div>
 		</form>
 
-
-		<div class="col s10 red-text" id="error" th:if="${error != null}"></div>
-
-		<div class="col s10 blue-text" id="success" th:if="${result != null}"></div>
+		<div id="result" th:if="${result != null}"></div>
 	</div>
-
+	
+	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
-
-	<script th:inline="javascript">
-	$(function() {
-		  $('#error')
-		    .show(1000, function() {
-		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
-		    });
-		  $('#success')
-		    .show(1000, function() {
-		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
-		    });
-		  $('#failed')
-		    .show(1000, function() {
-		      Materialize.toast('Ocurrió un error al intentar registrar al usuario',4000, 'rounded waves-effect');
-		    });
-		});
-	</script>
+	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 
 </body>
 </html>

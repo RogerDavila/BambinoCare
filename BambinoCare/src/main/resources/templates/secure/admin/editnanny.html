@@ -27,7 +27,7 @@
 			</div>
 		</nav>
 	</header>
-		<div class="container">
+	<div class="container">
 		<div class="row">
 			<div class="col s10">
 				<br />
@@ -40,129 +40,134 @@
 				th:object="${nanny}" method="post" name="newNannyform">
 				<div class="row">
 					<div class="input-field col s3">
-						<input type="hidden" th:value="${nannyId}" th:field="*{nannyId}" /> 
-						<input id="nombre" type="text" class="validate black-text" required="required"
-							 th:value="${user == null ? '' : user.firstname }" th:field="*{user.firstname}" /> 
-						<label for="firstname">Nombre</label>
+						<input type="hidden" th:value="${nannyId}" th:field="*{nannyId}" />
+						<input id="nombre" type="text" class="validate black-text"
+							required="required"
+							th:value="${user == null ? '' : user.firstname }"
+							th:field="*{user.firstname}" /> <label for="firstname">Nombre</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="last_name" type="text" class="validate black-text"
-							required="required" 
-							th:value="${nanny.user.lastname}" th:field="*{user.lastname}" />
-						<label for="last_name">Apellidos</label>
+							required="required" th:value="${nanny.user.lastname}"
+							th:field="*{user.lastname}" /> <label for="last_name">Apellidos</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="street_num" type="number" class="validate black-text"
-							required="required"  th:value="${nanny.age}" th:field = "*{age}" /> 
+							required="required" th:value="${nanny.age}" th:field="*{age}" />
 						<label for="street_num">Edad</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="email" type="email" class="validate black-text"
-							required="required" th:value="${nanny.user.email}" th:field="*{user.email}" /> <label
-							for="email">Email</label>
+							required="required" th:value="${nanny.user.email}"
+							th:field="*{user.email}" /> <label for="email">Email</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s3">
 						<input id="phone" type="number" class="validate black-text"
-							required="required" th:value="${nanny.user.phone}" th:field="*{user.phone}" /> <label
-							for="phone">Telefono</label>
+							required="required" th:value="${nanny.user.phone}"
+							th:field="*{user.phone}" /> <label for="phone">Telefono</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="street_num" type="text" class="validate black-text"
-							required="required"  th:value="${nanny.street}"
+							required="required" th:value="${nanny.street}"
 							th:field="*{street}" /> <label for="street_num">Calle -
 							Numero</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="neighborhood" type="text" class="validate black-text"
-							required="required" 
-							th:value="${neighborhood}" th:field="*{neighborhood}" /> <label
-							for="neighborhood">Colonia</label>
+							required="required" th:value="${neighborhood}"
+							th:field="*{neighborhood}" /> <label for="neighborhood">Colonia</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="city" type="text" class="validate black-text"
-							required="required"  th:value="${city}"
-							th:field="*{city}" /> <label for="city">Municipio</label>
+							required="required" th:value="${city}" th:field="*{city}" /> <label
+							for="city">Municipio</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s4">
 						<input id="state" type="text" class="validate black-text"
-							required="required"  th:value="${state}"
-							th:field="*{state}" /> <label for="state">Estado</label>
+							required="required" th:value="${state}" th:field="*{state}" /> <label
+							for="state">Estado</label>
 					</div>
 					<div class="input-field col s4">
 						<input id="career" type="text" class="validate black-text"
-							required="required"  th:value="${nanny.career}"
+							required="required" th:value="${nanny.career}"
 							th:field="*{career}" /> <label for="career">Carrera</label>
 					</div>
 					<div class="input-field col s4">
 						<input id="school" type="text" class="validate black-text"
-							required="required" 
-							th:value="${nanny.school}" th:field="*{school}" /> <label
-							for="phone">Universidad o Escuela</label>
+							required="required" th:value="${nanny.school}"
+							th:field="*{school}" /> <label for="phone">Universidad o
+							Escuela</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s4">
 						<textarea id="qualities" class="materialize-textarea"
-						th:field="*{qualities}" th:value="${qualities}" data-length="120"></textarea>
+							th:field="*{qualities}" th:value="${qualities}" data-length="120"></textarea>
 						<label for="qualities">Habilidades o Cualidades</label>
 					</div>
 					<div class="input-field col s4">
 						<textarea id="hobbies" class="materialize-textarea"
-							th:field="*{hobbies}" th:value="${nanny.hobbies}" data-length="120"></textarea>
+							th:field="*{hobbies}" th:value="${nanny.hobbies}"
+							data-length="120"></textarea>
 						<label for="hobbies">Pasatiempos</label>
 					</div>
 					<div class="input-field col s4">
-						<textarea id="bambinoReason" class="materialize-textarea deep-purple accent-2"
-							th:field="*{bambinoReason}" th:value="${nanny.bambinoReason}" data-length="120"></textarea>
-						<label for="bambinoReason" class="deep-purple accent-2">Razones por las cuales les gustaria pertenecer a BambinoCare:</label>
+						<textarea id="bambinoReason"
+							class="materialize-textarea deep-purple accent-2"
+							th:field="*{bambinoReason}" th:value="${nanny.bambinoReason}"
+							data-length="120"></textarea>
+						<label for="bambinoReason" class="deep-purple accent-2">Razones
+							por las cuales les gustaria pertenecer a BambinoCare:</label>
 					</div>
 				</div>
 				<div class="row">
-	                <div class="file-field input-field col s4">
-	                	<div class="btn small deep-purple accent-2">
-	                    	<span>FILE</span> <input type="file"/>
-	                  	</div>
-	                  	<div class="file-path-wrapper">
-	                    	<input class="file-path validate" type="text" placeholder="IFE" th:field="*{ifeFile}" required="required"/>
-	                  	</div>
-	                </div>
-	                <div class="file-field input-field col s4">
-	                	<div class="btn deep-purple accent-2">
-	                    	<span>FILE</span> <input type="file"/>
-	                  	</div>
-	                  	<div class="file-path-wrapper">
-	                    	<input class="file-path validate" type="text" placeholder="CURP" th:field="*{curpFile}" required="required"/>
-	                  	</div>
-	                </div>
-	                <div class="file-field input-field col s4">
-	                	<div class="btn deep-purple accent-2">
-	                    	<span>FILE</span> <input type="file" />
-	                  	</div>
-	                  	<div class="file-path-wrapper">
-	                    	<input class="file-path validate" type="text" placeholder="Cedula o titulo" th:field="*{degreeFile}"/>
-	                  	</div>
-	                </div>
-	            </div>
+					<div class="file-field input-field col s4">
+						<div class="btn small deep-purple accent-2">
+							<span>FILE</span> <input type="file" />
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text" placeholder="IFE"
+								th:field="*{ifeFile}" required="required" />
+						</div>
+					</div>
+					<div class="file-field input-field col s4">
+						<div class="btn deep-purple accent-2">
+							<span>FILE</span> <input type="file" />
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text" placeholder="CURP"
+								th:field="*{curpFile}" required="required" />
+						</div>
+					</div>
+					<div class="file-field input-field col s4">
+						<div class="btn deep-purple accent-2">
+							<span>FILE</span> <input type="file" />
+						</div>
+						<div class="file-path-wrapper">
+							<input class="file-path validate" type="text"
+								placeholder="Cedula o titulo" th:field="*{degreeFile}" />
+						</div>
+					</div>
+				</div>
 				<div class="row">
 					<div class="input-field col s3">
 						<input id="nombre" type="password" class="validate black-text"
-							required="required"
-							th:value="${nanny.user.password}" th:field="*{user.password}" />
-						<label for="password">Contraseña</label>
+							required="required" th:value="${nanny.user.password}"
+							th:field="*{user.password}" /> <label for="password">Contraseña</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="last_name" type="password" class="validate black-text"
-							required="required"
-							th:value="${nanny.user.password}"
+							required="required" th:value="${nanny.user.password}"
 							th:field="*{user.passwordConfirm}" /> <label for="password">Confirmar
 							Contraseña</label>
-					</div>	
+					</div>
 					<div class="input-field col s6 align-right">
-						<a th:href="@{/admin/cancel}" class="btn waves-effect waves-light deep-purple accent-2">Cancelar</a>
+						<a th:href="@{/admin/cancel}"
+							class="btn waves-effect waves-light deep-purple accent-2">Cancelar</a>
 						<button class="btn waves-effect waves-light deep-purple accent-2"
 							type="submit" name="action">Guardar</button>
 					</div>
@@ -172,12 +177,16 @@
 
 	</div>
 
+	<div th:if="${result != null}" id="result"></div>
+
+	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 
 </body>
 </html>

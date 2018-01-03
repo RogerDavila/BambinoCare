@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body>
+	<div th:fragment="modal(msg)">
+		<div id="modal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<h4>Atención</h4>
+					<p th:text="${msg}"></p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!"
+						class="modal-action modal-close waves-effect waves-light btn deep-purple accent-2">Aceptar</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

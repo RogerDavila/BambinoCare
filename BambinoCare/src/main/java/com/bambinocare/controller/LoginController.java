@@ -33,16 +33,16 @@ public class LoginController {
 	
 	@GetMapping("/login")
 	public String showLoginForm( Model model,
-			@RequestParam(name="error", required=false) String error, 
+			@RequestParam(name="result", required=false) String result, 
 			@RequestParam(name="logout", required=false)String logout){
 		
 		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().getAuthority().equals("ROLE_ANONYMOUS")) {
 			return "redirect:/loginsuccess";
 		}
 		
-		error = (error != null) ? "Usuario/Contraseña inválidos" : null;
+		result = (result != null) ? "Usuario/Contraseña inválidos" : null;
 		
-		model.addAttribute("error", error);
+		model.addAttribute("result", result);
 		model.addAttribute("logout", logout);
 		return ViewConstants.LOGIN_FORM;
 	}
@@ -69,13 +69,11 @@ public class LoginController {
 	}
 	
 	@GetMapping("/recoverypasswordform")
-	public ModelAndView recoverypasswordform(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error) {
+	public ModelAndView recoverypasswordform(@RequestParam(required = false) String result) {
 		ModelAndView mav = new ModelAndView(ViewConstants.RECOVERYPASSWORD_FORM);
 		
 		UserEntity user = new UserEntity();
 		
-		mav.addObject("error", error);
 		mav.addObject("result", result);
 		mav.addObject("user",user);
 		
@@ -84,11 +82,10 @@ public class LoginController {
 	
 	@PostMapping("/recoverypassword")
 	public ModelAndView recoverypassword(@ModelAttribute(name="user") UserEntity user, Model model) {
-		String error = null;
 		String result = null;
 		if(!userService.userExist(user.getEmail())) {
-			error = "El email introducido no existe.";
-			return new ModelAndView("redirect:/recoverypasswordform?error="+error);
+			result = "El email introducido no existe.";
+			return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 		}else {
 			RandomPassword rp = new RandomPassword();
 			user.setPassword(rp.nextString());
@@ -99,8 +96,8 @@ public class LoginController {
 				result = "Tu nueva contraseña fue enviada a tu correo.";
 				return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 			}else {
-				error = "Ocurrió un error al intentar reestablecer tu contraseña, por favor intentalo de nuevo.";
-				return new ModelAndView("redirect:/recoverypasswordform?error="+error);
+				result = "Ocurrió un error al intentar reestablecer tu contraseña, por favor intentalo de nuevo.";
+				return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 			}
 		}
 	}

@@ -27,17 +27,18 @@
 		</nav>
 	</header>
 	<div class="row container">
-		<form id="nannyform" class="white pad" action="#" th:action="@{/admin/approvebooking}"
-			th:object="${nanny}" method="post" name="nannyform">
+		<form id="nannyform" class="white pad" action="#"
+			th:action="@{/admin/approvebooking}" th:object="${nanny}"
+			method="post" name="nannyform">
 			<div class="center grey-text text-darken-3">
 				<h5>Asignar Bambinaia</h5>
 			</div>
-			<input type="hidden" th:atrr="value=*{bookingId}" th:value="${bookingId}" id="bookingId" name="bookingId"/>
+			<input type="hidden" th:atrr="value=*{bookingId}"
+				th:value="${bookingId}" id="bookingId" name="bookingId" />
 			<div class="row">
 				<div class="col s12">
 					<select id="nanny" th:field="*{nannyId}">
-						<option th:each="nanny : ${nannies}"
-							th:value="${nanny.nannyId}"
+						<option th:each="nanny : ${nannies}" th:value="${nanny.nannyId}"
 							th:text="${nanny.user.firstname + ' ' + nanny.user.lastname}"
 							th:async="true"></option>
 					</select> <label class="black-text" for="bookingtype">Bambinaia</label>
@@ -51,35 +52,26 @@
 						Cancelar </a>
 
 
-					<button id="sendbutton" class="btn waves-effect waves-light deep-purple accent-2"
+					<button id="sendbutton"
+						class="btn waves-effect waves-light deep-purple accent-2"
 						type="submit" name="action">Enviar</button>
 				</div>
 			</div>
 		</form>
-		<div th:if="${error != null}" id="error"></div>
 		<div th:if="${result != null}" id="result"></div>
 	</div>
-
+	
+	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
-
+	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 	<script th:inline="javascript">
 	$(function() {
-		  $('#error')
-		    .show(1000, function() {
-		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
-		    });
-		  $('#success')
-		    .show(1000, function() {
-		      Materialize.toast([[${result}]],4000,'rounded waves-effect');
-		    });
-
 		  $('#nannyform').bind('submit', function (e) {
-			  	console.log('Entra');
 			    var sendbutton = $('#sendbutton');
 			    var cancelbutton = $('#cancelbutton');
 

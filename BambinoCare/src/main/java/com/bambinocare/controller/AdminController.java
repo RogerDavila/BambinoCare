@@ -90,8 +90,7 @@ public class AdminController {
 	private ParameterService parameterService;
 
 	@GetMapping("/showbookings")
-	public ModelAndView showBookings(@RequestParam(required = false) String error,
-			@RequestParam(required = false) String result) {
+	public ModelAndView showBookings(@RequestParam(required = false) String result) {
 
 		ModelAndView mav = new ModelAndView(ViewConstants.ADMIN_VIEW);
 
@@ -102,7 +101,6 @@ public class AdminController {
 		mav.addObject("bookings", bookingService.findAllBookings());
 		mav.addObject("parameters", parameterService.findAllParameters());
 		mav.addObject("nannies", nannyService.findAllNannies());
-		mav.addObject("error", error);
 		mav.addObject("result", result);
 
 		return mav;
@@ -111,7 +109,6 @@ public class AdminController {
 	@PostMapping("/showbookingdetail")
 	public String showBookingDetail(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
-		String error = "";
 		String result = "";
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -142,20 +139,19 @@ public class AdminController {
 			model.addAttribute("eventTypes", eventTypes);
 
 			model.addAttribute("result", result);
-			model.addAttribute("error", error);
 
 			return ViewConstants.BOOKING_DETAIL_ADMIN_SHOW;
 		} else {
-			error = "No se encontró la reservación solicitada o no tiene permisos para verla";
+			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/admin/showbookings?result=" + result;
 
 	}
 
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, @RequestParam(required = true) Integer bookingId,
+			@RequestParam(required = true) Integer bookingId,
 			Model model) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -165,8 +161,8 @@ public class AdminController {
 				"Cancelada");
 
 		if (booking == null) {
-			error = "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
-			return "redirect:/admin/showbookings?error=" + error;
+			result = "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
+			return "redirect:/admin/showbookings?result=" + result;
 		}
 
 		if (booking.getBambino() != null) {
@@ -192,27 +188,25 @@ public class AdminController {
 		model.addAttribute("eventTypes", eventTypes);
 
 		model.addAttribute("result", result);
-		model.addAttribute("error", error);
 
 		return ViewConstants.BOOKING_ADMIN_EDIT;
 	}
 
 	@GetMapping("/editparameterform")
 	public String showEditParameter(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, @RequestParam(required = true) Integer parameterId,
+			@RequestParam(required = true) Integer parameterId,
 			Model model) {
 
 		ParameterEntity parameter = parameterService.findByParameterId(parameterId);
 
 		if (parameter == null) {
-			error = "El parametro solicitado no existe";
-			return "redirect:/admin/showbookings?error=" + error;
+			result = "El parametro solicitado no existe";
+			return "redirect:/admin/showbookings?result=" + result;
 		}
 
 		model.addAttribute("parameter", parameter);
 
 		model.addAttribute("result", result);
-		model.addAttribute("error", error);
 
 		return ViewConstants.PARAMETER_ADMIN_EDIT;
 	}
@@ -223,44 +217,43 @@ public class AdminController {
 
 		ModelAndView mav = new ModelAndView();
 
-		String error = "";
 		String result = "";
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
-			error = "Favor de verificar el campo Duración";
+			result = "Favor de verificar el campo Duración";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
-			mav.addObject("error", error);
+			mav.addObject("result", result);
 			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
 
 		if (booking.getDate() == null) {
-			error = "Favor de verificar el campo Fecha";
+			result = "Favor de verificar el campo Fecha";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
-			mav.addObject("error", error);
+			mav.addObject("result", result);
 			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		} else if (bookingService.getDate(booking.getDate(), 1)
 				.before(bookingService.getDate(Calendar.getInstance().getTime(), 0))) {
-			error = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
+			result = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
-			mav.addObject("error", error);
+			mav.addObject("result", result);
 			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
 
 		if (booking.getHour() == null || booking.getHour().equals("")) {
-			error = "Favor de verificar el campo Hora";
+			result = "Favor de verificar el campo Hora";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
-			mav.addObject("error", error);
+			mav.addObject("result", result);
 			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
 
 		if (booking.getBambinoId().size() <= 0) {
-			error = "Favor de elegir al menos un bambino";
+			result = "Favor de elegir al menos un bambino";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
-			mav.addObject("error", error);
+			mav.addObject("result", result);
 			mav.addObject("bookingId", booking.getBookingId());
 			return mav;
 		}
@@ -271,9 +264,9 @@ public class AdminController {
 				oldBooking.getClient().getUser()));
 
 		if (booking.getBambino().isEmpty()) {
-			error = "Ocurrió un error al intentar agregar a los bambinos";
+			result = "Ocurrió un error al intentar agregar a los bambinos";
 			mav = new ModelAndView("redirect:/users/editbookingform");
-			mav.addObject("error", error);
+			mav.addObject("result", result);
 			return mav;
 		}
 
@@ -288,14 +281,13 @@ public class AdminController {
 					"Reservación Modificada",
 					"Su reservación del día " + oldBooking.getDate()
 							+ "ha sido modificada. Puedes revisar el detalle en"
-							+ " la siguiente liga: \n\r \n\r localhost:8080");
+							+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
 		}
 
 		mav = new ModelAndView("redirect:/admin/showbookings");
-		mav.addObject("error", error);
 		mav.addObject("result", result);
 		return mav;
 	}
@@ -306,15 +298,14 @@ public class AdminController {
 
 		ModelAndView mav = new ModelAndView();
 		
-		String error = "";
 		String result = "";
 
 		String parameterValue = parameter.getParameterValue();
 		
 		if (parameterValue == null) {
-			error = "Favor de verificar el campo Valor de Parametro";
+			result = "Favor de verificar el campo Valor de Parametro";
 			mav = new ModelAndView("redirect:/admin/editparameterform");
-			mav.addObject("error", error);
+			mav.addObject("result", result);
 			mav.addObject("parameterId", parameter.getParameterId());
 			return mav;
 		}
@@ -329,7 +320,6 @@ public class AdminController {
 		}
 
 		mav = new ModelAndView("redirect:/admin/showbookings");
-		mav.addObject("error", error);
 		mav.addObject("result", result);
 		return mav;
 	}
@@ -337,7 +327,6 @@ public class AdminController {
 	@PostMapping("/cancelbooking")
 	public String cancelBooking(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
-		String error = "";
 		String result = "";
 
 		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId,
@@ -355,16 +344,16 @@ public class AdminController {
 						"Reservación Cancelada",
 						"Su reservación del día del día " + booking.getDate()
 								+ "  ha sido cancelada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r localhost:8080");
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 
 			} else {
-				error = "No se permiten cancelaciones de reservación";
+				result = "No se permiten cancelaciones de reservación";
 			}
 		} else {
-			error = "No se puede cancelar la reservación solicitada";
+			result = "No se puede cancelar la reservación solicitada";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/admin/showbookings?result=" + result;
 	}
 
 	@GetMapping("/cancel")
@@ -376,7 +365,6 @@ public class AdminController {
 	public String approveBooking(@RequestParam(name = "bookingId", required = false) Integer bookingId,
 			@ModelAttribute(name = "nanny") NannyEntity nanny, BindingResult bindingResult, Model model) {
 
-		String error = "";
 		String result = "";
 
 		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId,
@@ -420,19 +408,18 @@ public class AdminController {
 								+ "\r\nAgradecemos su preferencia.\r\n");
 
 			} else {
-				error = "No se permite agendar esta reservación";
+				result = "No se permite agendar esta reservación";
 			}
 		} else {
-			error = "No se puede agendar la reservación solicitada";
+			result = "No se puede agendar la reservación solicitada";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/admin/showbookings?result=" + result;
 	}
 
 	@PostMapping("/rejectbooking")
 	public String rejectBooking(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
-		String error = "";
 		String result = "";
 
 		BookingEntity booking = bookingService.findByBookingIdAndBookingStatusBookingStatusDescNotIn(bookingId,
@@ -450,21 +437,21 @@ public class AdminController {
 						"Reservación Rechazada",
 						"Su reservación del día " + booking.getDate()
 								+ "  ha sido rechazada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r localhost:8080");
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 
 			} else {
-				error = "No se permite rechazar la reservación solicitada";
+				result = "No se permite rechazar la reservación solicitada";
 			}
 		} else {
-			error = "No se puede rechazar la reservación solicitada";
+			result = "No se puede rechazar la reservación solicitada";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/admin/showbookings?result=" + result;
 	}
 
 	@GetMapping("/createNannyForm")
 	public String createNannyForm(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, Model model) {
+			Model model) {
 		NannyEntity nanny = new NannyEntity();
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -473,7 +460,6 @@ public class AdminController {
 		model.addAttribute("usernameLogged", userEntity.getFirstname());
 		model.addAttribute("nanny", nanny);
 		model.addAttribute("result", result);
-		model.addAttribute("error", error);
 
 		return ViewConstants.CREATE_NANNY;
 	}
@@ -481,103 +467,93 @@ public class AdminController {
 	// newnanny
 
 	@PostMapping("/newnanny")
-	public String newbambino(@ModelAttribute(name = "nanny") NannyEntity nanny, BindingResult bindingResult,
+	public String newNanny(@ModelAttribute(name = "nanny") NannyEntity nanny, BindingResult bindingResult,
 			Model model) {
 
-		String error = "";
 		String result = "";
 
 		if (nanny.getUser().getFirstname() == null || nanny.getUser().getFirstname().equalsIgnoreCase("")) {
-			error = "Favor de verificar el Nombre";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verificar el Nombre";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getUser().getLastname() == null || nanny.getUser().getLastname().equalsIgnoreCase("")) {
-			error = "Favor de verificar Apellido";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verificar Apellido";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getAge() == null) {
-			error = "Favor de verficar la edad de la Nanny";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar la edad de la Nanny";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getUser().getEmail() == null || nanny.getUser().getEmail().equalsIgnoreCase("")) {
-			error = "Favor de verificar Apellido";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verificar Apellido";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getUser().getPhone() == null || nanny.getUser().getPhone().equalsIgnoreCase("")) {
-			error = "Favor de verificar Apellido";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verificar Apellido";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getStreet() == null) {
-			error = "Favor de verficar la calle";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar la calle";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getNeighborhood() == null) {
-			error = "Favor de verficar la Colonia";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar la Colonia";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getNeighborhood() == null) {
-			error = "Favor de verficar la Ciudad";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar la Ciudad";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getState() == null) {
-			error = "Favor de verficar el Estado";
-			return "redirect:/users/createNannyForm?error=" + error;
-		} else if (nanny.getDegree() == null) {
-			error = "Favor de verficar ultimo grado de estudios";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar el Estado";
+			return "redirect:/users/createNannyForm?result=" + result;
+		} else if (nanny.getCareer() == null) {
+			result = "Favor de verficar ultimo grado de estudios";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getSchool() == null) {
-			error = "Favor de verficar la Escuela";
-			return "redirect:/admin/createNannyForm?error=" + error;
-		} else if (nanny.getCourse() == null) {
-			error = "Favor de verficar los Certificaciones o Capacitaciones";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar la Escuela";
+			return "redirect:/admin/createNannyForm?result=" + result;
+		} else if (nanny.getCareer() == null) {
+			result = "Favor de verficar su carrera";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getQualities() == null) {
-			error = "Favor de verficar las Habilidades o Cualidades";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar las Habilidades o Cualidades";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getHobbies() == null) {
-			error = "Favor de verficar los Pasatiempos";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar los Pasatiempos";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getBambinoReason() == null) {
-			error = "Favor de verficar las Razones por las cuales les gustaria pertenecer a BambinoCare";
-			return "redirect:/admin/createNannyForm?error=" + error;
-		} else if (nanny.getChildrenReason() == null) {
-			error = "Favor de verficar las Razones por las cuales consideran que trabajar con niños es su vocación";
-			return "redirect:/admin/createNannyForm?error=" + error;
-		} else if (nanny.getComments() == null) {
-			error = "Favor de verficar las observaciones";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar las Razones por las cuales les gustaria pertenecer a BambinoCare";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getIfeFile() == null) {
-			error = "Favor de verficar el IFE";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar el IFE";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getCurpFile() == null) {
-			error = "Favor de verficar el CURP";
-			return "redirect:/admin/createNannyForm?error=" + error;
-		} else if (nanny.getDegreeFile() == null) {
-			error = "Favor de verificar la Cedula o Titulo";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verficar el CURP";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (userService.userExist(nanny.getUser().getEmail())) {
-			error = "El email introducido ya existe";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "El email introducido ya existe en la aplicación";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getUser().getEmail() == null || nanny.getUser().getEmail().equals("")) {
-			error = "Favor de verificar el campo Correo";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verificar el campo Correo";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getUser().getPassword() == null || nanny.getUser().getPassword().equals("")) {
-			error = "Favor de verificar el campo Contraseña";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verificar el campo Contraseña";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (!nanny.getUser().getPasswordConfirm().equals(nanny.getUser().getPassword())) {
-			error = "La contraseña y la confirmación de contraseña no coínciden";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "La contraseña y la confirmación de contraseña no coínciden";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		}
 
 		RoleEntity roleEntity = new RoleEntity(2, "Nanny");
 		nanny.getUser().setRole(roleEntity);
 		nanny.getUser().setEnabled(true);
-
+		
 		if (nannyService.createNanny(nanny) != null) {
 			result = "Se ha agregado la Nanny exitosamente.";
 		} else {
-			error = "No se ha podido agregar la Nanny, intente nuevamente";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "No se ha podido agregar la Nanny, intente nuevamente";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		}
 
 		return "redirect:/admin/showbookings?result=" + result;
 	}
 
 	@GetMapping("/editnannyform")
-	public String editnannyform(@RequestParam(required = false) String result,
-			@RequestParam(required = false) String error, @RequestParam(required = true) Integer nannyId, Model model) {
+	public String editNannyForm(@RequestParam(required = false) String result,
+	@RequestParam(required = true) Integer nannyId, Model model) {
 
 		NannyEntity nanny = nannyService.findByNannyId(nannyId);
 
@@ -592,78 +568,68 @@ public class AdminController {
 	public String editnanny(@ModelAttribute(name = "nanny") NannyEntity nanny, BindingResult bindingResult,
 			Model model) {
 
-		String error = "";
 		String result = "";
 
 		if (nanny.getUser().getFirstname() == null || nanny.getUser().getFirstname().equalsIgnoreCase("")) {
-			error = "Favor de verificar el Nombre";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verificar el Nombre";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getUser().getLastname() == null || nanny.getUser().getLastname().equalsIgnoreCase("")) {
-			error = "Favor de verificar Apellido";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verificar Apellido";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getAge() == null) {
-			error = "Favor de verficar la edad de la Nanny";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar la edad de la Nanny";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getUser().getEmail() == null || nanny.getUser().getEmail().equalsIgnoreCase("")) {
-			error = "Favor de verificar Apellido";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verificar Apellido";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getUser().getPhone() == null || nanny.getUser().getPhone().equalsIgnoreCase("")) {
-			error = "Favor de verificar Apellido";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verificar Apellido";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getStreet() == null) {
-			error = "Favor de verficar la calle";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar la calle";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getNeighborhood() == null) {
-			error = "Favor de verficar la Colonia";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar la Colonia";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getNeighborhood() == null) {
-			error = "Favor de verficar la Ciudad";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar la Ciudad";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getState() == null) {
-			error = "Favor de verficar el Estado";
-			return "redirect:/users/editnannyform?error=" + error;
-		} else if (nanny.getDegree() == null) {
-			error = "Favor de verficar ultimo grado de estudios";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar el Estado";
+			return "redirect:/users/editnannyform?result=" + result;
+		} else if (nanny.getCareer() == null) {
+			result = "Favor de verficar su carrera";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getSchool() == null) {
-			error = "Favor de verficar la Escuela";
-			return "redirect:/admin/editnannyform?error=" + error;
-		} else if (nanny.getCourse() == null) {
-			error = "Favor de verficar los Certificaciones o Capacitaciones";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar la Escuela";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getQualities() == null) {
-			error = "Favor de verficar las Habilidades o Cualidades";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar las Habilidades o Cualidades";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getHobbies() == null) {
-			error = "Favor de verficar los Pasatiempos";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar los Pasatiempos";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getBambinoReason() == null) {
-			error = "Favor de verficar las Razones por las cuales les gustaria pertenecer a BambinoCare";
-			return "redirect:/admin/editnannyform?error=" + error;
-		} else if (nanny.getChildrenReason() == null) {
-			error = "Favor de verficar las Razones por las cuales consideran que trabajar con niños es su vocación";
-			return "redirect:/admin/editnannyform?error=" + error;
-		} else if (nanny.getComments() == null) {
-			error = "Favor de verficar las observaciones";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar las Razones por las cuales les gustaria pertenecer a BambinoCare";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getIfeFile() == null) {
-			error = "Favor de verficar el IFE";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar el IFE";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getCurpFile() == null) {
-			error = "Favor de verficar el CURP";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verficar el CURP";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getDegreeFile() == null) {
-			error = "Favor de verificar la Cedula o Titulo";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verificar la Cedula o Titulo";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (nanny.getUser().getEmail() == null || nanny.getUser().getEmail().equals("")) {
-			error = "Favor de verificar el campo Correo";
-			return "redirect:/admin/createNannyForm?error=" + error;
+			result = "Favor de verificar el campo Correo";
+			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getUser().getPassword() == null || nanny.getUser().getPassword().equals("")) {
-			error = "Favor de verificar el campo Contraseña";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "Favor de verificar el campo Contraseña";
+			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (!nanny.getUser().getPasswordConfirm().equals(nanny.getUser().getPassword())) {
-			error = "La contraseña y la confirmación de contraseña no coínciden";
-			return "redirect:/admin/editnannyform?error=" + error;
+			result = "La contraseña y la confirmación de contraseña no coínciden";
+			return "redirect:/admin/editnannyform?result=" + result;
 		}
 
 		NannyEntity oldNanny = nannyService.findByNannyId(nanny.getNannyId());
@@ -679,13 +645,11 @@ public class AdminController {
 		oldNanny.setNeighborhood(nanny.getNeighborhood());
 		oldNanny.setCity(nanny.getCity());
 		oldNanny.setState(nanny.getState());
-		oldNanny.setDegree(nanny.getDegree());
-		oldNanny.setCourse(nanny.getCourse());
+		oldNanny.setCareer(nanny.getCareer());
 		oldNanny.setQualities(nanny.getQualities());
 		oldNanny.setHobbies(nanny.getHobbies());
 		oldNanny.setBambinoReason(nanny.getBambinoReason());
-		oldNanny.setChildrenReason(nanny.getChildrenReason());
-		oldNanny.setComments(nanny.getComments());
+		oldNanny.setDegreeFile(nanny.getDegreeFile());
 
 		if (nannyService.saveNanny(oldNanny) != null) {
 			result = "Se ha modificado el perfil de Nanny!";
@@ -693,12 +657,11 @@ public class AdminController {
 			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/admin/showbookings?result=" + result;
 	}
 
 	@GetMapping("/disableNanny")
 	public String disablenanny(@RequestParam(required = true) Integer nannyId, Model model) {
-		String error = "";
 		String result = "";
 
 		NannyEntity nanny = nannyService.findByNannyId(nannyId);
@@ -710,12 +673,12 @@ public class AdminController {
 			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
 		}
 
-		return "redirect:/admin/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/admin/showbookings?result=" + result;
 	}
 
 	@PostMapping("acceptpayment")
 	public ModelAndView acceptPayment(@RequestParam("bookingId") int bookingId,
-			@RequestAttribute(name = "error", required = false) String error, Model model) {
+			@RequestAttribute(name = "result", required = false) String result, Model model) {
 
 		ModelAndView mav = new ModelAndView();
 		// BookingEntity booking = bookingService.findByBookingId(bookingId);
@@ -723,8 +686,8 @@ public class AdminController {
 				"Pendiente Pago");
 
 		if (booking == null) {
-			error = "No se puede aprobar el pago para este servicio";
-			mav = new ModelAndView("redirect:/admin/showbookings?error=" + error);
+			result = "No se puede aprobar el pago para este servicio";
+			mav = new ModelAndView("redirect:/admin/showbookings?result=" + result);
 			return mav;
 		}
 
@@ -732,12 +695,12 @@ public class AdminController {
 		booking.setBookingStatus(bookingStatus);
 
 		if (bookingService.createBooking(booking) == null) {
-			error = "Ocurrió un error al guardar la reservación";
-			mav = new ModelAndView("redirect:/admin/showbookings?error=" + error);
+			result = "Ocurrió un error al guardar la reservación";
+			mav = new ModelAndView("redirect:/admin/showbookings?result=" + result);
 			return mav;
 		}
 
-		String result = "El pago se aprobó. Ahora puede agendar la reservación.";
+		result = "El pago se aprobó. Ahora puede agendar la reservación.";
 		mav = new ModelAndView("redirect:/admin/showbookings?result=" + result);
 		return mav;
 

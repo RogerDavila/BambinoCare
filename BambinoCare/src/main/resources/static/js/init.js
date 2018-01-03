@@ -67,49 +67,49 @@
     $('#contacto')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#Footer";
+      window.location.href = "http://www.bambinocare.com.mx/#Footer";
     });
 
     $('#servicios')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#Servicios";
+      window.location.href = "http://www.bambinocare.com.mx/#Servicios";
     });
 
     $('#inicio, #logo-container')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#";
+      window.location.href = "http://www.bambinocare.com.mx/#";
     });
 
     $('#nosotros')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#Nosotros";
+      window.location.href = "http://www.bambinocare.com.mx/#Nosotros";
     });
 
     $('#contactoMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#Footer";
+      window.location.href = "http://www.bambinocare.com.mx/#Footer";
     });
 
     $('#serviciosMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#Servicios";
+      window.location.href = "http://www.bambinocare.com.mx/#Servicios";
     });
 
     $('#inicioMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#";
+      window.location.href = "http://www.bambinocare.com.mx/#";
     });
 
     $('#nosotrosMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://localhost:8080/#Nosotros";
+      window.location.href = "http://www.bambinocare.com.mx/#Nosotros";
     });
     
     $('#paymentmodal, #cashmodal').modal({
@@ -140,8 +140,5 @@
         }
       }
     );
-    
-    
-
   });
 })(jQuery);

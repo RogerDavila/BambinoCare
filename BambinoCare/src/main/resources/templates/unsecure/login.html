@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
-	http-equiv="Content-Type"/>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
+	http-equiv="Content-Type" />
 <title>BambinoCare</title>
 
 <!-- CSS  -->
@@ -20,7 +21,8 @@
 
 	<div>
 		<div class="">
-			<br /><br />
+			<br />
+			<br />
 			<div class="row">
 				<div class="col s4"></div>
 				<form class="col white col s4 z-depth-5" th:action="@{/logincheck}"
@@ -28,7 +30,7 @@
 					<input type="hidden" name="${csrf.parametername}"
 						value="${_csrf.token}" />
 					<div class="row center black-text">
-							<h4>Inicio de Sesion</h4>
+						<h4>Inicio de Sesion</h4>
 					</div>
 
 					<div class="row">
@@ -50,31 +52,27 @@
 							class="btn waves-effect waves-light right-align deep-purple accent-2"
 							type="submit" name="action">Enviar</button>
 					</div>
-					<br />
-					<br />
+					<br /> <br />
 					<div class="row right-align">
-						<a href="#" class="black-text hoverable" th:href="@{/recoverypasswordform}">Se me olvidó mi contraseña</a>
+						<a href="#" class="black-text hoverable"
+							th:href="@{/recoverypasswordform}">Se me olvidó mi contraseña</a>
 					</div>
 				</form>
 				<div class="col s1"></div>
 			</div>
 		</div>
 	</div>
+	
+	<div th:if="${result != null}" id="result"></div>
 
+	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
-	<script th:inline="javascript">
-	$(function() {
-		  $('#error')
-		    .show(1000, function() {
-		      Materialize.toast([[${error}]],4000,'rounded waves-effect');
-		    });
-		});
-	</script>
+	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 
 </body>
 </html>

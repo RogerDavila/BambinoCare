@@ -171,13 +171,17 @@
 		</div>
 
 	</div>
+	
+	<div th:if="${result != null}" id="result"></div>
 
+	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
 		th:src="@{/js/jquery-3.2.1.min.js}"></script>
 	<script src="../static/js/materialize.js"
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
+	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 
 </body>
 </html>

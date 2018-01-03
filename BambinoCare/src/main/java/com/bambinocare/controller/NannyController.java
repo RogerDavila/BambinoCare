@@ -77,8 +77,7 @@ public class NannyController {
 	private static final String STATUS = "Agendada";
 
 	@GetMapping("/showbookings")
-	public ModelAndView showBookings(@RequestParam(required = false) String error,
-			@RequestParam(required = false) String result) {
+	public ModelAndView showBookings(@RequestParam(required = false) String result) {
 
 		ModelAndView mav = new ModelAndView(ViewConstants.NANNY_SHOW);
 
@@ -89,7 +88,6 @@ public class NannyController {
 		mav.addObject("usernameLogged", userLogged.getFirstname());
 		mav.addObject("bookings", bookingService.findByNannyAndBookingStatusBookingStatusDesc(nanny, STATUS));
 		mav.addObject("nanny", nanny);
-		mav.addObject("error", error);
 		mav.addObject("result", result);
 
 		return mav;
@@ -98,7 +96,6 @@ public class NannyController {
 	@PostMapping("/showbookingdetail")
 	public String showBookingDetail(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
-		String error = "";
 		String result = "";
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -130,14 +127,13 @@ public class NannyController {
 			model.addAttribute("eventTypes", eventTypes);
 
 			model.addAttribute("result", result);
-			model.addAttribute("error", error);
 
 			return ViewConstants.BOOKING_DETAIL_NANNY_SHOW;
 		} else {
-			error = "No se encontró la reservación solicitada o no tiene permisos para verla";
+			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
 		}
 
-		return "redirect:/nannies/showbookings?error=" + error + "&result=" + result;
+		return "redirect:/nannies/showbookings?result=" + result;
 
 	}
 

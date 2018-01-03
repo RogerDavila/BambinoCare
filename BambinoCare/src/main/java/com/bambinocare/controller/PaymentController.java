@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import com.bambinocare.constant.PaypalConstants;
-import com.bambinocare.model.entity.BookingEntity;
 import com.paypal.api.payments.Amount;
 import com.paypal.api.payments.Details;
 import com.paypal.api.payments.Item;
@@ -92,8 +90,8 @@ public class PaymentController {
 		// Generamos las URLs a redireccionar (solo aplica para pagos con paypal),
 		// cuando se inicie sesión en Paypal o cuando se cancele el pago con paypal
 		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setCancelUrl("http://localhost:8080/users/showbookings");
-		redirectUrls.setReturnUrl("http://localhost:8080/payments/execute");
+		redirectUrls.setCancelUrl("http://www.bambinocare.com.mx/users/showbookings");
+		redirectUrls.setReturnUrl("http://www.bambinocare.com.mx/payments/execute");
 
 		// Generamos el Payment, seteando el tipo de intent, para este caso "sale"
 		// (venta directa)
@@ -149,7 +147,6 @@ public class PaymentController {
 			@RequestParam("PayerID") String payerId, @RequestParam("token") String token, Model model,
 			HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
-		String error;
 		String result;
 
 		// Eliminar la variable de sesión
@@ -162,7 +159,7 @@ public class PaymentController {
 				|| payerId.equals("")) {
 			request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
 			ModelMap modelmap = mav.getModelMap();
-			modelmap.addAttribute("error", "No se ha podido procesar el pago, intente nuevamente");
+			modelmap.addAttribute("result", "No se ha podido procesar el pago, intente nuevamente");
 			modelmap.addAttribute("bookingId", bookingId);
 			mav = new ModelAndView("redirect:/users/completebooking", modelmap);
 			return mav;
@@ -181,7 +178,7 @@ public class PaymentController {
 			if (!paymentExecuted.getState().equalsIgnoreCase("approved")) {
 				request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
 				ModelMap modelmap = mav.getModelMap();
-				modelmap.addAttribute("error", "No se ha podido procesar el pago, intente nuevamente");
+				modelmap.addAttribute("result", "No se ha podido procesar el pago, intente nuevamente");
 				modelmap.addAttribute("bookingId", bookingId);
 				mav = new ModelAndView("redirect:/users/completebooking", modelmap);
 				return mav;
