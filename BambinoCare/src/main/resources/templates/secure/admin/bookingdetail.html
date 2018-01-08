@@ -104,7 +104,8 @@
 							<tr th:each="bambinoclient : ${allbambinos}">
 								<td><input type="checkbox" class="filled-in"
 									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
-									name="bambino" disabled="disabled"/> <label th:for="${#ids.prev('bambinoId')}" ></label></td>
+									name="bambino" disabled="disabled" /> <label
+									th:for="${#ids.prev('bambinoId')}"></label></td>
 								<td
 									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
 							</tr>
@@ -114,23 +115,23 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col s12" id="cost"></div>
-			</div>
-
-			<div id="Tutorias">
+			<div id="tutory">
+				<div class="divider"></div>
+				<div class="row">
+					<h5>Información del servicio</h5>
+				</div>
 				<div class="row">
 					<div class="input-field col s6">
 						<input id="Materia" type="text" class="validate black-text"
 							th:field="*{tutory.course}"
-							th:value="${tutory == null ? '' : tutory.course}" name="course" />
-						<label for="Materia">Materia</label>
+							th:value="${tutory == null ? '' : tutory.course}" name="course"
+							disabled="disabled" /> <label for="Materia">Materia</label>
 					</div>
 					<div class="input-field col s6">
 						<input id="Tema" type="text" class="validate black-text"
 							th:field="*{tutory.topic}"
-							th:value="${tutory == null ? '' : tutory.topic}" /> <label
-							for="Tema">Tema</label>
+							th:value="${tutory == null ? '' : tutory.topic}"
+							disabled="disabled" /> <label for="Tema">Tema</label>
 					</div>
 				</div>
 				<div class="row">
@@ -138,68 +139,83 @@
 						<textarea id="Observaciones" class="materialize-textarea"
 							th:field="*{tutory.comments}"
 							th:value="${tutory == null ? '' : tutory.comments}"
-							data-length="120"></textarea>
+							data-length="120" disabled="disabled"></textarea>
 						<label for="Observaciones">Observaciones</label>
 					</div>
 				</div>
 			</div>
 
-			<div id="Evento">
+			<div id="event">
+				<div class="divider"></div>
 				<div class="row">
-					<div class="col s6">
-						<select id="bookingtype" th:field="*{bookingType.bookingTypeId}">
+					<h5>Información del evento</h5>
+				</div>
+				<div class="row">
+					<div class="col s12">
+						<select id="bookingtype" th:field="*{bookingType.bookingTypeId}"
+							disabled="disabled">
 							<option th:each="eventType : ${eventTypes}"
 								th:value="${eventType.eventTypeId}"
 								th:text="${eventType.eventTypeDesc}" th:async="true"></option>
 						</select> <label class="black-text" for="bookingtype">Tipo de
 							Evento</label>
 					</div>
+				</div>
 
-					<div class="input-field col s4">
-						<input id="NoBambino" type="text" class="validate black-text"
-							th:field="*{event.bambinosNum}"
-							th:value="${event == null ? '' : event.bambinosNum}" /> <label
-							for="NoBambino">Numero de Bambinos</label>
+				<div class="row">
+					<div class="input-field col s6">
+						<input id="bambinosqty" type="number" class="validate black-text"
+							th:field="*{event.bambinosQty}"
+							th:value="${event == null ? '' : event.bambinosQty}"
+							disabled="disabled" /> <label for="bambinosqty">Número
+							de Bambinos</label>
 					</div>
-					<!-- div class="input-field col s4">
-						<input id="edades" type="text" class="validate black-text"
-							disabled="disabled" /> <label for="edades">Edades</label>
-					</div-->
+					<div class="input-field col s6">
+						<input id="age" type="text" class="validate black-text"
+							th:field="*{event.age}"
+							th:value="${event == null ? '' : event.age}" disabled="disabled" />
+						<label for="age">Edades</label>
+					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s3">
 						<input id="street_num" type="text" class="validate black-text"
 							th:field="*{event.street}"
-							th:value="${event == null ? '' : event.street}" /> <label
-							for="street_num">Calle - Numero</label>
+							th:value="${event == null ? '' : event.street}"
+							disabled="disabled" /> <label for="street_num">Calle -
+							Numero</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="neighborhood" type="text" class="validate black-text"
 							th:field="*{event.neighborhood}"
-							th:value="${event == null ? '' : event.neighborhood}" /> <label
-							for="neighborhood">Colonia</label>
+							th:value="${event == null ? '' : event.neighborhood}"
+							disabled="disabled" /> <label for="neighborhood">Colonia</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="city" type="text" class="validate black-text"
 							th:field="*{event.city}"
-							th:value="${event == null ? '' : event.city}" /> <label
-							for="city">Municipio</label>
+							th:value="${event == null ? '' : event.city}" disabled="disabled" />
+						<label for="city">Municipio</label>
 					</div>
 					<div class="input-field col s3">
 						<input id="stage" type="text" class="validate black-text"
 							th:field="*{event.state}"
-							th:value="${event == null ? '' : event.state}" /> <label
-							for="stage">Estado</label>
+							th:value="${event == null ? '' : event.state}"
+							disabled="disabled" /> <label for="stage">Estado</label>
 					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s12">
 						<textarea id="Observaciones" class="materialize-textarea"
 							data-length="120" th:field="*{event.comments}"
-							th:value="${event == null ? '' : event.comments}"></textarea>
+							th:value="${event == null ? '' : event.comments}"
+							disabled="disabled"></textarea>
 						<label for="Observaciones">Observaciones</label>
 					</div>
 				</div>
+			</div>
+			<div class="row">
+				<div class="col s12 l4 offset-l5" id="cost"></div>
 			</div>
 			<div class="row">
 				<div class="right-align" style="">
@@ -220,25 +236,12 @@
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
 	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
+	<script src="../static/js/modules/booking.js"
+		th:src="@{/js/modules/booking.js}"></script>
 
 	<script th:inline="javascript">
-	$(function() {
-		  $('#bookingform').bind('submit', function (e) {
-			  	console.log('Entra');
-			    var sendbutton = $('#sendbutton');
-			    var cancelbutton = $('#cancelbutton');
-
-			    sendbutton.prop('disabled', true);
-			    cancelbutton.addClass('disabled');
-			});
-		  /*
-			EMPIEZA CALCULO DE COSTOS
-			*/
-		  $("#duration, input[type='checkbox']")
-		  	.change(function() {
-		  		document.getElementById('cost').innerHTML = "Total: $" + totalCost;
-			});
-		});
+		var totalCost = [[${totalCost}]];
+		var perfil = 'admin';
 	</script>
 
 </body>

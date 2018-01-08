@@ -7,5 +7,6 @@ import com.bambinocare.model.entity.EventTypeEntity;
 public interface EventTypeService {
 
 	List<EventTypeEntity> findAllEventTypes();
+	EventTypeEntity findByEventTypeId(Integer eventTypeId);
 	
 }

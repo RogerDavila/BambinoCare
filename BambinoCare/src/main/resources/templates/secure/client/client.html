@@ -145,8 +145,8 @@
 										<td
 											th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
 										<td th:text="${booking.cost}"></td>
-										<td th:text="${booking.tutory}"></td>
-										<td th:text="${booking.event}"></td>
+										<td th:text="${booking.tutory == null ? '' : booking.tutory.course}"></td>
+										<td th:text="${booking.event == null ? '' : booking.event.eventType.eventTypeDesc}"></td>
 										<td><a href="#"
 											class="btn-floating deep-purple lighten-1 tooltipped"
 											data-position="bottom" data-tooltip="Editar" data-delay="50"

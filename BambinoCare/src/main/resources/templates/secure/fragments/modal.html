@@ -16,5 +16,55 @@
 			</div>
 		</div>
 	</div>
+	<div th:fragment="bookingmodals">
+		<div id="paymentmodal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<h4>Instrucciones para realizar el pago</h4>
+					<p>Para realizar el pago, por favor acuda a la sucursal de Oxxo
+						mas cercana, o bien realice el deposito a cuenta bancaria con la
+						siguiente información:</p>
+					<p>Banco: Santander</p>
+					<p>Movimiento: Déposito a tarjeta de Débito</p>
+					<p>Nombre de Beneficiario: Erika Yaimeé Rodríguez Rodríguez</p>
+					<p>Número de cuenta: 5579 1001 7184 6510</p>
+					<p>Número de Referencia: 99999999999</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!"
+						class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+				</div>
+			</div>
+		</div>
+
+		<div id="cashmodal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<h4>Instrucciones para realizar el pago</h4>
+					<p>Una persona del equipo de BambinoCare acudirá a su domicilio
+						para que usted pueda realizar el pago en efectivo</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!"
+						class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+				</div>
+			</div>
+		</div>
+
+		<div id="bambinomodal" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<h4>Atención</h4>
+					<p>Usted a seleccionado a más de 4 niños, por lo que de acuerdo
+						a nuestras políticas y términos de uso, se enviará a una segunda
+						niñera para brindarle una mejor calidad en el servicio.</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!"
+						class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

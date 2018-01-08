@@ -90,8 +90,8 @@ public class PaymentController {
 		// Generamos las URLs a redireccionar (solo aplica para pagos con paypal),
 		// cuando se inicie sesión en Paypal o cuando se cancele el pago con paypal
 		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setCancelUrl("http://www.bambinocare.com.mx/users/showbookings");
-		redirectUrls.setReturnUrl("http://www.bambinocare.com.mx/payments/execute");
+		redirectUrls.setCancelUrl("http://localhost:8080/users/showbookings");
+		redirectUrls.setReturnUrl("http://localhost:8080/payments/execute");
 
 		// Generamos el Payment, seteando el tipo de intent, para este caso "sale"
 		// (venta directa)
@@ -178,7 +178,7 @@ public class PaymentController {
 			if (!paymentExecuted.getState().equalsIgnoreCase("approved")) {
 				request.setAttribute(View.RESPONSE_STATUS_ATTRIBUTE, HttpStatus.TEMPORARY_REDIRECT);
 				ModelMap modelmap = mav.getModelMap();
-				modelmap.addAttribute("result", "No se ha podido procesar el pago, intente nuevamente");
+				modelmap.addAttribute("error", "No se ha podido procesar el pago, intente nuevamente");
 				modelmap.addAttribute("bookingId", bookingId);
 				mav = new ModelAndView("redirect:/users/completebooking", modelmap);
 				return mav;

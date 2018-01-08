@@ -5,6 +5,8 @@
 	content="width=device-width, initial-scale=1; text/html; charset=UTF-8"
 	http-equiv="Content-Type" />
 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>BambinoCare</title>
 
 <!-- CSS  -->
@@ -12,8 +14,8 @@
 	rel="stylesheet" />
 
 <link type="text/css" rel="stylesheet"
-	href="../static/css/materialize.css" th:href="@{/css/materialize.css}"
-	media="screen,projection" />
+	href="../static/css/materialize.min.css"
+	th:href="@{/css/materialize.css}" media="screen,projection" />
 
 <link href="../static/css/style.css" th:href="@{/css/style.css}"
 	type="text/css" rel="stylesheet" media="screen,projection" />
@@ -21,9 +23,8 @@
 <link href="../static/css/wickedpicker.min.css"
 	th:href="@{/css/wickedpicker.min.css}" type="text/css" rel="stylesheet"
 	media="screen,projection" />
-
 </head>
-<body>
+<body class="section1">
 	<header>
 		<nav class="nav-extended deep-purple accent-1">
 			<div
@@ -31,11 +32,12 @@
 		</nav>
 	</header>
 	<div class="row container">
-		<form id="bookingform" class="white pad" action="#"
+		<div class="row"></div>
+		<form id="bookingform" class="white pad z-depth-5" action="#"
 			th:action="@{/admin/editbooking}" th:object="${booking}"
 			method="post" name="bookingform">
 			<div class="center grey-text text-darken-3">
-				<h5>Editar Reservación</h5>
+				<h4>Editar Reservación</h4>
 			</div>
 			<input type="hidden" th:value="${bookingId}" th:field="*{bookingId}" />
 			<div class="row">
@@ -69,36 +71,23 @@
 						th:field="*{hour}" th:value="${hour}" class="timepicker"
 						required="required" />
 				</div>
-				<div id="infobambinos" class="col s6">
-					<table
-						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Nombre</th>
-							</tr>
-						</thead>
+			</div>
 
-						<tbody>
-							<tr th:each="bambinoclient : ${allbambinos}">
-								<td><input type="checkbox" class="filled-in"
-									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
-									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
-								<td
-									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
-							</tr>
-						</tbody>
-					</table>
-
+			<div class="row">
+				<div class="col s12">
+					<label for="nanny" class="black-text">Nombre de la
+						Bambinaia</label> <input id="nanny" type="text"
+						class="validate black-text"
+						th:attr="value=*{nanny == null ? 'No hay Bambinaia asignada' : nanny.user.firstname + ' ' + nanny.user.lastname}"
+						disabled="disabled" />
 				</div>
 			</div>
-			<div class="row">
-				<div class="col s12 l4 offset-l5" id="cost"></div>
-			</div>
 
-			<div class="divider"></div>
-
-			<div id="Tutorias">
+			<div id="tutory">
+				<div class="divider"></div>
+				<div class="row">
+					<h5>Información del servicio</h5>
+				</div>
 				<div class="row">
 					<div class="input-field col s6">
 						<input id="Materia" type="text" class="validate black-text"
@@ -124,9 +113,13 @@
 				</div>
 			</div>
 
-			<div id="Evento">
+			<div id="event">
+				<div class="divider"></div>
 				<div class="row">
-					<div class="col s6">
+					<h5>Información del evento</h5>
+				</div>
+				<div class="row">
+					<div class="col s12">
 						<select id="bookingtype" th:field="*{bookingType.bookingTypeId}">
 							<option th:each="eventType : ${eventTypes}"
 								th:value="${eventType.eventTypeId}"
@@ -134,17 +127,19 @@
 						</select> <label class="black-text" for="bookingtype">Tipo de
 							Evento</label>
 					</div>
-
-					<div class="input-field col s4">
-						<input id="NoBambino" type="text" class="validate black-text"
-							th:field="*{event.bambinosNum}"
-							th:value="${event == null ? '' : event.bambinosNum}" /> <label
-							for="NoBambino">Numero de Bambinos</label>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<input id="bambinosqty" type="number" class="validate black-text"
+							th:field="*{event.bambinosQty}"
+							th:value="${event == null ? '' : event.bambinosQty}" /> <label
+							for="bambinosqty">Número de Bambinos</label>
 					</div>
-					<!-- div class="input-field col s4">
-						<input id="edades" type="text" class="validate black-text"
-							required="required" /> <label for="edades">Edades</label>
-					</div-->
+					<div class="input-field col s6">
+						<input id="age" type="text" class="validate black-text"
+							th:field="*{event.age}"
+							th:value="${event == null ? '' : event.age}" /> <label for="age">Edades</label>
+					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s3">
@@ -183,6 +178,35 @@
 			</div>
 
 			<div class="row">
+				<div id="infobambinos" class="col s12 l5 offset-l3">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Bambino</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:each="bambinoclient : ${allbambinos}">
+								<td><input type="checkbox" class="filled-in"
+									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
+									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
+								<td
+									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12 l4 offset-l5" id="cost"></div>
+			</div>
+
+			<div class="row">
 				<div class="right-align" style="">
 					<a id="cancelbutton" th:href="@{/admin/cancel}"
 						class="waves-effect waves-light btn deep-purple accent-2">
@@ -206,6 +230,10 @@
 		th:src="@{/js/materialize.js}"></script>
 	<script src="../static/js/init.js" th:src="@{/js/init.js}"></script>
 	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
+	<script src="../static/js/wickedpicker.min.js"
+		th:src="@{/js/wickedpicker.min.js}"></script>
+	<script src="../static/js/modules/booking.js"
+		th:src="@{/js/modules/booking.js}"></script>
 
 	<script th:inline="javascript">
 	var options = {
@@ -216,15 +244,11 @@
 		};
 		
 		$('.timepickerwicked').wickedpicker(options);
-		
+	var perfil = 'admin';
+	var totalCost = [[${totalCost}]];
 	$(function() {
-		  var totalCost = [[${totalCost}]];
+		var totalCost = [[${totalCost}]];
 		  var costs = [[${costs}]];
-		  
-		  if(!totalCost){
-			  totalCost = 0.0;
-		  }
-		  
 		  /*<![CDATA[*/
 		  var originalDuration = $("#duration")[0].defaultValue.split(".");
 		  console.log(originalDuration);
@@ -251,9 +275,7 @@
 			  totalCost = 0.0;
 		  }
 		  /*]]>*/
-		  
 		  document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
-		  
 		  $('#bookingform').bind('submit', function (e) {
 			  	console.log('Entra');
 			    var sendbutton = $('#sendbutton');
@@ -276,6 +298,7 @@
 			EMPIEZA CALCULO DE COSTOS
 			*/
 			function calculateCost(bambinoQuantity) {
+			  console.log("Entra");
 		  		var sum = 0;
 		  		var duration = $("#duration")
 		  		if(!bambinoQuantity){
@@ -305,10 +328,10 @@
 		  		}
 		  		
 		  		for(var i = 0; i < costsCurrent.length; i++ ){
-		  			  var durationValue = duration[0].value.split(":");
+		  			var durationValue = duration[0].value.split(":");
 					  var durationHour = parseFloat(durationValue[0]);
 					  var durationMinute = parseFloat(durationValue[1]/60);
-					  durationValue = durationHour + durationMinute;		
+					  durationValue = durationHour + durationMinute;	
 						
 						if(durationValue != "" && !isNaN(durationValue) && durationValue != 0){
 			  				if(durationValue > costsCurrent[i].hourQuantity){

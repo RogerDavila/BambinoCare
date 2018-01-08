@@ -21,6 +21,11 @@ public class EventTypeServiceImpl implements EventTypeService{
 	public List<EventTypeEntity> findAllEventTypes() {
 		return eventTypeRepository.findAll();
 	}
+
+	@Override
+	public EventTypeEntity findByEventTypeId(Integer eventTypeId) {
+		return eventTypeRepository.findByEventTypeId(eventTypeId);
+	}
 	
 	
 	

@@ -68,12 +68,10 @@ public class BookingEntity {
 
 	@JoinColumn(name = "tutory_id", nullable = true)
 	@OneToOne(fetch = FetchType.EAGER, optional = true)
-	@Transient
 	private TutoryEntity tutory;
 
 	@JoinColumn(name = "event_id", nullable = true)
 	@OneToOne(fetch = FetchType.EAGER, optional = true)
-	@Transient
 	private EventEntity event;
 	
 	@JoinColumn(name = "payment_type_id", nullable = false)

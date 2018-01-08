@@ -22,7 +22,7 @@ public class TutoryEntity {
 	@Column(name = "topic", nullable = false)
 	private String topic;
 
-	@Column(name = "comments", nullable = false)
+	@Column(name = "comments", nullable = true)
 	private String comments;
 
 	public TutoryEntity(Integer tutoryId, String course, String topic, String comments) {

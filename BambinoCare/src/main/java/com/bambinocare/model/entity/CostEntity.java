@@ -2,9 +2,12 @@ package com.bambinocare.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,16 +27,26 @@ public class CostEntity {
 	
 	@Column(name="cost", nullable=false)
 	private Double cost;
+	
+	@JoinColumn(name = "booking_type_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	private BookingTypeEntity bookingType;
+	
+	@Column(name="cost_extra_hour", nullable=true)
+	private Double costExtraHour;
 
-	public CostEntity(Integer costId, Integer bambinoQuantity, Double hourQuantity, Double cost) {
+	public CostEntity() {
+	}
+
+	public CostEntity(Integer costId, Integer bambinoQuantity, Double hourQuantity, Double cost,
+			BookingTypeEntity bookingType, Double costExtraHour) {
 		super();
 		this.costId = costId;
 		this.bambinoQuantity = bambinoQuantity;
 		this.hourQuantity = hourQuantity;
 		this.cost = cost;
-	}
-	
-	public CostEntity() {
+		this.bookingType = bookingType;
+		this.costExtraHour = costExtraHour;
 	}
 
 	public Integer getCostId() {
@@ -67,5 +80,21 @@ public class CostEntity {
 	public void setCost(Double cost) {
 		this.cost = cost;
 	}
-	
+
+	public BookingTypeEntity getBookingType() {
+		return bookingType;
+	}
+
+	public void setBookingType(BookingTypeEntity bookingType) {
+		this.bookingType = bookingType;
+	}
+
+	public Double getCostExtraHour() {
+		return costExtraHour;
+	}
+
+	public void setCostExtraHour(Double costExtraHour) {
+		this.costExtraHour = costExtraHour;
+	}
+
 }

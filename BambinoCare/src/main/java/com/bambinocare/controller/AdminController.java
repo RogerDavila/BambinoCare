@@ -138,8 +138,6 @@ public class AdminController {
 			model.addAttribute("bookingTypes", bookingTypes);
 			model.addAttribute("eventTypes", eventTypes);
 
-			model.addAttribute("result", result);
-
 			return ViewConstants.BOOKING_DETAIL_ADMIN_SHOW;
 		} else {
 			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
@@ -274,14 +272,14 @@ public class AdminController {
 		oldBooking.setDate(bookingService.getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
 		oldBooking.setBambino(booking.getBambino());
-		oldBooking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
+		oldBooking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size(), booking.getBookingType()));
 
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage(oldBooking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
 					"Reservación Modificada",
 					"Su reservación del día " + oldBooking.getDate()
 							+ "ha sido modificada. Puedes revisar el detalle en"
-							+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
+							+ " la siguiente liga: \n\r \n\r localhost:8080");
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
@@ -344,7 +342,7 @@ public class AdminController {
 						"Reservación Cancelada",
 						"Su reservación del día del día " + booking.getDate()
 								+ "  ha sido cancelada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
+								+ " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
 				result = "No se permiten cancelaciones de reservación";
@@ -437,7 +435,7 @@ public class AdminController {
 						"Reservación Rechazada",
 						"Su reservación del día " + booking.getDate()
 								+ "  ha sido rechazada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
+								+ " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
 				result = "No se permite rechazar la reservación solicitada";

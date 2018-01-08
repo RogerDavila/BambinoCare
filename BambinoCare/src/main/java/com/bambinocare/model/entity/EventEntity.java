@@ -2,9 +2,12 @@ package com.bambinocare.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -16,8 +19,9 @@ public class EventEntity {
 	@Column(name = "event_id", nullable = false, unique = true)
 	private Integer eventId;
 
-	@Column(name = "event_type", nullable = false)
-	private String eventType;
+	@JoinColumn(name = "event_type_id", nullable = false)
+	@OneToOne(fetch = FetchType.EAGER)
+	private EventTypeEntity eventType;
 
 	@Column(name = "street", nullable = false)
 	private String street;
@@ -31,17 +35,17 @@ public class EventEntity {
 	@Column(name = "state", nullable = false)
 	private String state;
 
-	@Column(name = "bambinos_num", nullable = false)
-	private Integer bambinosNum;
+	@Column(name = "bambinos_qty", nullable = false)
+	private Integer bambinosQty;
 
 	@Column(name = "age", nullable = false)
-	private Integer age;
+	private String age;
 
 	@Column(name = "comments", nullable = true)
 	private String comments;
 
-	public EventEntity(Integer eventId, String eventType, String street, String neighborhood, String city, String state,
-			Integer bambinosNum, Integer age, String comments) {
+	public EventEntity(Integer eventId, EventTypeEntity eventType, String street, String neighborhood, String city, String state,
+			Integer bambinosQty, String age, String comments) {
 		super();
 		this.eventId = eventId;
 		this.eventType = eventType;
@@ -49,7 +53,7 @@ public class EventEntity {
 		this.neighborhood = neighborhood;
 		this.city = city;
 		this.state = state;
-		this.bambinosNum = bambinosNum;
+		this.bambinosQty = bambinosQty;
 		this.age = age;
 		this.comments = comments;
 	}
@@ -65,11 +69,11 @@ public class EventEntity {
 		this.eventId = eventId;
 	}
 
-	public String getEventType() {
+	public EventTypeEntity getEventType() {
 		return eventType;
 	}
 
-	public void setEventType(String eventType) {
+	public void setEventType(EventTypeEntity eventType) {
 		this.eventType = eventType;
 	}
 
@@ -105,19 +109,19 @@ public class EventEntity {
 		this.state = state;
 	}
 
-	public Integer getBambinosNum() {
-		return bambinosNum;
+	public Integer getBambinosQty() {
+		return bambinosQty;
 	}
 
-	public void setBambinosNum(Integer bambinosNum) {
-		this.bambinosNum = bambinosNum;
+	public void setBambinosQty(Integer bambinosQty) {
+		this.bambinosQty = bambinosQty;
 	}
 
-	public Integer getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(Integer age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 

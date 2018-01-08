@@ -12,5 +12,6 @@ import com.bambinocare.model.entity.EventTypeEntity;
 public interface EventTypeRepository extends JpaRepository<EventTypeEntity, Serializable>{
 
 	List<EventTypeEntity> findAll();
+	EventTypeEntity findByEventTypeId(Integer eventTypeId);
 	
 }

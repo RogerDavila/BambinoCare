@@ -71,49 +71,11 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div id="paymenttypeinfo" class="col s12">
-					<label class="black-text" for="paymenttype">Forma de pago</label> <select
-						id="paymenttype" th:field="*{paymentType.paymentTypeId}">
-						<option th:each="paymentType : ${paymentTypes}"
-							th:value="${paymentType.paymentTypeId}"
-							th:text="${paymentType.paymentTypeDesc}" value="${nametype}"
-							th:async="true"></option>
-					</select>
+			<div id="tutory">
+				<div class="divider"></div>
+				<div class="row">
+					<h5>Información del servicio</h5>
 				</div>
-			</div>
-
-			<div class="row">
-				<div id="infobambinos" class="col s12 l5 offset-l3">
-					<table
-						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Bambino</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							<tr th:each="bambinoclient : ${allbambinos}">
-								<td><input type="checkbox" class="filled-in"
-									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
-									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
-								<td
-									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
-							</tr>
-						</tbody>
-					</table>
-
-				</div>
-			</div>
-			<div class="row">
-				<div class="col s12 l4 offset-l5" id="cost"></div>
-			</div>
-
-			<div class="divider"></div>
-
-			<div id="Tutorias">
 				<div class="row">
 					<div class="input-field col s6">
 						<input id="Materia" type="text" class="validate black-text"
@@ -140,27 +102,33 @@
 
 			</div>
 
-			<div id="Evento">
+			<div id="event">
+				<div class="divider"></div>
 				<div class="row">
-					<div class="col s6">
-						<select id="bookingtype" th:field="*{bookingType.bookingTypeId}">
+					<h5>Información del Evento</h5>
+				</div>
+				<div class="row">
+					<div class="col s12">
+						<label class="black-text" for="eventtype">Tipo de Evento</label>
+						<select id="eventtype" th:field="*{event.eventType.eventTypeId}">
 							<option th:each="eventType : ${eventTypes}"
 								th:value="${eventType.eventTypeId}"
 								th:text="${eventType.eventTypeDesc}" th:async="true"></option>
-						</select> <label class="black-text" for="bookingtype">Tipo de
-							Evento</label>
+						</select>
 					</div>
-
-					<div class="input-field col s4">
-						<input id="NoBambino" type="text" class="validate black-text"
-							th:field="*{event.bambinosNum}"
-							th:value="${event == null ? '' : event.bambinosNum}" /> <label
-							for="NoBambino">Numero de Bambinos</label>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<input id="bambinosqty" type="number" class="validate black-text"
+							th:field="*{event.bambinosQty}"
+							th:value="${event == null ? '' : event.bambinosQty}" /> <label
+							for="bambinosqty">Número de Bambinos</label>
 					</div>
-					<!-- div class="input-field col s4">
-						<input id="edades" type="text" class="validate black-text"
-							required="required" /> <label for="edades">Edades</label>
-					</div-->
+					<div class="input-field col s6">
+						<input id="age" type="text" class="validate black-text"
+							th:field="*{event.age}"
+							th:value="${event == null ? '' : event.age}" /> <label for="age">Edades</label>
+					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s3">
@@ -199,6 +167,47 @@
 			</div>
 
 			<div class="row">
+				<div id="paymenttypeinfo" class="col s12">
+					<label class="black-text" for="paymenttype">Forma de pago</label> <select
+						id="paymenttype" th:field="*{paymentType.paymentTypeId}">
+						<option th:each="paymentType : ${paymentTypes}"
+							th:value="${paymentType.paymentTypeId}"
+							th:text="${paymentType.paymentTypeDesc}" value="${nametype}"
+							th:async="true"></option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div id="infobambinos" class="col s12 l5 offset-l3">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Bambino</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:each="bambinoclient : ${allbambinos}">
+								<td><input type="checkbox" class="filled-in"
+									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
+									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
+								<td
+									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12 l4 offset-l5" id="cost"></div>
+			</div>
+
+			<div class="row">
 				<div class="right-align" style="">
 					<a th:href="@{/users/cancel}"
 						class="waves-effect waves-light btn deep-purple accent-2"
@@ -206,7 +215,7 @@
 
 
 					<button class="btn waves-effect waves-light deep-purple accent-2"
-						type="submit" name="action" id="sendbutton">Enviar</button>
+						type="submit" name="action" id="sendbutton" >Enviar</button>
 				</div>
 			</div>
 		</form>
@@ -214,56 +223,7 @@
 		<div th:if="${result != null}" id="result"></div>
 	</div>
 
-	<div id="paymentmodal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<h4>Instrucciones para realizar el pago</h4>
-				<p>Para realizar el pago, por favor acuda a la sucursal de Oxxo
-					mas cercana, o bien realice el deposito a cuenta bancaria con la
-					siguiente información:</p>
-				<p>Banco: Santander</p>
-				<p>Movimiento: Déposito a tarjeta de Débito</p>
-				<p>Nombre de Beneficiario: Erika Yaimeé Rodríguez Rodríguez</p>
-				<p>Número de cuenta: 5579 1001 7184 6510</p>
-				<p>Número de Referencia: 99999999999</p>
-			</div>
-			<div class="modal-footer">
-				<a href="#!"
-					class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
-			</div>
-		</div>
-	</div>
-
-	<div id="cashmodal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<h4>Instrucciones para realizar el pago</h4>
-				<p>Una persona del equipo de BambinoCare acudirá a su domicilio
-					para que usted pueda realizar el pago en efectivo</p>
-			</div>
-			<div class="modal-footer">
-				<a href="#!"
-					class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
-			</div>
-		</div>
-	</div>
-
-	<div id="bambinomodal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<h4>Atención</h4>
-				<p>Usted a seleccionado a más de 4 niños, por lo que de acuerdo
-					a nuestras políticas y términos de uso, se enviará a una segunda
-					niñera para brindarle una mejor calidad en el servicio.</p>
-			</div>
-			<div class="modal-footer">
-				<a href="#!"
-					class="modal-action modal-close waves-effect waves-green btn-flat">Aceptar</a>
-			</div>
-		</div>
-	</div>
-	
-
+	<div th:include="/secure/fragments/modal :: bookingmodals"></div>
 	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
@@ -274,128 +234,16 @@
 	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 	<script src="../static/js/wickedpicker.min.js"
 		th:src="@{/js/wickedpicker.min.js}"></script>
+	<script src="../static/js/modules/booking.js" th:src="@{/js/modules/booking.js}"></script>
 
-	<script th:inline="javascript">
-		var showMessage = 0;
-		var options = {
-		    now: "00:00",
-		    twentyFour: false,
-		    title: "Seleccione duración",
-		    twentyFour: true
-		};
-	
+	<script type="text/javascript" th:inline="javascript">
+		var totalCost = [[${totalCost}]];
+		var perfil = 'client';
+		var costsBambinoTutory = [[${ costsbambinotutory }]];
+		var costsBambinoCare = [[${ costsbambinocare }]];
+		var costsBambinoASAP = [[${ costsbambinoasap }]];
+		var costsBambinoEvents = [[${ costsbambinoevents }]];
 		$('.timepickerwicked').wickedpicker(options);
-	
-		$(function () {
-		    var totalCost = [[${ totalCost }]];
-		    var costs = [[${ costs }]];
-	
-		    if (!totalCost) {
-		        totalCost = 0.0;
-		    }
-	
-		    calculateCost();
-	
-		    $('#bookingform').bind('submit', function (e) {
-		        var sendbutton = $('#sendbutton');
-		        var cancelbutton = $('#cancelbutton');
-		        sendbutton.prop('disabled', true);
-		        cancelbutton.addClass('disabled');
-		    });
-	
-		    $("#duration, input[type='checkbox']")
-		        .change(function () {
-		            calculateCost();
-		            document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
-		        });
-	
-		    /*
-		      EMPIEZA CALCULO DE COSTOS
-		      */
-		    function calculateCost(bambinoQuantity) {
-		        var sum = 0;
-		        var duration = $("#duration");
-	
-		        if (!bambinoQuantity) {
-		            totalCost = 0;
-		            $("input[type='checkbox']").each(function (checkbox) {
-		                if (this.checked) {
-		                    sum += 1;
-		                }
-		            });
-		        } else {
-		            sum = bambinoQuantity;
-		        }
-		        /*<![CDATA[*/
-		        if (sum > 3) {
-		            if (showMessage < 1) {
-		                $('#bambinomodal').modal('open');
-		            }
-		            showMessage += 1;
-		            sum -= 3;
-		            totalCost += calculateCost(sum);
-		            sum = 3;
-		        }
-	
-	
-		        var costsCurrent = [];
-		        for (var cost of costs) {
-		            if (cost.bambinoQuantity == sum) {
-		                costsCurrent.push(cost);
-		            }
-		        }
-	
-		        for (var i = 0; i < costsCurrent.length; i++) {
-		            var durationValue = duration[0].value.split(":");
-		            var durationHour = parseFloat(durationValue[0]);
-		            var durationMinute = parseFloat(durationValue[1] / 60);
-		            durationValue = durationHour + durationMinute;
-		            if (durationValue != "" && !isNaN(durationValue) && durationValue != 0) {
-		                if (durationValue > costsCurrent[i].hourQuantity) {
-		                    continue;
-		                } else {
-	
-		                    if (durationValue == costsCurrent[i].hourQuantity) {
-		                        totalCost += costsCurrent[i].cost * durationValue;
-		                    } else {
-		                        totalCost += costsCurrent[i - 1].cost * durationValue;
-		                    }
-		                    break;
-		                }
-		            }
-		        }/*]]>*/
-		        //document.getElementById('cost').innerHTML = "Total: $" + totalCost;
-		        return totalCost;
-		    }
-	
-		    $("#bookingform").submit(function (event) {
-		        var duration = $("#duration");
-		        var durationValue = duration[0].value.split(":");
-		        var durationHour = parseFloat(durationValue[0]);
-		        var durationMinute = parseFloat(durationValue[1] / 60);
-		        durationValue = durationHour + durationMinute;
-		        console.log(`${durationHour}.${durationMinute} = ${durationValue}`);
-		        $("#duration").val(durationValue);
-	
-		        var paymenttype = $('#paymenttype option:selected').text();
-	
-		        console.log(paymenttype);
-	
-		        if (paymenttype == 'Pago en Oxxo o a cuenta Bancaria') {
-		            $('#paymentmodal').modal('open');
-		            event.preventDefault();
-		        } else if (paymenttype == 'Pago en efectivo') {
-		            $('#cashmodal').modal('open');
-		            event.preventDefault();
-		        }
-	
-		    });
-	
-		    $("#btn-confirm").click(function () {
-		        $('#paymentmodal').modal('close');
-		    });
-	
-		});
 	</script>
 
 </body>

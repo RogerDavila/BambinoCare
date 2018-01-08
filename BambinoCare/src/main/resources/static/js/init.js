@@ -50,66 +50,52 @@
       aftershow: function(){} // Function for after opening timepicker
     });
 
-    // Reservacion
-    $("#Tutorias").hide();
-    $("#Evento").hide();
-    $('#tipoServicio').change(function(){
-    	if($(this).val() == 2){
-        $("#Tutorias").hide();
-        $("#Evento").show();
-    	}
-    	if($(this).val() == 3){
-        $("#Evento").hide();
-        $("#Tutorias").show();
-    	}
-	});
-
     $('#contacto')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#Footer";
+      window.location.href = "http://localhost:8080/#Footer";
     });
 
     $('#servicios')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#Servicios";
+      window.location.href = "http://localhost:8080/#Servicios";
     });
 
     $('#inicio, #logo-container')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#";
+      window.location.href = "http://localhost:8080/#";
     });
 
     $('#nosotros')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#Nosotros";
+      window.location.href = "http://localhost:8080/#Nosotros";
     });
 
     $('#contactoMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#Footer";
+      window.location.href = "http://localhost:8080/#Footer";
     });
 
     $('#serviciosMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#Servicios";
+      window.location.href = "http://localhost:8080/#Servicios";
     });
 
     $('#inicioMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#";
+      window.location.href = "http://localhost:8080/#";
     });
 
     $('#nosotrosMobile')
     .click(function() {
     	console.log("Redirigiendo...");
-      window.location.href = "http://www.bambinocare.com.mx/#Nosotros";
+      window.location.href = "http://localhost:8080/#Nosotros";
     });
     
     $('#paymentmodal, #cashmodal').modal({

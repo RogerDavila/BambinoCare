@@ -120,13 +120,10 @@ public class NannyController {
 
 			model.addAttribute("allbambinos", bambinos);
 			model.addAttribute("usernameLogged", userLogged.getFirstname());
-			model.addAttribute("totalCost", booking.getCost());
 
 			model.addAttribute("booking", booking);
 			model.addAttribute("bookingTypes", bookingTypes);
 			model.addAttribute("eventTypes", eventTypes);
-
-			model.addAttribute("result", result);
 
 			return ViewConstants.BOOKING_DETAIL_NANNY_SHOW;
 		} else {

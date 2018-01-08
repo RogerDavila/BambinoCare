@@ -83,38 +83,11 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div id="infobambinos" class="col s12 l5 offset-l3">
-					<table
-						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
-						<thead>
-							<tr>
-								<th></th>
-								<th>Bambino</th>
-							</tr>
-						</thead>
-
-						<tbody>
-							<tr th:each="bambinoclient : ${allbambinos}">
-								<td><input type="checkbox" class="filled-in"
-									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
-									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
-								<td
-									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
-							</tr>
-						</tbody>
-					</table>
-
+			<div id="tutory">
+				<div class="divider"></div>
+				<div class="row">
+					<h5>Información del servicio</h5>
 				</div>
-			</div>
-
-			<div class="row">
-				<div class="col s12 l4 offset-l5" id="cost"></div>
-			</div>
-
-			<div class="divider"></div>
-
-			<div id="Tutorias">
 				<div class="row">
 					<div class="input-field col s6">
 						<input id="Materia" type="text" class="validate black-text"
@@ -140,9 +113,13 @@
 				</div>
 			</div>
 
-			<div id="Evento">
+			<div id="event">
+				<div class="divider"></div>
 				<div class="row">
-					<div class="col s6">
+					<h5>Información del servicio</h5>
+				</div>
+				<div class="row">
+					<div class="col s12">
 						<select id="bookingtype" th:field="*{bookingType.bookingTypeId}">
 							<option th:each="eventType : ${eventTypes}"
 								th:value="${eventType.eventTypeId}"
@@ -150,17 +127,19 @@
 						</select> <label class="black-text" for="bookingtype">Tipo de
 							Evento</label>
 					</div>
-
-					<div class="input-field col s4">
-						<input id="NoBambino" type="text" class="validate black-text"
-							th:field="*{event.bambinosNum}"
-							th:value="${event == null ? '' : event.bambinosNum}" /> <label
-							for="NoBambino">Numero de Bambinos</label>
+				</div>
+				<div class="row">
+					<div class="input-field col s6">
+						<input id="bambinosqty" type="number" class="validate black-text"
+							th:field="*{event.bambinosQty}"
+							th:value="${event == null ? '' : event.bambinosQty}" /> <label
+							for="bambinosqty">Número de Bambinos</label>
 					</div>
-					<!-- div class="input-field col s4">
-						<input id="edades" type="text" class="validate black-text"
-							required="required" /> <label for="edades">Edades</label>
-					</div-->
+					<div class="input-field col s6">
+						<input id="age" type="text" class="validate black-text"
+							th:field="*{event.age}"
+							th:value="${event == null ? '' : event.age}" /> <label for="age">Edades</label>
+					</div>
 				</div>
 				<div class="row">
 					<div class="input-field col s3">
@@ -199,6 +178,35 @@
 			</div>
 
 			<div class="row">
+				<div id="infobambinos" class="col s12 l5 offset-l3">
+					<table
+						class="bordedeep-purple lighten-1 highlight centelight-blue centered accent-4 responsive-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Bambino</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:each="bambinoclient : ${allbambinos}">
+								<td><input type="checkbox" class="filled-in"
+									th:field="*{bambinoId}" th:value="${bambinoclient.bambinoId}"
+									name="bambino" /> <label th:for="${#ids.prev('bambinoId')}"></label></td>
+								<td
+									th:text="${bambinoclient.firstname + ' ' + bambinoclient.lastname} "></td>
+							</tr>
+						</tbody>
+					</table>
+
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col s12 l4 offset-l5" id="cost"></div>
+			</div>
+
+			<div class="row">
 				<div class="right-align" style="">
 					<a id="cancelbutton" th:href="@{/users/cancel}"
 						class="waves-effect waves-light btn deep-purple accent-2">
@@ -224,6 +232,8 @@
 	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 	<script src="../static/js/wickedpicker.min.js"
 		th:src="@{/js/wickedpicker.min.js}"></script>
+	<script src="../static/js/modules/booking.js"
+		th:src="@{/js/modules/booking.js}"></script>
 
 	<script th:inline="javascript">
 	var options = {
@@ -234,9 +244,9 @@
 		};
 		
 		$('.timepickerwicked').wickedpicker(options);
-	
+		var perfil = 'client';
+		var totalCost = [[${totalCost}]];
 	$(function() {
-		  
 		  var totalCost = [[${totalCost}]];
 		  var costs = [[${costs}]];
 		  /*<![CDATA[*/

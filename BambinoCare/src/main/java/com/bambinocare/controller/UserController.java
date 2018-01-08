@@ -28,6 +28,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import com.bambinocare.constant.ViewConstants;
+import com.bambinocare.model.TutoryService;
+import com.bambinocare.model.ValidationModel;
 import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
@@ -49,6 +51,7 @@ import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.CostService;
 import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EmergencyContactService;
+import com.bambinocare.model.service.EventService;
 import com.bambinocare.model.service.EventTypeService;
 import com.bambinocare.model.service.ParameterService;
 import com.bambinocare.model.service.PaymentTypeService;
@@ -110,10 +113,18 @@ public class UserController {
 	@Autowired
 	@Qualifier("paymentTypeService")
 	private PaymentTypeService paymentTypeService;
-	
+
 	@Autowired
 	@Qualifier("parameterService")
 	private ParameterService parameterService;
+
+	@Autowired
+	@Qualifier("eventService")
+	private EventService eventService;
+
+	@Autowired
+	@Qualifier("tutoryService")
+	private TutoryService tutoryService;
 
 	@GetMapping("/showbookings")
 	public ModelAndView showBookings(@RequestParam(required = false) String result) {
@@ -169,8 +180,6 @@ public class UserController {
 			model.addAttribute("bookingTypes", bookingTypes);
 			model.addAttribute("eventTypes", eventTypes);
 
-			model.addAttribute("result", result);
-
 			return ViewConstants.BOOKING_DETAIL_SHOW;
 		} else {
 			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
@@ -181,31 +190,11 @@ public class UserController {
 	}
 
 	@GetMapping("/createbookingform")
-	public String showCreateBooking(@RequestParam(required = false) String result, Model model) {
+	public ModelAndView showCreateBooking(@RequestParam(required = false) String result, Model model) {
+		ModelAndView mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
 		BookingEntity booking = new BookingEntity();
-
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findByEmail(user.getUsername());
-
-		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-		List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-		List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-		model.addAttribute("usernameLogged", userEntity.getFirstname());
-
-		model.addAttribute("booking", booking);
-		model.addAttribute("bookingTypes", bookingTypes);
-		model.addAttribute("eventTypes", eventTypes);
-		model.addAttribute("allbambinos", bambinos);
-		model.addAttribute("costs", costs);
-		model.addAttribute("totalCost", booking.getCost());
-		model.addAttribute("paymentTypes", paymentTypes);
-
-		model.addAttribute("result", result);
-
-		return ViewConstants.BOOKING_CREATE;
+		mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
+		return mav;
 	}
 
 	@PostMapping("/createbooking")
@@ -214,243 +203,68 @@ public class UserController {
 
 		ModelAndView mav = new ModelAndView();
 		String result = "";
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
-		if (booking.getDuration() == null || booking.getDuration() == 0) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			result = "Favor de verificar el campo Duración";
+		ValidationModel validationModel = bookingService.validateBookingForm(booking, user);
 
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
-
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
-			return mav;
-		}
-
-		if (booking.getDate() == null) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			result = "Favor de verificar el campo Fecha";
-
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
-
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
-			return mav;
-		} 
-
-		if (booking.getHour() == null || booking.getHour().equals("")) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			result = "Favor de verificar el campo Hora";
-
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
-
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
-			return mav;
-		} else if (!bookingService.isValideDate(booking.getDate(), booking.getHour())) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			result = "La reservación debe realizarse al menos 24 horas antes de la fecha solictada, le sugerimos revisar el servicio Bambino ASAP";
-
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
-
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
-			return mav;
-		} else if (!bookingService.isValideHour(booking.getHour())) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			String serviceHour = parameterService.findByParameterKey("Hora Apertura").getParameterValue();
-			result = "Por el momento el horario para el servicio es a partir de las " + serviceHour + " hrs";
-			
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
-
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
-			return mav;
-		}
-
-		if (booking.getPaymentType() == null) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			result = "Favor de verificar la forma de pago";
-
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
-
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
-			return mav;
-		}
-
-		ClientEntity client = clientService.findByUserEmail(user.getUsername());
-
-		booking.setClient(client);
-
-		if (bambinoService.findByClient(client).isEmpty()) {
-			mav = new ModelAndView("redirect:/users/createbambinoform");
-			result = "Favor dar de alta a sus bambinos";
-			mav.addObject("result", result);
-
-			return mav;
-		}
-
-		List<EmergencyContactEntity> emergencyContacts = emergencyContactService.findByClient(client);
-
-		if (emergencyContacts.isEmpty() || emergencyContacts.size() < 2) {
-			mav = new ModelAndView("redirect:/users/createcontactform");
-			result = "Favor dar de alta al menos 2 contactos de emergencia";
-			mav.addObject("result", result);
-
-			return mav;
-		}
-
-		if (booking.getBambino() != null) {
-			List<String> bambinoIds = new ArrayList<>();
-			for (BambinoEntity bambino : booking.getBambino()) {
-				bambinoIds.add(bambino.getBambinoId().toString());
+		if (validationModel.getResult() != null) {
+			if (validationModel.isRequireOtherView()) {
+				mav = new ModelAndView(validationModel.getOtherView());
+				mav.addObject("result", validationModel.getResult());
+			} else {
+				mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+				mav.addAllObjects(getModelMapForCreateBookingForm(validationModel.getResult(), booking));
 			}
-			booking.setBambinoId(bambinoIds);
-		}
-
-		if (booking.getBambinoId().size() <= 0) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			result = "Favor de elegir al menos un bambino";
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
-
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
 			return mav;
 		}
 
-		booking.setBambino(bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(), userEntity));
+		// Asignación de Bambinos solo para BambinoCare y BambinoASAP
+		if (booking.getBookingType().getBookingTypeId() == 1 || booking.getBookingType().getBookingTypeId() == 4) {
+			if (booking.getBambino() != null) {
+				List<String> bambinoIds = new ArrayList<>();
+				for (BambinoEntity bambino : booking.getBambino()) {
+					bambinoIds.add(bambino.getBambinoId().toString());
+				}
+				booking.setBambinoId(bambinoIds);
+			}
 
-		if (booking.getBambino().isEmpty()) {
-			mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-			result = "Ocurrió un error al intentar agregar a los bambinos";
-			List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
-			List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
-			List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-			List<CostEntity> costs = costService.findAllByOrderByHourQuantity();
-			List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
+			if (booking.getBambinoId().size() <= 0) {
+				mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+				result = "Favor de elegir al menos un bambino";
+				mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
+				return mav;
+			}
 
-			mav.addObject("allbambinos", bambinos);
-			mav.addObject("usernameLogged", userEntity.getFirstname());
-			mav.addObject("costs", costs);
-			mav.addObject("totalCost", booking.getCost());
-			mav.addObject("paymentTypes", paymentTypes);
+			booking.setBambino(bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(), userEntity));
 
-			mav.addObject("booking", booking);
-			mav.addObject("bookingTypes", bookingTypes);
-			mav.addObject("eventTypes", eventTypes);
-
-			mav.addObject("result", result);
-
-			return mav;
+			if (booking.getBambino().isEmpty()) {
+				mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
+				result = "Ocurrió un error al intentar agregar a los bambinos";
+				mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
+				return mav;
+			}
 		}
 
 		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Pendiente Pago");
 		booking.setBookingStatus(bookingStatus);
 
-		booking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
+		booking.setCost(costService.calculateTotalCostByBooking(booking));
 
 		booking.setDate(bookingService.getDate(booking.getDate(), 1));
+
+		if (booking.getBookingType().getBookingTypeId() != 3) {
+			booking.setEvent(null);
+		} else {
+			eventService.createEvent(booking.getEvent());
+		}
+		if (booking.getBookingType().getBookingTypeId() != 2) {
+			booking.setTutory(null);
+		} else {
+			tutoryService.createTutory(booking.getTutory());
+		}
+
 		BookingEntity bookingCreated = bookingService.createBooking(booking);
 		if (bookingCreated != null) {
 			String paymentTypeDesc = paymentTypeService.findByPaymentTypeId(booking.getPaymentType().getPaymentTypeId())
@@ -497,9 +311,48 @@ public class UserController {
 		return mav;
 	}
 
+	private ModelMap getModelMapForCreateBookingForm(String result, BookingEntity booking) {
+		ModelMap modelMap = new ModelMap();
+
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
+
+		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
+		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
+		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
+
+		for (BookingTypeEntity bookingType : bookingTypes) {
+			List<CostEntity> costs = costService.findByBookingTypeOrderByHourQuantity(bookingType);
+			if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Care")) {
+				modelMap.addAttribute("costsbambinocare", costs);
+			} else if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino ASAP")) {
+				modelMap.addAttribute("costsbambinoasap", costs);
+			} else if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Tutory")) {
+				modelMap.addAttribute("costsbambinotutory", costs);
+			} else if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Events")) {
+				modelMap.addAttribute("costsbambinoevents", costs);
+			}
+		}
+		List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
+
+		modelMap.addAttribute("usernameLogged", userEntity.getFirstname());
+
+		modelMap.addAttribute("booking", booking);
+		modelMap.addAttribute("bookingTypes", bookingTypes);
+		modelMap.addAttribute("eventTypes", eventTypes);
+		modelMap.addAttribute("allbambinos", bambinos);
+		modelMap.addAttribute("totalCost", booking.getCost());
+		modelMap.addAttribute("paymentTypes", paymentTypes);
+
+		modelMap.addAttribute("result", result);
+
+		return modelMap;
+	}
+
 	@RequestMapping(value = "completebooking", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView completeBooking(@RequestAttribute("bookingId") int bookingId,
-			@RequestAttribute(name = "result", required = false) String result, Model model) {
+			@RequestAttribute(name = "result", required = false) String result,
+			@RequestAttribute(name = "error", required = false) String error, Model model) {
 
 		ModelAndView mav = new ModelAndView();
 		BookingEntity booking = bookingService.findByBookingId(bookingId);
@@ -508,9 +361,9 @@ public class UserController {
 				.getPaymentTypeDesc();
 
 		if (paymentType.equalsIgnoreCase("Paypal")) {
-			if (result != null) {
+			if (error != null) {
 				bookingService.delete(booking);
-				mav = new ModelAndView("redirect:/users/showbookings?result=" + result);
+				mav = new ModelAndView("redirect:/users/showbookings?result=" + error + "#Reservaciones");
 				return mav;
 			}
 
@@ -520,7 +373,7 @@ public class UserController {
 
 			if (bookingService.createBooking(booking) == null) {
 				result = "Ocurrió un error al guardar la reservación";
-				mav = new ModelAndView("redirect:/users/showbookings?result=" + result);
+				mav = new ModelAndView("redirect:/users/showbookings?result=" + result +"#Reservaciones");
 				return mav;
 			}
 		}
@@ -528,15 +381,17 @@ public class UserController {
 		try {
 			emailService.sendHTMLMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
 					getBookingHTML(booking));
-			
-			emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(), "BambinoCare - Nueva reservación",
-					"<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>","reservacion.jpg");
+
+			emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(),
+					"BambinoCare - Nueva reservación",
+					"<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>",
+					"reservacion.jpg");
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
 
 		result = "La reservación se realizó exitosamente.";
-		mav = new ModelAndView("redirect:/users/showbookings?result=" + result);
+		mav = new ModelAndView("redirect:/users/showbookings?result=" + result + "#Reservaciones");
 		return mav;
 
 	}
@@ -545,9 +400,15 @@ public class UserController {
 
 		String bambinos = "";
 		String bambinosAges = "";
-		for (BambinoEntity bambino : booking.getBambino()) {
-			bambinos += bambino.getFirstname() + " " + bambino.getLastname() + ",";
-			bambinosAges += bambino.getAge() + ",";
+		if (booking.getBookingType().getBookingTypeId() == 1 || booking.getBookingType().getBookingTypeId() == 4) {
+			for (BambinoEntity bambino : booking.getBambino()) {
+				bambinos += bambino.getFirstname() + " " + bambino.getLastname() + ",";
+				bambinosAges += bambino.getAge() + ",";
+			}
+			bambinos = bambinos.substring(0, bambinos.length() - 1);
+			bambinosAges = bambinosAges.substring(0, bambinosAges.length() - 1);
+		} else if (booking.getBookingType().getBookingTypeId() == 3) {
+			bambinosAges = booking.getEvent().getAge();
 		}
 
 		BookingTypeEntity bookingType = bookingTypeService
@@ -559,19 +420,18 @@ public class UserController {
 				+ "<th>Fecha</th><th>Horario</th><th>Lugar</th></tr></thead><tbody><tr><td>"
 				+ booking.getClient().getUser().getFirstname() + " " + booking.getClient().getUser().getLastname()
 				+ "</td><td>" + booking.getClient().getUser().getEmail() + "</td><td>"
-				+ bookingType.getBookingTypeDesc() + "</td><td>" + bambinos.substring(0, bambinos.length() - 1)
-				+ "</td><td>" + bambinosAges.substring(0, bambinosAges.length() - 1) + "</td><td>" + booking.getDate()
-				+ "</td><td>" + booking.getDuration() + "</td><td>" + booking.getClient().getStreet() + " "
-				+ booking.getClient().getNeighborhood() + " " + booking.getClient().getState().getStateDesc()
-				+ "</td></tr>" + "</tbody></table><p>Puedes revisar el detalle en"
-				+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx</p></body></html>";
+				+ bookingType.getBookingTypeDesc() + "</td><td>" + bambinos + "</td><td>" + bambinosAges + "</td><td>"
+				+ booking.getDate() + "</td><td>" + booking.getDuration() + "</td><td>"
+				+ booking.getClient().getStreet() + " " + booking.getClient().getNeighborhood() + " "
+				+ booking.getClient().getState().getStateDesc() + "</td></tr>"
+				+ "</tbody></table><p>Puedes revisar el detalle en"
+				+ " la siguiente liga: \n\r \n\r localhost:8080</p></body></html>";
 
 	}
 
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
-			@RequestParam(required = true) Integer bookingId,
-			Model model) {
+			@RequestParam(required = true) Integer bookingId, Model model) {
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
@@ -673,13 +533,14 @@ public class UserController {
 		oldBooking.setDate(bookingService.getDate(booking.getDate(), 1));
 		oldBooking.setHour(booking.getHour());
 		oldBooking.setBambino(booking.getBambino());
-		oldBooking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size()));
+		oldBooking.setCost(costService.calculateTotalCost(booking.getDuration(), booking.getBambino().size(),
+				booking.getBookingType()));
 
 		if (bookingService.createBooking(oldBooking) != null) {
 			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
 					"El usuario " + oldBooking.getClient().getUser().getEmail()
 							+ " ha modificado la reservación del día " + oldBooking.getDate()
-							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
+							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
 			result = "La reservación fue modificada con éxito!";
 		} else {
 			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
@@ -797,8 +658,7 @@ public class UserController {
 				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
 						"El usuario " + booking.getClient().getUser().getEmail()
 								+ " ha cancelado su reservación del día " + booking.getDate()
-								+ " Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
+								+ " Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
 				result = "No se permiten cancelaciones de reservación";
@@ -847,12 +707,11 @@ public class UserController {
 			return "redirect:/users/createbookingform?result=" + result;
 		}
 
-		return "redirect:/users/showbookings?result=" + result;
+		return "redirect:/users/showbookings?result=" + result + "#MisBambinos";
 	}
 
 	@GetMapping("/createbambinoform")
-	public String createbambinoform(@RequestParam(required = false) String result,
-			Model model) {
+	public String createbambinoform(@RequestParam(required = false) String result, Model model) {
 		BambinoEntity bambino = new BambinoEntity();
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -867,8 +726,7 @@ public class UserController {
 
 	@GetMapping("/editBambinoForm")
 	public String editBambinoForm(@RequestParam(required = false) String result,
-			@RequestParam(required = true) Integer bambinoId,
-			Model model) {
+			@RequestParam(required = true) Integer bambinoId, Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
@@ -926,8 +784,7 @@ public class UserController {
 
 	@PostMapping("/removeBambino")
 	public String removeBambino(@RequestParam(required = false) String result,
-			@RequestParam(required = true) Integer bambinoId,
-			Model model) {
+			@RequestParam(required = true) Integer bambinoId, Model model) {
 		bambinoService.removeBambino(bambinoId);
 		result = "El bambino fue borrado con éxito!";
 		return "redirect:/users/showbookings?result=" + result;
@@ -936,8 +793,7 @@ public class UserController {
 	// contactos
 
 	@GetMapping("/createcontactform")
-	public String createcontactform(@RequestParam(required = false) String result,
-			Model model) {
+	public String createcontactform(@RequestParam(required = false) String result, Model model) {
 		EmergencyContactEntity contact = new EmergencyContactEntity();
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -994,13 +850,12 @@ public class UserController {
 			return "redirect:/users/createbookingform?result=" + result;
 		}
 
-		return "redirect:/users/showbookings?result=" + result;
+		return "redirect:/users/showbookings?result=" + result + "#Contactos";
 	}
 
 	@GetMapping("/editcontactForm")
 	public String editContactForm(@RequestParam(required = false) String result,
-			@RequestParam(required = true) Integer contactId,
-			Model model) {
+			@RequestParam(required = true) Integer contactId, Model model) {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
@@ -1073,8 +928,7 @@ public class UserController {
 
 	@PostMapping("/removeContact")
 	public String removeContacts(@RequestParam(required = false) String result,
-			@RequestParam(required = true) Integer contactId,
-			Model model) {
+			@RequestParam(required = true) Integer contactId, Model model) {
 		emergencyContactService.removeContact(contactId);
 		result = "El bambino fue borrado con éxito!";
 		return "redirect:/users/showbookings?result=" + result;

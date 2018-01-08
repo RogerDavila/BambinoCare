@@ -3,6 +3,9 @@ package com.bambinocare.model.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.security.core.userdetails.User;
+
+import com.bambinocare.model.ValidationModel;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.UserEntity;
@@ -43,5 +46,7 @@ public interface BookingService {
 	boolean isValideDate (Date date, String hour);
 	
 	boolean isValideHour (String hour);
+	
+	ValidationModel validateBookingForm(BookingEntity booking, User user);
 
 }
