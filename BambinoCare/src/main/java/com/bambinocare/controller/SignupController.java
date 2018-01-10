@@ -145,7 +145,7 @@ public class SignupController {
 
 			mav = new ModelAndView(ViewConstants.SIGNUP_FORM);
 
-			result = "La contraseña y la confirmación de contraseña no coínciden";
+			result = "La contraseña y la confirmaci%C3%B3n de contraseña no co%C3%ADnciden";
 			List<RoleEntity> roles = roleService.findAllRoles();
 			List<CityEntity> cities = cityService.findAll();
 			List<StateEntity> states = stateService.findAll();
@@ -178,8 +178,7 @@ public class SignupController {
 		}
 
 		if (clientService.createClient(client) != null) {
-			result = "Usuario registrado con éxito!. En breve recibirás un correo de confirmación de tu cuenta, con la que tendrás acceso a promociones y mejores tarifas, podrás realizar tus reservaciones de una manera sencilla y recibirás información importante.";
-
+			result = "Usuario registrado con %C3%A9xito!. En breve recibir%C3%A1s un correo de confirmaci%C3%B3n de tu cuenta, con la que tendr%C3%A1s acceso a promociones y mejores tarifas, podr%C3%A1s realizar tus reservaciones de una manera sencilla y recibir%C3%A1s informaci%C3%B3n importante.";
 			UserEntity user = client.getUser();
 
 			if (!userService.userExist(user.getEmail())) {
@@ -189,9 +188,8 @@ public class SignupController {
 				eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, appUrl));
 			}
 		} else {
-			result = "Ocurrió un error al intentar registrar el usuario, por favor intente nuevamente";
+			result = "Ocurri%C3%B3 un error al intentar registrar el usuario, por favor intente nuevamente";
 		}
-
 		mav.setViewName("redirect:/signup/signupform?result=" + result);
 		return mav;
 	}
@@ -201,7 +199,7 @@ public class SignupController {
 
 		VerificationTokenEntity verificationToken = userService.getVerificationToken(token);
 		if (verificationToken == null) {
-			String result = "token no válido";
+			String result = "token no v%C3%A1lido";
 			model.addAttribute("result", result);
 
 			return "redirect:/baduser";

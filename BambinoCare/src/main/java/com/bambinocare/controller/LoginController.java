@@ -40,7 +40,7 @@ public class LoginController {
 			return "redirect:/loginsuccess";
 		}
 		
-		result = (result != null) ? "Usuario/Contraseña inválidos" : null;
+		result = (result != null) ? "Usuario/Contraseña inv%C3%A1lidos" : null;
 		
 		model.addAttribute("result", result);
 		model.addAttribute("logout", logout);
@@ -96,7 +96,7 @@ public class LoginController {
 				result = "Tu nueva contraseña fue enviada a tu correo.";
 				return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 			}else {
-				result = "Ocurrió un error al intentar reestablecer tu contraseña, por favor intentalo de nuevo.";
+				result = "Ocurri%C3%B3 un error al intentar reestablecer tu contraseña, por favor intentalo de nuevo.";
 				return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 			}
 		}

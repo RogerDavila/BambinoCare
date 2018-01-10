@@ -219,7 +219,7 @@ public class BookingServiceImpl implements BookingService {
 		String otherView = null;
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
-			result = "Favor de verificar el campo Duración";
+			result = "Favor de verificar el campo Duraci%C3%B3n";
 			return new ValidationModel(result, requireOtherView, otherView);
 		}
 		if (booking.getDate() == null) {
@@ -230,7 +230,7 @@ public class BookingServiceImpl implements BookingService {
 			result = "Favor de verificar el campo Hora";
 			return new ValidationModel(result, requireOtherView, otherView);
 		} else if (!isValideDate(booking.getDate(), booking.getHour())) {
-			result = "La reservación debe realizarse al menos 24 horas antes de la fecha solictada, le sugerimos revisar el servicio Bambino ASAP";
+			result = "La reservaci%C3%B3n debe realizarse al menos 24 horas antes de la fecha solictada, le sugerimos revisar el servicio Bambino ASAP";
 			return new ValidationModel(result, requireOtherView, otherView);
 		} else if (!isValideHour(booking.getHour())) {
 			String serviceHour = parameterService.findByParameterKey("Hora Apertura").getParameterValue();
@@ -263,7 +263,7 @@ public class BookingServiceImpl implements BookingService {
 		// Validaciones para BambinoTutory
 		if (booking.getBookingType().getBookingTypeId() == 2) {
 			if (booking.getTutory() == null) {
-				result = "Ocurrió un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
+				result = "Ocurri%C3%B3 un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
 				return new ValidationModel(result, requireOtherView, otherView);
 			}
 			if (booking.getTutory().getCourse() == null
@@ -281,7 +281,7 @@ public class BookingServiceImpl implements BookingService {
 		if (booking.getBookingType().getBookingTypeId() == 3) {
 			
 			if (booking.getEvent() == null) {
-				result = "Ocurrió un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
+				result = "Ocurri%C3%B3 un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
 				return new ValidationModel(result, requireOtherView, otherView);
 			}
 			

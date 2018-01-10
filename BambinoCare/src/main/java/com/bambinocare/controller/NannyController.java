@@ -127,7 +127,7 @@ public class NannyController {
 
 			return ViewConstants.BOOKING_DETAIL_NANNY_SHOW;
 		} else {
-			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
+			result = "No se encontr%C3%B3 la reservaci%C3%B3n solicitada o no tiene permisos para verla";
 		}
 
 		return "redirect:/nannies/showbookings?result=" + result;

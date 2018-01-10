@@ -140,7 +140,7 @@ public class AdminController {
 
 			return ViewConstants.BOOKING_DETAIL_ADMIN_SHOW;
 		} else {
-			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
+			result = "No se encontr%C3%B3 la reservaci%C3%B3n solicitada o no tiene permisos para verla";
 		}
 
 		return "redirect:/admin/showbookings?result=" + result;
@@ -159,7 +159,7 @@ public class AdminController {
 				"Cancelada");
 
 		if (booking == null) {
-			result = "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
+			result = "La reservaci%C3%B3n solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
 			return "redirect:/admin/showbookings?result=" + result;
 		}
 
@@ -218,7 +218,7 @@ public class AdminController {
 		String result = "";
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
-			result = "Favor de verificar el campo Duración";
+			result = "Favor de verificar el campo Duraci%C3%B3n";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("result", result);
 			mav.addObject("bookingId", booking.getBookingId());
@@ -233,7 +233,7 @@ public class AdminController {
 			return mav;
 		} else if (bookingService.getDate(booking.getDate(), 1)
 				.before(bookingService.getDate(Calendar.getInstance().getTime(), 0))) {
-			result = "La reservación debe realizarse al menos 1 día antes de la fecha solictada";
+			result = "La reservaci%C3%B3n debe realizarse al menos 1 d%C3%ADa antes de la fecha solictada";
 			mav = new ModelAndView("redirect:/admin/editbookingform");
 			mav.addObject("result", result);
 			mav.addObject("bookingId", booking.getBookingId());
@@ -262,7 +262,7 @@ public class AdminController {
 				oldBooking.getClient().getUser()));
 
 		if (booking.getBambino().isEmpty()) {
-			result = "Ocurrió un error al intentar agregar a los bambinos";
+			result = "Ocurri%C3%B3 un error al intentar agregar a los bambinos";
 			mav = new ModelAndView("redirect:/users/editbookingform");
 			mav.addObject("result", result);
 			return mav;
@@ -280,9 +280,9 @@ public class AdminController {
 					"Su reservación del día " + oldBooking.getDate()
 							+ "ha sido modificada. Puedes revisar el detalle en"
 							+ " la siguiente liga: \n\r \n\r localhost:8080");
-			result = "La reservación fue modificada con éxito!";
+			result = "La reservaci%C3%B3n fue modificada con %C3%A9xito!";
 		} else {
-			result = "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo";
+			result = "Ocurri%C3%B3 un error al intentar editar la reservaci%C3%B3n, vuelva a intentarlo";
 		}
 
 		mav = new ModelAndView("redirect:/admin/showbookings");
@@ -312,9 +312,9 @@ public class AdminController {
 		oldParameter.setParameterValue(parameterValue);
 		
 		if (parameterService.createParameter(oldParameter) != null) {
-			result = "El parametro fue modificada con éxito!";
+			result = "El parametro fue modificada con %C3%A9xito!";
 		} else {
-			result = "Ocurrió un error al intentar editar el parametro, vuelva a intentarlo";
+			result = "Ocurri%C3%B3 un error al intentar editar el parametro, vuelva a intentarlo";
 		}
 
 		mav = new ModelAndView("redirect:/admin/showbookings");
@@ -345,10 +345,10 @@ public class AdminController {
 								+ " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
-				result = "No se permiten cancelaciones de reservación";
+				result = "No se permiten cancelaciones de reservaci%C3%B3n";
 			}
 		} else {
-			result = "No se puede cancelar la reservación solicitada";
+			result = "No se puede cancelar la reservaci%C3%B3n solicitada";
 		}
 
 		return "redirect:/admin/showbookings?result=" + result;
@@ -401,15 +401,15 @@ public class AdminController {
 
 				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
 						"Reservación Confirmada",
-						"Su reservación ha sido confirmada. Puede ingresar a su perfil para verificar la información de la Bambinaia que estará asistiendo a la cita en el horario de "
+						"Su reservación ha sido confirmada. Puede ingresar a su perfil para verificar la información de la Bambinaia que estar%C3%A1 asistiendo a la cita en el horario de "
 								+ initialTime + " a " + finalTime + " el día " + dateStr + " \r\n"
 								+ "\r\nAgradecemos su preferencia.\r\n");
 
 			} else {
-				result = "No se permite agendar esta reservación";
+				result = "No se permite agendar esta reservaci%C3%B3n";
 			}
 		} else {
-			result = "No se puede agendar la reservación solicitada";
+			result = "No se puede agendar la reservaci%C3%B3n solicitada";
 		}
 
 		return "redirect:/admin/showbookings?result=" + result;
@@ -438,10 +438,10 @@ public class AdminController {
 								+ " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
-				result = "No se permite rechazar la reservación solicitada";
+				result = "No se permite rechazar la reservaci%C3%B3n solicitada";
 			}
 		} else {
-			result = "No se puede rechazar la reservación solicitada";
+			result = "No se puede rechazar la reservaci%C3%B3n solicitada";
 		}
 
 		return "redirect:/admin/showbookings?result=" + result;
@@ -522,7 +522,7 @@ public class AdminController {
 			result = "Favor de verficar el CURP";
 			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (userService.userExist(nanny.getUser().getEmail())) {
-			result = "El email introducido ya existe en la aplicación";
+			result = "El email introducido ya existe en la aplicaci%C3%B3n";
 			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (nanny.getUser().getEmail() == null || nanny.getUser().getEmail().equals("")) {
 			result = "Favor de verificar el campo Correo";
@@ -531,7 +531,7 @@ public class AdminController {
 			result = "Favor de verificar el campo Contraseña";
 			return "redirect:/admin/createNannyForm?result=" + result;
 		} else if (!nanny.getUser().getPasswordConfirm().equals(nanny.getUser().getPassword())) {
-			result = "La contraseña y la confirmación de contraseña no coínciden";
+			result = "La contraseña y la confirmaci%C3%B3n de contraseña no co%C3%ADnciden";
 			return "redirect:/admin/createNannyForm?result=" + result;
 		}
 
@@ -626,7 +626,7 @@ public class AdminController {
 			result = "Favor de verificar el campo Contraseña";
 			return "redirect:/admin/editnannyform?result=" + result;
 		} else if (!nanny.getUser().getPasswordConfirm().equals(nanny.getUser().getPassword())) {
-			result = "La contraseña y la confirmación de contraseña no coínciden";
+			result = "La contraseña y la confirmaci%C3%B3n de contraseña no co%C3%ADnciden";
 			return "redirect:/admin/editnannyform?result=" + result;
 		}
 
@@ -652,7 +652,7 @@ public class AdminController {
 		if (nannyService.saveNanny(oldNanny) != null) {
 			result = "Se ha modificado el perfil de Nanny!";
 		} else {
-			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
+			result = "Ocurri%C3%B3 un error al intentar editar el perfil, vuelva a intentarlo";
 		}
 
 		return "redirect:/admin/showbookings?result=" + result;
@@ -668,7 +668,7 @@ public class AdminController {
 		if (nannyService.saveNanny(nanny) != null) {
 			result = "Se hashabilitado el perfil de la Nanny!";
 		} else {
-			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
+			result = "Ocurri%C3%B3 un error al intentar editar el perfil, vuelva a intentarlo";
 		}
 
 		return "redirect:/admin/showbookings?result=" + result;
@@ -693,12 +693,12 @@ public class AdminController {
 		booking.setBookingStatus(bookingStatus);
 
 		if (bookingService.createBooking(booking) == null) {
-			result = "Ocurrió un error al guardar la reservación";
+			result = "Ocurri%C3%B3 un error al guardar la reservaci%C3%B3n";
 			mav = new ModelAndView("redirect:/admin/showbookings?result=" + result);
 			return mav;
 		}
 
-		result = "El pago se aprobó. Ahora puede agendar la reservación.";
+		result = "El pago se aprob%C3%B3. Ahora puede agendar la reservaci%C3%B3n.";
 		mav = new ModelAndView("redirect:/admin/showbookings?result=" + result);
 		return mav;
 

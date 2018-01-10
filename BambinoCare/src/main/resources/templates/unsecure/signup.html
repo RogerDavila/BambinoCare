@@ -2,8 +2,9 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta name="viewport"
-	content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
+	content="width=device-width, initial-scale=1;text/html"
 	http-equiv="Content-Type" />
+<meta charset="UTF-8" />
 <title>BambinoCare</title>
 
 <!-- CSS  -->
@@ -152,8 +153,8 @@
 	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 
 	<script th:inline="javascript">
-	$(function() {
-		  /*$('#city').change(
+		$(function() {
+			/*$('#city').change(
 			function() {
 				var city = $(this).find('option:selected').text();
 				
@@ -168,12 +169,12 @@
 					$('#neighborhood-div').append('<label class="black-text" for="neighborhood-input" id="neighborhood-label">Municipio</label>');
 				}
 			}	  
-		  );*/
-		  $('#signupform').bind('submit', function (e) {
-			  	console.log('Entra');
-			    var sendbutton = $('#sendbutton');
+			);*/
+			$('#signupform').bind('submit', function(e) {
+				console.log('Entra');
+				var sendbutton = $('#sendbutton');
 
-			    sendbutton.prop('disabled', true);
+				sendbutton.prop('disabled', true);
 			});
 		});
 	</script>
