@@ -23,9 +23,9 @@
 		<div class="">
 			<br />
 			<br />
-			<div class="row">
+			<div class="row container">
 				<div class="col s4"></div>
-				<form class="col white col s4 z-depth-5" th:action="@{/logincheck}"
+				<form class="white pad z-depth-5 s4 z-depth-5" th:action="@{/logincheck}"
 					method="POST">
 					<input type="hidden" name="${csrf.parametername}"
 						value="${_csrf.token}" />

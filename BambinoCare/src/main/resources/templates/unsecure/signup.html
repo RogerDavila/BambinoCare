@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1;text/html"
-	http-equiv="Content-Type" />
-<meta charset="UTF-8" />
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>BambinoCare</title>
 
 <!-- CSS  -->
@@ -39,13 +37,13 @@
 						Bambinaias.</p>
 				</div>
 				<div class="row">
-					<div class="input-field col s6">
+					<div class="input-field col s12 m6">
 						<input id="first_name" type="text" class="validate black-text"
 							th:field="*{user.firstname}"
 							th:value="${user == null ? '' : user.firstname }"
 							th:required="required" /> <label for="first_name">Nombre</label>
 					</div>
-					<div class="input-field col s6">
+					<div class="input-field col s12 m6">
 						<input id="last_name" type="text" class="validate black-text"
 							th:field="*{user.lastname}"
 							th:value="${user == null ? '' : user.lastname}"
@@ -53,18 +51,18 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<input id="street_num" type="text" class="validate black-text"
 							th:field="*{street}" th:value="${street}" th:required="required" />
 						<label for="street_num">Calle - Numero</label>
 					</div>
-					<div class="input-field col s4" id="neighborhood-div">
+					<div class="input-field col s12 m4" id="neighborhood-div">
 						<input id="neighborhood-input" type="text"
 							class="validate black-text" th:field="*{neighborhood}"
 							th:value="${neighborhood}" th:required="required" /> <label
 							for="neighborhood-input" id="neighborhood-label">Colonia</label>
 					</div>
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<select id="city" th:field="*{city.cityId}">
 							<option value="">Selecciona el municipio</option>
 							<option th:each="city : ${cities}" th:value="${city.cityId}"
@@ -78,7 +76,7 @@
 					</div-->
 				</div>
 				<div class="row">
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<select id="state" th:field="*{state.stateId}">
 							<option th:each="state : ${states}" th:value="${state.stateId}"
 								th:text="${state.stateDesc}" value="${nametype}" th:async="true"></option>
@@ -89,12 +87,12 @@
 							th:field="*{state}" th:value="${state}" th:required="required" />
 						<label for="state">Estado</label>
 					</div-->
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<input id="job" type="text" class="validate black-text"
 							th:field="*{job}" th:value="${job}" th:required="required" /> <label
 							for="job">Ocupación</label>
 					</div>
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<input id="Telefono" type="number" class="validate black-text"
 							th:field="*{user.phone}"
 							th:value="${user == null ? '' : user.phone}"
@@ -102,19 +100,19 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<input id="email" type="email" class="validate black-text"
 							th:field="*{user.email}"
 							th:value="${user == null ? '' : user.email}"
 							th:required="required" /> <label for="email">Email</label>
 					</div>
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<input id="password" type="password" class="validate black-text"
 							th:field="*{user.password}"
 							th:value="${user == null ? '' : user.password}"
 							th:required="required" /> <label for="password">Contraseña</label>
 					</div>
-					<div class="input-field col s4">
+					<div class="input-field col s12 m4">
 						<input id="passwordconfirm" type="password"
 							class="validate black-text" th:field="*{user.passwordConfirm}"
 							th:value="${user == null ? '' : user.passwordConfirm}"
@@ -133,7 +131,7 @@
 					<div th:if="${result}" id="result"></div>
 
 
-					<div class="col offset-s10 s2 right-align ">
+					<div class="col offset-l10 offset-m9 offset-s7 s2 right-align ">
 						<button id="sendbutton"
 							class="btn waves-effect waves-light right-align deep-purple accent-2"
 							type="submit" name="action">Enviar</button>
@@ -171,9 +169,7 @@
 			}	  
 			);*/
 			$('#signupform').bind('submit', function(e) {
-				console.log('Entra');
 				var sendbutton = $('#sendbutton');
-
 				sendbutton.prop('disabled', true);
 			});
 		});
