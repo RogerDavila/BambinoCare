@@ -68,8 +68,8 @@ public class PayPalTest {
 		payment.setTransactions(transactions);
 
 		RedirectUrls redirectUrls = new RedirectUrls();
-		redirectUrls.setCancelUrl("http://localhost:8080");
-		redirectUrls.setReturnUrl("http://localhost:8080");
+		redirectUrls.setCancelUrl("http://www.bambinocare.com.mx");
+		redirectUrls.setReturnUrl("http://www.bambinocare.com.mx");
 
 		payment.setRedirectUrls(redirectUrls);
 
