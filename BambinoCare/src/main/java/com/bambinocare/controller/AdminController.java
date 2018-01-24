@@ -3,7 +3,6 @@ package com.bambinocare.controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -28,7 +27,6 @@ import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.BookingStatusEntity;
 import com.bambinocare.model.entity.BookingTypeEntity;
-import com.bambinocare.model.entity.CostEntity;
 import com.bambinocare.model.entity.EventTypeEntity;
 import com.bambinocare.model.entity.NannyEntity;
 import com.bambinocare.model.entity.ParameterEntity;
@@ -147,6 +145,7 @@ public class AdminController {
 
 	}
 
+	/*
 	@GetMapping("/editbookingform")
 	public String showEditBooking(@RequestParam(required = false) String result,
 			@RequestParam(required = true) Integer bookingId,
@@ -189,26 +188,7 @@ public class AdminController {
 
 		return ViewConstants.BOOKING_ADMIN_EDIT;
 	}
-
-	@GetMapping("/editparameterform")
-	public String showEditParameter(@RequestParam(required = false) String result,
-			@RequestParam(required = true) Integer parameterId,
-			Model model) {
-
-		ParameterEntity parameter = parameterService.findByParameterId(parameterId);
-
-		if (parameter == null) {
-			result = "El parametro solicitado no existe";
-			return "redirect:/admin/showbookings?result=" + result;
-		}
-
-		model.addAttribute("parameter", parameter);
-
-		model.addAttribute("result", result);
-
-		return ViewConstants.PARAMETER_ADMIN_EDIT;
-	}
-
+	
 	@PostMapping("/editbooking")
 	public ModelAndView editBooking(@ModelAttribute(name = "booking") BookingEntity booking,
 			BindingResult bindingResult, Model model) {
@@ -288,6 +268,26 @@ public class AdminController {
 		mav = new ModelAndView("redirect:/admin/showbookings");
 		mav.addObject("result", result);
 		return mav;
+	}
+	*/
+	
+	@GetMapping("/editparameterform")
+	public String showEditParameter(@RequestParam(required = false) String result,
+			@RequestParam(required = true) Integer parameterId,
+			Model model) {
+
+		ParameterEntity parameter = parameterService.findByParameterId(parameterId);
+
+		if (parameter == null) {
+			result = "El parametro solicitado no existe";
+			return "redirect:/admin/showbookings?result=" + result;
+		}
+
+		model.addAttribute("parameter", parameter);
+
+		model.addAttribute("result", result);
+
+		return ViewConstants.PARAMETER_ADMIN_EDIT;
 	}
 
 	@PostMapping("/editparameter")

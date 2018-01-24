@@ -2,9 +2,6 @@ package com.bambinocare.model.service;
 
 import java.util.List;
 
-import org.springframework.security.core.userdetails.User;
-
-import com.bambinocare.model.ValidationModel;
 import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.entity.VerificationTokenEntity;
 

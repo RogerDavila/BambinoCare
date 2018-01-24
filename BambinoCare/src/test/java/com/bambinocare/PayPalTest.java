@@ -24,7 +24,7 @@ public class PayPalTest {
 	private static final String MODE = "sandbox";
 
 	public static void main(String[] args) throws PayPalRESTException {
-		Payment payment = createPayment();
+		createPayment();
 		executePayment();
 	}
 

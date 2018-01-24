@@ -33,16 +33,16 @@ public class LoginController {
 	
 	@GetMapping("/login")
 	public String showLoginForm( Model model,
-			@RequestParam(name="result", required=false) String result, 
+			@RequestParam(name="error", required=false) String error, 
 			@RequestParam(name="logout", required=false)String logout){
 		
 		if(!SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst().get().getAuthority().equals("ROLE_ANONYMOUS")) {
 			return "redirect:/loginsuccess";
 		}
 		
-		result = (result != null) ? "Usuario/Contraseña inv%C3%A1lidos" : null;
+		error = (error != null) ? "Usuario/Contraseña inv%C3%A1lidos" : null;
 		
-		model.addAttribute("result", result);
+		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);
 		return ViewConstants.LOGIN_FORM;
 	}

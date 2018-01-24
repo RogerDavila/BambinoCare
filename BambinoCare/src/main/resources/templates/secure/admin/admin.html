@@ -65,7 +65,7 @@
 								<th>Nanny</th>
 								<th>Duración</th>
 								<th>Costo</th>
-								<th colspan="3">Acciones</th>
+								<th colspan="2">Acciones</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -125,12 +125,12 @@
 									th:text="${booking.nanny == null ? '' : booking.nanny.user.firstname}"></td>
 								<td th:text="${booking.duration}"></td>
 								<td th:text="${booking.cost}"></td>
-								<td><a href="#"
+								<!-- <td><a href="#"
 									class="btn-floating deep-purple lighten-1 tooltipped"
 									data-position="bottom" data-tooltip="Editar" data-delay="50"
 									th:href="@{/admin/editbookingform?bookingId=__${booking.bookingId}__}">
 										<i class="material-icons">edit</i>
-								</a></td>
+								</a></td> -->
 								<td><form th:action="@{/admin/cancelbooking}" method="post">
 										<input type="hidden" name="bookingId"
 											th:value="${booking.bookingId}" />

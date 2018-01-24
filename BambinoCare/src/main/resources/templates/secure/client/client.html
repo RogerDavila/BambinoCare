@@ -114,7 +114,7 @@
 										<th>Costo</th>
 										<th>Tutorias</th>
 										<th>Eventos</th>
-										<th colspan="2" align="left">Acciones</th>
+										<th>Cancelar</th>
 										<th></th>
 									</tr>
 								</thead>
@@ -147,12 +147,12 @@
 										<td th:text="${booking.cost}"></td>
 										<td th:text="${booking.tutory == null ? '' : booking.tutory.course}"></td>
 										<td th:text="${booking.event == null ? '' : booking.event.eventType.eventTypeDesc}"></td>
-										<td><a href="#"
+										<!-- <td><a href="#"
 											class="btn-floating deep-purple lighten-1 tooltipped"
 											data-position="bottom" data-tooltip="Editar" data-delay="50"
 											th:href="@{/users/editbookingform?bookingId=__${booking.bookingId}__}">
 												<i class="material-icons">edit</i>
-										</a></td>
+										</a></td> -->
 										<td><form th:action="@{/users/cancelbooking}"
 												method="post">
 												<input type="hidden" name="bookingId"

@@ -428,6 +428,7 @@ public class UserController {
 
 	}
 
+	/*
 	@GetMapping("/editbookingform")
 	public ModelAndView showEditBooking(@RequestParam(required = false) String result,
 			@RequestParam(required = true) Integer bookingId, Model model) {
@@ -532,7 +533,8 @@ public class UserController {
 		mav.addObject("result", result);
 		return mav;
 	}
-
+*/
+	
 	@PostMapping("/edituser")
 	public ModelAndView edituser(@ModelAttribute(name = "client") ClientEntity client, BindingResult bindingResult,
 			Model model) {
