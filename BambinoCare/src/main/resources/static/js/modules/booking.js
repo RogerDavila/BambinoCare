@@ -8,6 +8,7 @@ var options = {
 
 $(function () {
 	if(perfil != 'nanny'){
+		totalCost = totalCost ? totalCost : 0.00;
 		document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
 	}
     calculateCost();
@@ -42,6 +43,7 @@ $(function () {
     $("#duration, input[type='checkbox'], #bookingtype, #bambinosqty")
         .change(function () {
             calculateCostByBookingType();
+            totalCost = totalCost ? totalCost : 0.00;
             document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
         });
 
@@ -124,7 +126,6 @@ $(function () {
 
         /* <![CDATA[ */
         if (sum > 3) {
-            console.log("Entra en sum")
             if (showMessage < 1) {
                 $('#bambinomodal').modal('open');
             }
@@ -162,6 +163,7 @@ $(function () {
                 }
             }
         }/* ]]> */
+        console.log(totalCost);
         return totalCost;
     }
 
@@ -178,7 +180,6 @@ $(function () {
     $("#tutory").hide();
     $("#event").hide();
     
-    console.log($('#bookingtype').val());
     if($('#bookingtype').val() == 2){
     	$("#tutory").show();
     	$("#infobambinos").hide();
