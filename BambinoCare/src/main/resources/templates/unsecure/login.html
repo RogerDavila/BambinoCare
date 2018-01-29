@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta name="viewport"
-	content="width=device-width, initial-scale=1;text/html; charset=UTF-8"
+<meta name="viewport" content="width=device-width, initial-scale=1"
 	http-equiv="Content-Type" />
+<meta charset="UTF-8" />
+
 <title>BambinoCare</title>
 
 <!-- CSS  -->
@@ -21,12 +22,11 @@
 
 	<div>
 		<div class="">
-			<br />
-			<br />
+			<br /> <br />
 			<div class="row container">
 				<div class="col s4"></div>
-				<form class="white pad z-depth-5 s4 z-depth-5" th:action="@{/logincheck}"
-					method="POST">
+				<form class="white pad z-depth-5 s4 z-depth-5"
+					th:action="@{/logincheck}" method="POST">
 					<input type="hidden" name="${csrf.parametername}"
 						value="${_csrf.token}" />
 					<div class="row center black-text">
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div th:if="${error != null}" id="result"></div>
 
 	<div th:include="/secure/fragments/modal :: modal(${error})"></div>

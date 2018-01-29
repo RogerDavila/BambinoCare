@@ -13,9 +13,12 @@ public class TimeTest {
 		try {
 			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 	        String dateInString = "26/12/2017";
+	        String hour = "23:30";
 			Date date = formatter.parse(dateInString);
 			System.out.println(date);
-			System.out.println(isValideDate(date,"21:36"));
+			System.out.println(getBookingDateTime(date,hour , 4.0, false));
+			System.out.println(getBookingDateTime(date, hour, 12.350000000000001, true));
+			//System.out.println(isValideDate(date,"21:36"));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,5 +86,28 @@ public class TimeTest {
 		
 		return isValideDate;
 		
+	}
+	
+	public static Date getBookingDateTime(Date bookingDate, String hour, Double duration, boolean isFinalDate) {
+		
+		Calendar date = Calendar.getInstance();
+		
+		Calendar originDate = Calendar.getInstance();
+		originDate.setTime(bookingDate);
+		String[] originTimeArr = hour.split(":");
+		
+		date.set(originDate.get(Calendar.YEAR), originDate.get(Calendar.MONTH),
+				originDate.get(Calendar.DAY_OF_MONTH), Integer.parseInt(originTimeArr[0]),
+				Integer.parseInt(originTimeArr[1]),0);
+		
+		if(isFinalDate){
+			Integer hours = duration.intValue();
+			Double minutesAux = (duration - hours) * 60;
+			Integer minutes = minutesAux.intValue();
+			date.add(Calendar.HOUR_OF_DAY, hours);
+			date.add(Calendar.MINUTE, minutes);
+		}
+		
+		return date.getTime();
 	}
 }

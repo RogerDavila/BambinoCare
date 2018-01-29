@@ -134,3 +134,7 @@ footer.page-footer {
 .dropdown-content li > a, .dropdown-content li > span{
 	color: #7c4dff
 }
+
+.slideimg{
+	opacity: 0.8
+}

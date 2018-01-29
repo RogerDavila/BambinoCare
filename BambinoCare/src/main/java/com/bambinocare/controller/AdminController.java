@@ -259,7 +259,7 @@ public class AdminController {
 					"Reservación Modificada",
 					"Su reservación del día " + oldBooking.getDate()
 							+ "ha sido modificada. Puedes revisar el detalle en"
-							+ " la siguiente liga: \n\r \n\r localhost:8080");
+							+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 			result = "La reservaci%C3%B3n fue modificada con %C3%A9xito!";
 		} else {
 			result = "Ocurri%C3%B3 un error al intentar editar la reservaci%C3%B3n, vuelva a intentarlo";
@@ -342,7 +342,7 @@ public class AdminController {
 						"Reservación Cancelada",
 						"Su reservación del día del día " + booking.getDate()
 								+ "  ha sido cancelada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r localhost:8080");
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 
 			} else {
 				result = "No se permiten cancelaciones de reservaci%C3%B3n";
@@ -371,7 +371,19 @@ public class AdminController {
 		if (booking != null) {
 
 			if (nanny.getNannyId() != null && booking.getNanny() == null) {
-				booking.setNanny(nanny);
+				if(nannyService.isNannyAvailable(booking.getStartDateTime(), booking.getFinishDateTime(),nanny)) {
+					booking.setNanny(nanny);
+				}else {
+					result = "La nanny seleccionada no esta disponible en ese horario";
+					booking.getDate();
+					booking.getDuration();
+					List<NannyEntity> nannies = nannyService.findAllNannies();
+					model.addAttribute("nanny", nanny);
+					model.addAttribute("nannies", nannies);
+					model.addAttribute("bookingId", booking.getBookingId());
+					model.addAttribute("result", result);
+					return ViewConstants.NANNY_ASSIGN;
+				}
 			} else if (booking.getNanny() == null) {
 				NannyEntity nannyToAssign = new NannyEntity();
 				List<NannyEntity> nannies = nannyService.findAllNannies();
@@ -401,7 +413,7 @@ public class AdminController {
 
 				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
 						"Reservación Confirmada",
-						"Su reservación ha sido confirmada. Puede ingresar a su perfil para verificar la información de la Bambinaia que estar%C3%A1 asistiendo a la cita en el horario de "
+						"Su reservación ha sido confirmada. Puede ingresar a su perfil para verificar la información de la Bambinaia que estará asistiendo a la cita en el horario de "
 								+ initialTime + " a " + finalTime + " el día " + dateStr + " \r\n"
 								+ "\r\nAgradecemos su preferencia.\r\n");
 
@@ -435,7 +447,7 @@ public class AdminController {
 						"Reservación Rechazada",
 						"Su reservación del día " + booking.getDate()
 								+ "  ha sido rechazada. Puedes revisar el detalle en"
-								+ " la siguiente liga: \n\r \n\r localhost:8080");
+								+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 
 			} else {
 				result = "No se permite rechazar la reservaci%C3%B3n solicitada";

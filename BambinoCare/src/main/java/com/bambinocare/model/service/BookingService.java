@@ -48,5 +48,9 @@ public interface BookingService {
 	boolean isValideHour (String hour);
 	
 	ValidationModel validateBookingForm(BookingEntity booking, User user);
+	
+	Date getBookingDateTime(Date bookingDate, String hour, Double duration, boolean isFinalDate);
+	
+	List<BookingEntity> findByNanny(NannyEntity nanny);
 
 }

@@ -40,7 +40,7 @@ public class LoginController {
 			return "redirect:/loginsuccess";
 		}
 		
-		error = (error != null) ? "Usuario/Contraseña inv%C3%A1lidos" : null;
+		error = (error != null) ? "Usuario/Contraseña inválidos" : null;
 		
 		model.addAttribute("error", error);
 		model.addAttribute("logout", logout);

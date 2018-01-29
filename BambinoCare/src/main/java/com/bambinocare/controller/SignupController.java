@@ -145,7 +145,7 @@ public class SignupController {
 
 			mav = new ModelAndView(ViewConstants.SIGNUP_FORM);
 
-			result = "La contraseña y la confirmaci%C3%B3n de contraseña no co%C3%ADnciden";
+			result = "La contraseña y la confirmación de contraseña no coínciden";
 			List<RoleEntity> roles = roleService.findAllRoles();
 			List<CityEntity> cities = cityService.findAll();
 			List<StateEntity> states = stateService.findAll();
@@ -178,19 +178,20 @@ public class SignupController {
 		}
 
 		if (clientService.createClient(client) != null) {
-			result = "Usuario registrado con %C3%A9xito!. En breve recibir%C3%A1s un correo de confirmaci%C3%B3n de tu cuenta, con la que tendr%C3%A1s acceso a promociones y mejores tarifas, podr%C3%A1s realizar tus reservaciones de una manera sencilla y recibir%C3%A1s informaci%C3%B3n importante.";
+			result = "Usuario registrado con éxito!. En breve recibirás un correo de confirmación de tu cuenta, con la que tendrás acceso a promociones y mejores tarifas, podrás realizar tus reservaciones de una manera sencilla y recibirás información importante.";
 			UserEntity user = client.getUser();
 
 			if (!userService.userExist(user.getEmail())) {
-				// Arrojar mensaje de error TEST2
+				result = "Ocurrió un error al intentar registrar el usuario. Favor de intentar nuevamente";
 			} else {
 				String appUrl = "/signup" + request.getContextPath();
 				eventPublisher.publishEvent(new OnRegistrationCompleteEvent(user, appUrl));
 			}
 		} else {
-			result = "Ocurri%C3%B3 un error al intentar registrar el usuario, por favor intente nuevamente";
+			result = "Ocurrió un error al intentar registrar el usuario, por favor intente nuevamente";
 		}
-		mav.setViewName("redirect:/signup/signupform?result=" + result);
+		mav.setViewName("redirect:/signup/signupform");
+		mav.addObject("result", result);
 		return mav;
 	}
 

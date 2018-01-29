@@ -38,7 +38,7 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	@Qualifier("emergencyContactService")
 	private EmergencyContactService emergencyContactService;
-	
+
 	@Autowired
 	@Qualifier("eventTypeService")
 	private EventTypeService eventTypeService;
@@ -279,12 +279,12 @@ public class BookingServiceImpl implements BookingService {
 
 		// Validaciones para Bambino Events
 		if (booking.getBookingType().getBookingTypeId() == 3) {
-			
+
 			if (booking.getEvent() == null) {
 				result = "Ocurri%C3%B3 un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
 				return new ValidationModel(result, requireOtherView, otherView);
 			}
-			
+
 			if (booking.getEvent().getEventType() == null) {
 				result = "Favor de especificar un tipo de Evento";
 				return new ValidationModel(result, requireOtherView, otherView);
@@ -317,6 +317,40 @@ public class BookingServiceImpl implements BookingService {
 		}
 
 		return new ValidationModel(result, requireOtherView, otherView);
+	}
+
+	@Override
+	public Date getBookingDateTime(Date bookingDate, String hour, Double duration, boolean isFinalDate) {
+
+		Calendar date = Calendar.getInstance();
+
+		Calendar originDate = Calendar.getInstance();
+		originDate.setTime(bookingDate);
+		String[] originTimeArr = hour.split(":");
+
+		date.set(originDate.get(Calendar.YEAR), originDate.get(Calendar.MONTH), originDate.get(Calendar.DAY_OF_MONTH),
+				Integer.parseInt(originTimeArr[0]), Integer.parseInt(originTimeArr[1]), 0);
+
+		if (isFinalDate) {
+			Integer hours = duration.intValue();
+			Double minutesAux = (duration - hours) * 60;
+			Integer minutes = minutesAux.intValue();
+			date.add(Calendar.HOUR_OF_DAY, hours);
+			date.add(Calendar.MINUTE, minutes);
+			date.set(Calendar.MILLISECOND, 0);
+		}
+
+		return date.getTime();
+	}
+
+	@Override
+	public List<BookingEntity> findByNanny(NannyEntity nanny) {
+		
+		if(nanny == null) {
+			return null;
+		}
+		
+		return bookingRepository.findByNanny(nanny);
 	}
 
 }

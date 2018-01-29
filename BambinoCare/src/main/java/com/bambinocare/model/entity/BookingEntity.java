@@ -81,13 +81,21 @@ public class BookingEntity {
 	@Transient
 	private List<String> bambinoId;
 	
+	@Column(name="start_datetime", columnDefinition="DATETIME", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date startDateTime;
+	
+	@Column(name = "finish_datetime",columnDefinition="DATETIME",  nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date finishDateTime;
+	
 	public BookingEntity() {
 	}
 
 	public BookingEntity(Integer bookingId, ClientEntity client, Set<BambinoEntity> bambino,
 			BookingTypeEntity bookingType, Date date, String hour, Double duration, BookingStatusEntity bookingStatus,
 			NannyEntity nanny, Double cost, TutoryEntity tutory, EventEntity event, PaymentTypeEntity paymentType,
-			List<String> bambinoId) {
+			List<String> bambinoId, Date startDateTime, Date finishDateTime) {
 		super();
 		this.bookingId = bookingId;
 		this.client = client;
@@ -103,6 +111,8 @@ public class BookingEntity {
 		this.event = event;
 		this.paymentType = paymentType;
 		this.bambinoId = bambinoId;
+		this.startDateTime = startDateTime;
+		this.finishDateTime = finishDateTime;
 	}
 
 	public Integer getBookingId() {
@@ -215,6 +225,22 @@ public class BookingEntity {
 
 	public void setBambinoId(List<String> bambinoId) {
 		this.bambinoId = bambinoId;
+	}
+
+	public Date getStartDateTime() {
+		return startDateTime;
+	}
+
+	public void setStartDateTime(Date startDateTime) {
+		this.startDateTime = startDateTime;
+	}
+
+	public Date getFinishDateTime() {
+		return finishDateTime;
+	}
+
+	public void setFinishDateTime(Date finishDateTime) {
+		this.finishDateTime = finishDateTime;
 	}
 
 }

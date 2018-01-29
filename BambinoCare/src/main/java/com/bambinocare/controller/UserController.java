@@ -248,10 +248,14 @@ public class UserController {
 
 		BookingStatusEntity bookingStatus = bookingStatusService.findByBookingStatusDesc("Pendiente Pago");
 		booking.setBookingStatus(bookingStatus);
-
 		booking.setCost(costService.calculateTotalCostByBooking(booking));
-
 		booking.setDate(bookingService.getDate(booking.getDate(), 1));
+
+		// Imlepementar lógica para llenar los campos de startDateTime y finishDateTime
+		booking.setStartDateTime(
+				bookingService.getBookingDateTime(booking.getDate(), booking.getHour(), booking.getDuration(), false));
+		booking.setFinishDateTime(
+				bookingService.getBookingDateTime(booking.getDate(), booking.getHour(), booking.getDuration(), true));
 
 		if (booking.getBookingType().getBookingTypeId() != 3) {
 			booking.setEvent(null);
@@ -424,136 +428,126 @@ public class UserController {
 				+ booking.getClient().getStreet() + " " + booking.getClient().getNeighborhood() + " "
 				+ booking.getClient().getState().getStateDesc() + "</td></tr>"
 				+ "</tbody></table><p>Puedes revisar el detalle en"
-				+ " la siguiente liga: \n\r \n\r localhost:8080</p></body></html>";
+				+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx</p></body></html>";
 
 	}
 
 	/*
-	@GetMapping("/editbookingform")
-	public ModelAndView showEditBooking(@RequestParam(required = false) String result,
-			@RequestParam(required = true) Integer bookingId, Model model) {
+	 * @GetMapping("/editbookingform") public ModelAndView
+	 * showEditBooking(@RequestParam(required = false) String result,
+	 * 
+	 * @RequestParam(required = true) Integer bookingId, Model model) {
+	 * 
+	 * ModelAndView mav; User user = (User)
+	 * SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	 * UserEntity userEntity = userService.findByEmail(user.getUsername());
+	 * 
+	 * BookingEntity booking =
+	 * bookingService.findByBookingIdAndUserAndBookingStatusBookingStatusDescNotIn(
+	 * bookingId, userEntity, "Cancelada");
+	 * 
+	 * if (booking == null) { result =
+	 * "La reservaci%C3%B3n solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada"
+	 * ; mav = new ModelAndView("redirect:/users/showbookings");
+	 * mav.addObject("result", result); return mav; }
+	 * 
+	 * if (booking.getBambino() != null) { List<String> bambinoIds = new
+	 * ArrayList<>(); for (BambinoEntity bambino : booking.getBambino()) {
+	 * bambinoIds.add(bambino.getBambinoId().toString()); }
+	 * booking.setBambinoId(bambinoIds); }
+	 * 
+	 * mav = new ModelAndView(ViewConstants.BOOKING_EDIT);
+	 * mav.addAllObjects(getModelMapForCreateBookingForm(result, booking)); return
+	 * mav; }
+	 * 
+	 * @PostMapping("/editbooking") public ModelAndView
+	 * editBooking(@ModelAttribute(name = "booking") BookingEntity booking,
+	 * BindingResult bindingResult, Model model) {
+	 * 
+	 * ModelAndView mav = new ModelAndView();
+	 * 
+	 * String result = "";
+	 * 
+	 * User user = (User)
+	 * SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	 * UserEntity userEntity = userService.findByEmail(user.getUsername());
+	 * 
+	 * ValidationModel validationModel = bookingService.validateBookingForm(booking,
+	 * user);
+	 * 
+	 * if (validationModel.getResult() != null) { if
+	 * (validationModel.isRequireOtherView()) { mav = new
+	 * ModelAndView(validationModel.getOtherView()); mav.addObject("result",
+	 * validationModel.getResult()); } else { mav = new
+	 * ModelAndView(ViewConstants.BOOKING_EDIT);
+	 * mav.addAllObjects(getModelMapForCreateBookingForm(validationModel.getResult()
+	 * , booking)); } return mav; }
+	 * 
+	 * // Asignación de Bambinos solo para BambinoCare y BambinoASAP if
+	 * (booking.getBookingType().getBookingTypeId() == 1 ||
+	 * booking.getBookingType().getBookingTypeId() == 4) { if (booking.getBambino()
+	 * != null) { List<String> bambinoIds = new ArrayList<>(); for (BambinoEntity
+	 * bambino : booking.getBambino()) {
+	 * bambinoIds.add(bambino.getBambinoId().toString()); }
+	 * booking.setBambinoId(bambinoIds); }
+	 * 
+	 * if (booking.getBambinoId().size() <= 0) { mav = new
+	 * ModelAndView(ViewConstants.BOOKING_EDIT); result =
+	 * "Favor de elegir al menos un bambino";
+	 * mav.addAllObjects(getModelMapForCreateBookingForm(result, booking)); return
+	 * mav; }
+	 * 
+	 * booking.setBambino(bambinoService.findBambinosByBambinoIdAndUser(booking.
+	 * getBambinoId(), userEntity));
+	 * 
+	 * if (booking.getBambino().isEmpty()) { mav = new
+	 * ModelAndView(ViewConstants.BOOKING_EDIT); result =
+	 * "Ocurri%C3%B3 un error al intentar agregar a los bambinos";
+	 * mav.addAllObjects(getModelMapForCreateBookingForm(result, booking)); return
+	 * mav; } }
+	 * 
+	 * BookingEntity oldBooking =
+	 * bookingService.findByBookingIdAndUser(booking.getBookingId(), userEntity);
+	 * 
+	 * oldBooking.setDuration(booking.getDuration());
+	 * oldBooking.setDate(bookingService.getDate(booking.getDate(), 1));
+	 * oldBooking.setHour(booking.getHour());
+	 * oldBooking.setBambino(booking.getBambino());
+	 * oldBooking.setCost(costService.calculateTotalCostByBooking(booking));
+	 * 
+	 * if (bookingService.createBooking(oldBooking) != null) {
+	 * emailService.sendSimpleMessage("rogerdavila.stech@gmail.com",
+	 * "Reservación Modificada", "El usuario " +
+	 * oldBooking.getClient().getUser().getEmail() +
+	 * " ha modificado la reservación del día " + oldBooking.getDate() +
+	 * ". Puedes revisar el detalle en" +
+	 * " la siguiente liga: \n\r \n\r www.bambinocare.com.mx"); result =
+	 * "La reservaci%C3%B3n fue modificada con %C3%A9xito!"; } else { result =
+	 * "Ocurri%C3%B3 un error al intentar editar la reservaci%C3%B3n, vuelva a intentarlo"
+	 * ; }
+	 * 
+	 * mav = new ModelAndView("redirect:/users/showbookings#Reservaciones");
+	 * mav.addObject("result", result); return mav; }
+	 */
 
-		ModelAndView mav;
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findByEmail(user.getUsername());
-
-		BookingEntity booking = bookingService.findByBookingIdAndUserAndBookingStatusBookingStatusDescNotIn(bookingId,
-				userEntity, "Cancelada");
-
-		if (booking == null) {
-			result = "La reservaci%C3%B3n solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada";
-			mav = new ModelAndView("redirect:/users/showbookings");
-			mav.addObject("result", result);
-			return mav;
-		}
-
-		if (booking.getBambino() != null) {
-			List<String> bambinoIds = new ArrayList<>();
-			for (BambinoEntity bambino : booking.getBambino()) {
-				bambinoIds.add(bambino.getBambinoId().toString());
-			}
-			booking.setBambinoId(bambinoIds);
-		}
-
-		mav = new ModelAndView(ViewConstants.BOOKING_EDIT);
-		mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
-		return mav;
-	}
-
-	@PostMapping("/editbooking")
-	public ModelAndView editBooking(@ModelAttribute(name = "booking") BookingEntity booking,
-			BindingResult bindingResult, Model model) {
-
-		ModelAndView mav = new ModelAndView();
-
-		String result = "";
-
-		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserEntity userEntity = userService.findByEmail(user.getUsername());
-
-		ValidationModel validationModel = bookingService.validateBookingForm(booking, user);
-
-		if (validationModel.getResult() != null) {
-			if (validationModel.isRequireOtherView()) {
-				mav = new ModelAndView(validationModel.getOtherView());
-				mav.addObject("result", validationModel.getResult());
-			} else {
-				mav = new ModelAndView(ViewConstants.BOOKING_EDIT);
-				mav.addAllObjects(getModelMapForCreateBookingForm(validationModel.getResult(), booking));
-			}
-			return mav;
-		}
-
-		// Asignación de Bambinos solo para BambinoCare y BambinoASAP
-		if (booking.getBookingType().getBookingTypeId() == 1 || booking.getBookingType().getBookingTypeId() == 4) {
-			if (booking.getBambino() != null) {
-				List<String> bambinoIds = new ArrayList<>();
-				for (BambinoEntity bambino : booking.getBambino()) {
-					bambinoIds.add(bambino.getBambinoId().toString());
-				}
-				booking.setBambinoId(bambinoIds);
-			}
-
-			if (booking.getBambinoId().size() <= 0) {
-				mav = new ModelAndView(ViewConstants.BOOKING_EDIT);
-				result = "Favor de elegir al menos un bambino";
-				mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
-				return mav;
-			}
-
-			booking.setBambino(bambinoService.findBambinosByBambinoIdAndUser(booking.getBambinoId(), userEntity));
-
-			if (booking.getBambino().isEmpty()) {
-				mav = new ModelAndView(ViewConstants.BOOKING_EDIT);
-				result = "Ocurri%C3%B3 un error al intentar agregar a los bambinos";
-				mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
-				return mav;
-			}
-		}
-
-		BookingEntity oldBooking = bookingService.findByBookingIdAndUser(booking.getBookingId(), userEntity);
-
-		oldBooking.setDuration(booking.getDuration());
-		oldBooking.setDate(bookingService.getDate(booking.getDate(), 1));
-		oldBooking.setHour(booking.getHour());
-		oldBooking.setBambino(booking.getBambino());
-		oldBooking.setCost(costService.calculateTotalCostByBooking(booking));
-
-		if (bookingService.createBooking(oldBooking) != null) {
-			emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Modificada",
-					"El usuario " + oldBooking.getClient().getUser().getEmail()
-							+ " ha modificado la reservación del día " + oldBooking.getDate()
-							+ ". Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
-			result = "La reservaci%C3%B3n fue modificada con %C3%A9xito!";
-		} else {
-			result = "Ocurri%C3%B3 un error al intentar editar la reservaci%C3%B3n, vuelva a intentarlo";
-		}
-
-		mav = new ModelAndView("redirect:/users/showbookings#Reservaciones");
-		mav.addObject("result", result);
-		return mav;
-	}
-*/
-	
 	@PostMapping("/edituser")
 	public ModelAndView edituser(@ModelAttribute(name = "client") ClientEntity client, BindingResult bindingResult,
 			Model model) {
 
-		
 		ModelAndView mav;
-		
+
 		String empty = "";
 		String result = empty;
-		
+
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
-		
+
 		ValidationModel validationModel = clientService.validateClientForm(client, user);
 
 		if (validationModel.getResult() != null) {
 			if (validationModel.isRequireOtherView()) {
 				mav = new ModelAndView(validationModel.getOtherView());
-				
+
 			} else {
 				mav = new ModelAndView("redirect:/users/showbookings");
 			}
@@ -584,9 +578,9 @@ public class UserController {
 		} else {
 			result = "Ocurri%C3%B3 un error al intentar editar el perfil, vuelva a intentarlo";
 		}
-		
+
 		mav = new ModelAndView("redirect:/users/showbookings");
-		mav.addObject("result",result);
+		mav.addObject("result", result);
 		return mav;
 	}
 
@@ -612,7 +606,7 @@ public class UserController {
 				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
 						"El usuario " + booking.getClient().getUser().getEmail()
 								+ " ha cancelado su reservación del día " + booking.getDate()
-								+ " Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
+								+ " Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
 
 			} else {
 				result = "No se permiten cancelaciones de reservaci%C3%B3n";
@@ -629,8 +623,8 @@ public class UserController {
 		return "redirect:/users/showbookings";
 	}
 
-	//Bambinos
-	
+	// Bambinos
+
 	@PostMapping("/newbambino")
 	public String newbambino(@ModelAttribute(name = "bambino") BambinoEntity bambino, BindingResult bindingResult,
 			Model model) {
