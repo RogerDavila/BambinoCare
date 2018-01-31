@@ -17,5 +17,6 @@ public interface UserService {
 	UserEntity updatePassword(String email, String password);
 	void createVerificationToken(UserEntity user, String token);
 	VerificationTokenEntity getVerificationToken(String verificationToken);
+	Long deleteByToken(String token);
 	
 }

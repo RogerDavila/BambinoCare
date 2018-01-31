@@ -113,5 +113,13 @@ public class UserServiceImpl implements UserDetailsService, UserService{
 	public VerificationTokenEntity getVerificationToken(String verificationToken) {
 		return verificationTokenRepository.findByToken(verificationToken);
 	}
+
+	@Override
+	public Long deleteByToken(String token) {
+		if(token == null || token.equals("")) {
+			return null;
+		}
+		return verificationTokenRepository.deleteByToken(token);
+	}
 	
 }

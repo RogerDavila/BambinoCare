@@ -85,7 +85,6 @@ public class LoginController {
 		String result = null;
 		if(!userService.userExist(user.getEmail())) {
 			result = "El email introducido no existe.";
-			return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 		}else {
 			RandomPassword rp = new RandomPassword();
 			user.setPassword(rp.nextString());
@@ -94,11 +93,12 @@ public class LoginController {
 				emailService.sendSimpleMessage(user.getEmail(), "BambinoCare - Cambio de contraseña", "Hola " + newUser.getFirstname() + "!,\n\r "
 						+ "Te enviamos tu nueva contraseña: " + user.getPassword());
 				result = "Tu nueva contraseña fue enviada a tu correo.";
-				return new ModelAndView("redirect:/recoverypasswordform?result="+result);
 			}else {
-				result = "Ocurri%C3%B3 un error al intentar reestablecer tu contraseña, por favor intentalo de nuevo.";
-				return new ModelAndView("redirect:/recoverypasswordform?result="+result);
+				result = "Ocurrió un error al intentar reestablecer tu contraseña, por favor intentalo de nuevo.";
 			}
 		}
+		ModelAndView mav = new ModelAndView("redirect:/recoverypasswordform");
+		mav.addObject("result", result);
+		return mav;
 	}
 }

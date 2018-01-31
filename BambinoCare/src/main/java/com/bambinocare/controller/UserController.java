@@ -428,7 +428,7 @@ public class UserController {
 				+ booking.getClient().getStreet() + " " + booking.getClient().getNeighborhood() + " "
 				+ booking.getClient().getState().getStateDesc() + "</td></tr>"
 				+ "</tbody></table><p>Puedes revisar el detalle en"
-				+ " la siguiente liga: \n\r \n\r www.bambinocare.com.mx</p></body></html>";
+				+ " la siguiente liga: \n\r \n\r localhost:8080</p></body></html>";
 
 	}
 
@@ -521,7 +521,7 @@ public class UserController {
 	 * oldBooking.getClient().getUser().getEmail() +
 	 * " ha modificado la reservación del día " + oldBooking.getDate() +
 	 * ". Puedes revisar el detalle en" +
-	 * " la siguiente liga: \n\r \n\r www.bambinocare.com.mx"); result =
+	 * " la siguiente liga: \n\r \n\r localhost:8080"); result =
 	 * "La reservaci%C3%B3n fue modificada con %C3%A9xito!"; } else { result =
 	 * "Ocurri%C3%B3 un error al intentar editar la reservaci%C3%B3n, vuelva a intentarlo"
 	 * ; }
@@ -570,15 +570,16 @@ public class UserController {
 		if (clientService.saveClient(oldClient) != null) {
 			result = "Se ha modificado el perfil de usuario!";
 		} else {
-			result = "Ocurri%C3%B3 un error al intentar editar el perfil, vuelva a intentarlo";
+			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
 		}
 
+		/*
 		if (clientService.createClient(oldClient) != null) {
 			result = "Se ha modificado el perfil de usuario!";
 		} else {
-			result = "Ocurri%C3%B3 un error al intentar editar el perfil, vuelva a intentarlo";
+			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
 		}
-
+		*/
 		mav = new ModelAndView("redirect:/users/showbookings");
 		mav.addObject("result", result);
 		return mav;
@@ -606,7 +607,7 @@ public class UserController {
 				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
 						"El usuario " + booking.getClient().getUser().getEmail()
 								+ " ha cancelado su reservación del día " + booking.getDate()
-								+ " Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r www.bambinocare.com.mx");
+								+ " Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
 				result = "No se permiten cancelaciones de reservaci%C3%B3n";
