@@ -196,14 +196,15 @@ public class SignupController {
 	}
 
 	@GetMapping("/registrationConfirm")
-	public String confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
+	public ModelAndView confirmRegistration(WebRequest request, Model model, @RequestParam("token") String token) {
 
+		ModelAndView mav = new ModelAndView();
 		VerificationTokenEntity verificationToken = userService.getVerificationToken(token);
 		if (verificationToken == null) {
-			String result = "token no v%C3%A1lido";
-			model.addAttribute("result", result);
-
-			return "redirect:/baduser";
+			String result = "token no válido";
+			mav.addObject("result", result);
+			mav.setViewName("redirect:/baduser");
+			return mav;
 		}
 
 		UserEntity user = verificationToken.getUser();
@@ -211,14 +212,17 @@ public class SignupController {
 		user.setEnabled(true);
 		userService.editUser(user);
 
+		userService.deleteByToken(token);
+		
 		try {
 			emailService.sendMessageWithAttachment(user.getEmail(), "BambinoCare - Registro Exitoso",
 					"<html><body><img src='cid:registro.jpg'/></body></html>", "registro.jpg");
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
-
-		return "redirect:/login";
+		
+		mav.setViewName("redirect:/login");
+		return mav;
 	}
 
 	@GetMapping("/cancel")
