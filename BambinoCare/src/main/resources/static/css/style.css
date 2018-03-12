@@ -9,6 +9,10 @@ html {
 	font-family: sans-serif;
 }
 
+body {
+	height: 100vh;
+}
+
 .blk {
 	display: inline;
 }
@@ -131,10 +135,17 @@ footer.page-footer {
 	box-shadow: 0 1px 0 0 #7c4dff !important;
 }
 
-.dropdown-content li > a, .dropdown-content li > span{
+.dropdown-content li>a, .dropdown-content li>span {
 	color: #7c4dff
 }
 
-.slideimg{
+.slideimg {
 	opacity: 0.8
+}
+
+.index-btn {
+	font-size: 2em;
+	border: 0px;
+	margin-top: 1em;
+	width: 100%
 }

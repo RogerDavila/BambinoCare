@@ -8,7 +8,7 @@ INSERT INTO user(user_id,email,password,role_id,enabled,firstname,lastname,phone
 
 
 INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (1, 'Bambino Care');
-INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (2, 'Bambino Tutory');
+INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (2, 'Bambino Tutoring');
 INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (3, 'Bambino Events');
 INSERT INTO booking_type (booking_type_id, booking_type_desc) VALUES (4, 'Bambino ASAP');
 

@@ -51,7 +51,7 @@ $(function () {
         var bookingtype = $('#bookingtype option:selected').text();
         if (bookingtype == "Bambino Events") {
             calculateCostBambinoEvents(costsBambinoEvents);
-        } else if (bookingtype == "Bambino Tutory") {
+        } else if (bookingtype == "Bambino Tutoring") {
             calculateCost(1, costsBambinoTutory);
         } else if (bookingtype == "Bambino Care") {
             calculateCost(null, costsBambinoCare);
@@ -194,7 +194,7 @@ $(function () {
     		$("#tutory").hide();
     		$("#event").show();
     		$("#infobambinos").hide();
-    	}else if(bookingtype == "Bambino Tutory"){
+    	}else if(bookingtype == "Bambino Tutoring"){
     		$("#event").hide();
     		$("#tutory").show();
     		$("#infobambinos").hide();

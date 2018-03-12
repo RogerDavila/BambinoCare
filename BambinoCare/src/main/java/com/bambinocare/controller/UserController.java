@@ -330,7 +330,7 @@ public class UserController {
 				modelMap.addAttribute("costsbambinocare", costs);
 			} else if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino ASAP")) {
 				modelMap.addAttribute("costsbambinoasap", costs);
-			} else if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Tutory")) {
+			} else if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Tutoring")) {
 				modelMap.addAttribute("costsbambinotutory", costs);
 			} else if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Events")) {
 				modelMap.addAttribute("costsbambinoevents", costs);
