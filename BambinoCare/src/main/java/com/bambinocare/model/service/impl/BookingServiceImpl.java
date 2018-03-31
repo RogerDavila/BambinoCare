@@ -1,5 +1,8 @@
 package com.bambinocare.model.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
+import com.bambinocare.constant.TimeRestrictionConstants;
 import com.bambinocare.model.ValidationModel;
 import com.bambinocare.model.entity.BookingEntity;
 import com.bambinocare.model.entity.ClientEntity;
@@ -157,20 +161,46 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public boolean isValideDate(Date date, String hour) {
+	public long getRestrictionHoursByBookingTypeId (int bookingTypeId) {
+		
+		long addHours = 0;
+		
+		if (bookingTypeId == 1) {
+			addHours = TimeRestrictionConstants.BAMBINOCARE;
+		} else if (bookingTypeId == 2) {
+			addHours = TimeRestrictionConstants.BAMBINOTUTORING;
+		} else if (bookingTypeId == 3) {
+			addHours = TimeRestrictionConstants.BAMBINOEVENTS;
+		} else if (bookingTypeId == 4) {
+			addHours = TimeRestrictionConstants.BAMBINOASAP;
+		}
+		
+		return addHours;
+	}
+	
+	@Override
+	public boolean isValideDate(BookingEntity booking) {
 		boolean isValideDate = false;
 
-		String[] initialHourAux = hour.split(":");
+		String[] initialHourAux = booking.getHour().split(":");
 
 		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(getDate(date, 1));
-		calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(initialHourAux[0]));
-		calendar.set(Calendar.MINUTE, Integer.parseInt(initialHourAux[1]));
+		calendar.setTime(getDate(booking.getDate(), 1));
 
-		Calendar newCalendar = Calendar.getInstance();
-		newCalendar.add(Calendar.HOUR_OF_DAY, 24);
+		LocalDate localDate = LocalDate.of(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1,
+				calendar.get(Calendar.DAY_OF_MONTH));
+		
+		LocalTime localTime = LocalTime.of(Integer.parseInt(initialHourAux[0]), Integer.parseInt(initialHourAux[1]));
 
-		if (calendar.after(newCalendar)) {
+		LocalDateTime dateRequested = LocalDateTime.of(localDate, localTime);
+
+		Integer bookingType = booking.getBookingType().getBookingTypeId();
+
+		long addHours = getRestrictionHoursByBookingTypeId(bookingType);
+
+		LocalDateTime dateLater = LocalDateTime.now().plusHours(addHours);
+
+		if (dateRequested.isAfter(dateLater)) {
 			isValideDate = true;
 		}
 
@@ -219,7 +249,7 @@ public class BookingServiceImpl implements BookingService {
 		String otherView = null;
 
 		if (booking.getDuration() == null || booking.getDuration() == 0) {
-			result = "Favor de verificar el campo Duraci%C3%B3n";
+			result = "Favor de verificar el campo Duración";
 			return new ValidationModel(result, requireOtherView, otherView);
 		}
 		if (booking.getDate() == null) {
@@ -229,8 +259,12 @@ public class BookingServiceImpl implements BookingService {
 		if (booking.getHour() == null || booking.getHour().equals("")) {
 			result = "Favor de verificar el campo Hora";
 			return new ValidationModel(result, requireOtherView, otherView);
-		} else if (!isValideDate(booking.getDate(), booking.getHour())) {
-			result = "La reservaci%C3%B3n debe realizarse al menos 24 horas antes de la fecha solictada, le sugerimos revisar el servicio Bambino ASAP";
+		} else if (!isValideDate(booking)) {
+			long restrictionHours = getRestrictionHoursByBookingTypeId(booking.getBookingType().getBookingTypeId());
+			result = "La reservación debe realizarse al menos " + restrictionHours + " horas antes de la fecha solictada.";
+			if(booking.getBookingType().getBookingTypeId() == 1) {
+				result += " Le sugerimos revisar el servicio Bambino ASAP";
+			}
 			return new ValidationModel(result, requireOtherView, otherView);
 		} else if (!isValideHour(booking.getHour())) {
 			String serviceHour = parameterService.findByParameterKey("Hora Apertura").getParameterValue();
@@ -263,7 +297,7 @@ public class BookingServiceImpl implements BookingService {
 		// Validaciones para BambinoTutory
 		if (booking.getBookingType().getBookingTypeId() == 2) {
 			if (booking.getTutory() == null) {
-				result = "Ocurri%C3%B3 un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
+				result = "Ocurrió un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
 				return new ValidationModel(result, requireOtherView, otherView);
 			}
 			if (booking.getTutory().getCourse() == null
@@ -281,7 +315,7 @@ public class BookingServiceImpl implements BookingService {
 		if (booking.getBookingType().getBookingTypeId() == 3) {
 
 			if (booking.getEvent() == null) {
-				result = "Ocurri%C3%B3 un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
+				result = "Ocurrió un error al intentar generar el servicio seleccionado. Por favor intente de nuevo";
 				return new ValidationModel(result, requireOtherView, otherView);
 			}
 
@@ -345,11 +379,11 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public List<BookingEntity> findByNanny(NannyEntity nanny) {
-		
-		if(nanny == null) {
+
+		if (nanny == null) {
 			return null;
 		}
-		
+
 		return bookingRepository.findByNanny(nanny);
 	}
 

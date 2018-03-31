@@ -43,7 +43,7 @@ public interface BookingService {
 	
 	Date getDate(Date date, int days);
 	
-	boolean isValideDate (Date date, String hour);
+	boolean isValideDate (BookingEntity booking);
 	
 	boolean isValideHour (String hour);
 	
@@ -52,5 +52,7 @@ public interface BookingService {
 	Date getBookingDateTime(Date bookingDate, String hour, Double duration, boolean isFinalDate);
 	
 	List<BookingEntity> findByNanny(NannyEntity nanny);
+
+	long getRestrictionHoursByBookingTypeId(int bookingTypeId);
 
 }
