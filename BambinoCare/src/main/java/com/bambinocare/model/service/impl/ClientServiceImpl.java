@@ -90,7 +90,7 @@ public class ClientServiceImpl implements ClientService {
 		} else if (client.getJob() == null || client.getJob().equals(empty)) {
 			result = "Favor de verificar el campo Fecha";
 		} else if (!client.getUser().getPasswordConfirm().equals(client.getUser().getPassword())) {
-			result = "La contraseña y la confirmaci%C3%B3n de contraseña no co%C3%ADnciden";
+			result = "La contraseña y la confirmación de contraseña no coínciden";
 		}
 		
 		return new ValidationModel(result, requireOtherView, otherView);

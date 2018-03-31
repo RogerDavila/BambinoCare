@@ -181,7 +181,7 @@ public class UserController {
 
 			return ViewConstants.BOOKING_DETAIL_SHOW;
 		} else {
-			result = "No se encontr%C3%B3 la reservaci%C3%B3n solicitada o no tiene permisos para verla";
+			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
 		}
 
 		return "redirect:/users/showbookings?result=" + result;
@@ -240,7 +240,7 @@ public class UserController {
 
 			if (booking.getBambino().isEmpty()) {
 				mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
-				result = "Ocurri%C3%B3 un error al intentar agregar a los bambinos";
+				result = "Ocurrió un error al intentar agregar a los bambinos";
 				mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
 				return mav;
 			}
@@ -286,7 +286,7 @@ public class UserController {
 			// Si el método de pago es Deposito cuenta bancaria
 			if (paymentTypeDesc.equalsIgnoreCase("Pago en Oxxo o a cuenta Bancaria")) {
 				ModelMap modelmap = mav.getModelMap();
-				modelmap.addAttribute("result", "La reservaci%C3%B3n se ha realizado exitosamente");
+				modelmap.addAttribute("result", "La reservación se ha realizado exitosamente");
 				modelmap.addAttribute("bookingId", bookingCreated.getBookingId());
 				mav.addObject("result", "El pago se ha realizado exitosamente");
 				mav.addObject("bookingId", bookingCreated.getBookingId());
@@ -297,7 +297,7 @@ public class UserController {
 			// Si el método de pago es efectivo
 			if (paymentTypeDesc.equalsIgnoreCase("Pago en efectivo")) {
 				ModelMap modelmap = mav.getModelMap();
-				modelmap.addAttribute("result", "La reservaci%C3%B3n se ha realizado exitosamente");
+				modelmap.addAttribute("result", "La reservación se ha realizado exitosamente");
 				modelmap.addAttribute("bookingId", bookingCreated.getBookingId());
 				mav.addObject("result", "El pago se ha realizado exitosamente");
 				mav.addObject("bookingId", bookingCreated.getBookingId());
@@ -306,7 +306,7 @@ public class UserController {
 			}
 		} else {
 			mav = new ModelAndView("redirect:/users/createbookingform");
-			result = "No se ha podido realizar la reservaci%C3%B3n, intente nuevamente";
+			result = "No se ha podido realizar la reservación, intente nuevamente";
 			mav.addObject("result", result);
 			return mav;
 		}
@@ -375,7 +375,7 @@ public class UserController {
 			booking.setBookingStatus(bookingStatus);
 
 			if (bookingService.createBooking(booking) == null) {
-				result = "Ocurri%C3%B3 un error al guardar la reservaci%C3%B3n";
+				result = "Ocurrió un error al guardar la reservación";
 				mav = new ModelAndView("redirect:/users/showbookings?result=" + result + "#Reservaciones");
 				return mav;
 			}
@@ -393,7 +393,7 @@ public class UserController {
 			e.printStackTrace();
 		}
 
-		result = "La reservaci%C3%B3n se realiz%C3%B3 exitosamente.";
+		result = "La reservación se realizó exitosamente.";
 		mav = new ModelAndView("redirect:/users/showbookings?result=" + result + "#Reservaciones");
 		return mav;
 
@@ -447,7 +447,7 @@ public class UserController {
 	 * bookingId, userEntity, "Cancelada");
 	 * 
 	 * if (booking == null) { result =
-	 * "La reservaci%C3%B3n solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada"
+	 * "La reservación solicitada no existe o no tienes permisos para visualizarla o ya se encuentra cancelada"
 	 * ; mav = new ModelAndView("redirect:/users/showbookings");
 	 * mav.addObject("result", result); return mav; }
 	 * 
@@ -502,7 +502,7 @@ public class UserController {
 	 * 
 	 * if (booking.getBambino().isEmpty()) { mav = new
 	 * ModelAndView(ViewConstants.BOOKING_EDIT); result =
-	 * "Ocurri%C3%B3 un error al intentar agregar a los bambinos";
+	 * "Ocurrió un error al intentar agregar a los bambinos";
 	 * mav.addAllObjects(getModelMapForCreateBookingForm(result, booking)); return
 	 * mav; } }
 	 * 
@@ -522,8 +522,8 @@ public class UserController {
 	 * " ha modificado la reservación del día " + oldBooking.getDate() +
 	 * ". Puedes revisar el detalle en" +
 	 * " la siguiente liga: \n\r \n\r localhost:8080"); result =
-	 * "La reservaci%C3%B3n fue modificada con %C3%A9xito!"; } else { result =
-	 * "Ocurri%C3%B3 un error al intentar editar la reservaci%C3%B3n, vuelva a intentarlo"
+	 * "La reservación fue modificada con éxito!"; } else { result =
+	 * "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo"
 	 * ; }
 	 * 
 	 * mav = new ModelAndView("redirect:/users/showbookings#Reservaciones");
@@ -610,10 +610,10 @@ public class UserController {
 								+ " Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
 
 			} else {
-				result = "No se permiten cancelaciones de reservaci%C3%B3n";
+				result = "No se permiten cancelaciones de reservación";
 			}
 		} else {
-			result = "No se puede cancelar la reservaci%C3%B3n solicitada";
+			result = "No se puede cancelar la reservación solicitada";
 		}
 
 		return "redirect:/users/showbookings?result=" + result;
@@ -725,9 +725,9 @@ public class UserController {
 		oldbambino.setComments(bambino.getComments());
 
 		if (bambinoService.createBambino(oldbambino) != null) {
-			result = "El bambino fue modificado con %C3%A9xito!";
+			result = "El bambino fue modificado con éxito!";
 		} else {
-			result = "Ocurri%C3%B3 un error al intentar editar el bambino, vuelva a intentarlo";
+			result = "Ocurrió un error al intentar editar el bambino, vuelva a intentarlo";
 		}
 
 		return "redirect:/users/showbookings?result=" + result;
@@ -737,7 +737,7 @@ public class UserController {
 	public String removeBambino(@RequestParam(required = false) String result,
 			@RequestParam(required = true) Integer bambinoId, Model model) {
 		bambinoService.removeBambino(bambinoId);
-		result = "El bambino fue borrado con %C3%A9xito!";
+		result = "El bambino fue borrado con éxito!";
 		return "redirect:/users/showbookings?result=" + result;
 	}
 
@@ -869,9 +869,9 @@ public class UserController {
 		oldcontact.setRelationship(contact.getRelationship());
 
 		if (emergencyContactService.createContact(oldcontact) != null) {
-			result = "El contacto fue modificado con %C3%A9xito!";
+			result = "El contacto fue modificado con éxito!";
 		} else {
-			result = "Ocurri%C3%B3 un error al intentar editar el contacto, vuelva a intentarlo";
+			result = "Ocurrió un error al intentar editar el contacto, vuelva a intentarlo";
 		}
 
 		return "redirect:/users/showbookings?result=" + result;
@@ -881,7 +881,7 @@ public class UserController {
 	public String removeContacts(@RequestParam(required = false) String result,
 			@RequestParam(required = true) Integer contactId, Model model) {
 		emergencyContactService.removeContact(contactId);
-		result = "El bambino fue borrado con %C3%A9xito!";
+		result = "El bambino fue borrado con éxito!";
 		return "redirect:/users/showbookings?result=" + result;
 	}
 
