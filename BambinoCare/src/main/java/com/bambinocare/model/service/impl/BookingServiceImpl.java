@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.bambinocare.constant.TimeRestrictionConstants;
 import com.bambinocare.model.ValidationModel;
+import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
+import com.bambinocare.model.entity.BookingTypeEntity;
 import com.bambinocare.model.entity.ClientEntity;
 import com.bambinocare.model.entity.EmergencyContactEntity;
 import com.bambinocare.model.entity.NannyEntity;
@@ -23,6 +25,7 @@ import com.bambinocare.model.entity.UserEntity;
 import com.bambinocare.model.repository.BookingRepository;
 import com.bambinocare.model.service.BambinoService;
 import com.bambinocare.model.service.BookingService;
+import com.bambinocare.model.service.BookingTypeService;
 import com.bambinocare.model.service.ClientService;
 import com.bambinocare.model.service.EmergencyContactService;
 import com.bambinocare.model.service.EventTypeService;
@@ -54,6 +57,10 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	@Qualifier("parameterService")
 	private ParameterService parameterService;
+	
+	@Autowired
+	@Qualifier("bookingTypeService")
+	private BookingTypeService bookingTypeService;
 
 	@Override
 	public List<BookingEntity> findAllBookings() {
@@ -385,6 +392,40 @@ public class BookingServiceImpl implements BookingService {
 		}
 
 		return bookingRepository.findByNanny(nanny);
+	}
+	
+	@Override
+	public String getBookingHTML(BookingEntity booking) {
+
+		String bambinos = "";
+		String bambinosAges = "";
+		if (booking.getBookingType().getBookingTypeId() == 1 || booking.getBookingType().getBookingTypeId() == 4) {
+			for (BambinoEntity bambino : booking.getBambino()) {
+				bambinos += bambino.getFirstname() + " " + bambino.getLastname() + ",";
+				bambinosAges += bambino.getAge() + ",";
+			}
+			bambinos = bambinos.substring(0, bambinos.length() - 1);
+			bambinosAges = bambinosAges.substring(0, bambinosAges.length() - 1);
+		} else if (booking.getBookingType().getBookingTypeId() == 3) {
+			bambinosAges = booking.getEvent().getAge();
+		}
+
+		BookingTypeEntity bookingType = bookingTypeService
+				.findByBookingTypeId(booking.getBookingType().getBookingTypeId());
+
+		return "<html><body><p>El usuario " + booking.getClient().getUser().getEmail()
+				+ " ha agendado una nueva cita: </p><table border=\"1\">"
+				+ "<thead><tr><th>Nombre del Cliente</th><th>Email del Cliente</th><th>Servicio</th><th>Bambinos</th><th>Edades</th>"
+				+ "<th>Fecha</th><th>Horario</th><th>Lugar</th></tr></thead><tbody><tr><td>"
+				+ booking.getClient().getUser().getFirstname() + " " + booking.getClient().getUser().getLastname()
+				+ "</td><td>" + booking.getClient().getUser().getEmail() + "</td><td>"
+				+ bookingType.getBookingTypeDesc() + "</td><td>" + bambinos + "</td><td>" + bambinosAges + "</td><td>"
+				+ booking.getDate() + "</td><td>" + booking.getDuration() + "</td><td>"
+				+ booking.getClient().getStreet() + " " + booking.getClient().getNeighborhood() + " "
+				+ booking.getClient().getState().getStateDesc() + "</td></tr>"
+				+ "</tbody></table><p>Puedes revisar el detalle en"
+				+ " la siguiente liga: \n\r \n\r localhost:8080</p></body></html>";
+
 	}
 
 }

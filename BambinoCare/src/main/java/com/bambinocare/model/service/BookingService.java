@@ -55,4 +55,6 @@ public interface BookingService {
 
 	long getRestrictionHoursByBookingTypeId(int bookingTypeId);
 
+	String getBookingHTML(BookingEntity booking);
+
 }

@@ -13,7 +13,7 @@
 			<ul id="nav-mobile" class="right hide-on-med-and-down">
 				<li><a
 					class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
-					href="#modal1"> <i class="material-icons flo">person</i>
+					href="/nannies/showbookings"> <i class="material-icons flo">person</i>
 				</a> <output th:text="${username}"></output></li>
 				<li>
 					<form th:action="@{/logout}" method="POST">
@@ -23,15 +23,15 @@
 					</form>
 				</li>
 			</ul>
-			<ul class="side-nav" id="mobile-demo">
+			<ul class="side-nav black-text" id="mobile-demo">
 				<li><a
-					class="btn-floating btn-medium waves-effect waves-light deep-purple lighten-1 modal-trigger"
-					href="#modal1"> <i class="material-icons flo">person</i>
+					class="waves-effect waves-light white lighten-1 modal-trigger user-icon"
+					href="/nannies/showbookings"> <i class="material-icons flo">person</i>
 				</a> <output th:text="${username}"></output></li>
 				<li>
 					<form th:action="@{/logout}" method="POST">
 						<button type="submit"
-							class="waves-effect waves-teal btn-flat white-text">Cerrar
+							class="waves-effect waves-teal btn-flat">Cerrar
 							Sesión</button>
 					</form>
 				</li>
