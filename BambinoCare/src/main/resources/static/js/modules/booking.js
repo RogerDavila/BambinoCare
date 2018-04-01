@@ -182,7 +182,7 @@ $(function () {
     
     if($('#bookingtype').val() == 2){
     	$("#tutory").show();
-    	$("#infobambinos").hide();
+    	$("#infobambinos").show();
     }else if($('#bookingtype').val() == 3){
     	$("#event").show();
     	$("#infobambinos").hide();
@@ -197,7 +197,7 @@ $(function () {
     	}else if(bookingtype == "Bambino Tutoring"){
     		$("#event").hide();
     		$("#tutory").show();
-    		$("#infobambinos").hide();
+    		$("#infobambinos").show();
     	}else{
     		$("#event").hide();
     		$("#tutory").hide();

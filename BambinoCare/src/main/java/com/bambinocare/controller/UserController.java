@@ -225,8 +225,10 @@ public class UserController {
 			return mav;
 		}
 
-		// Asignación de Bambinos solo para BambinoCare y BambinoASAP
-		if (booking.getBookingType().getBookingTypeId() == 1 || booking.getBookingType().getBookingTypeId() == 4) {
+		// Asignación de Bambinos para Care ASAP y Tutoring
+		if (booking.getBookingType().getBookingTypeId() == 1 
+				|| booking.getBookingType().getBookingTypeId() == 4
+				|| booking.getBookingType().getBookingTypeId() == 2) {
 			if (booking.getBambino() != null) {
 				List<String> bambinoIds = new ArrayList<>();
 				for (BambinoEntity bambino : booking.getBambino()) {
@@ -372,7 +374,8 @@ public class UserController {
 		if (paymentType.equalsIgnoreCase("Paypal")) {
 			if (error != null) {
 				bookingService.delete(booking);
-				mav = new ModelAndView("redirect:/users/showbookings?result=" + error + "#Reservaciones");
+				mav = new ModelAndView("redirect:/users/showbookings#Reservaciones");
+				mav.addObject("result", result);
 				return mav;
 			}
 
@@ -382,7 +385,8 @@ public class UserController {
 
 			if (bookingService.createBooking(booking) == null) {
 				result = "Ocurrió un error al guardar la reservación";
-				mav = new ModelAndView("redirect:/users/showbookings?result=" + result + "#Reservaciones");
+				mav = new ModelAndView("redirect:/users/showbookings#Reservaciones");
+				mav.addObject("result", result);
 				return mav;
 			}
 		}
@@ -400,7 +404,8 @@ public class UserController {
 		}
 
 		result = "La reservación se realizó exitosamente.";
-		mav = new ModelAndView("redirect:/users/showbookings?result=" + result + "#Reservaciones");
+		mav = new ModelAndView("redirect:/users/showbookings?#Reservaciones");
+		mav.addObject("result", result);
 		return mav;
 
 	}
