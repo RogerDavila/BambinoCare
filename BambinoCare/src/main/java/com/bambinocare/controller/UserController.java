@@ -391,10 +391,10 @@ public class UserController {
 			emailService.sendHTMLMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
 					bookingService.getBookingHTML(booking));
 
-			emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(),
+			/*emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(),
 					"BambinoCare - Nueva reservación",
 					"<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>",
-					"reservacion.jpg");
+					"reservacion.jpg");*/
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

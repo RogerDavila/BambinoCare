@@ -1,10 +1,9 @@
 package com.bambinocare.controller;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -401,21 +400,30 @@ public class AdminController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido agendada";
 
-				Date date = booking.getDate();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				LocalDate datetime = LocalDate.parse(date.toString(), formatter);
-				String dateStr = datetime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//				Date date = booking.getDate();
+//				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//				LocalDate datetime = LocalDate.parse(date.toString(), formatter);
+//				String dateStr = datetime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//
+//				String initialTime = booking.getHour();
+//				Double duration = booking.getDuration();
 
-				String initialTime = booking.getHour();
-				Double duration = booking.getDuration();
+//				String finalTime = bookingService.getFinalHour(initialTime, duration);
 
-				String finalTime = bookingService.getFinalHour(initialTime, duration);
-
-				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
-						"Reservación Confirmada",
-						"Su reservación ha sido confirmada. Puede ingresar a su perfil para verificar la información de la Bambinaia que estará asistiendo a la cita en el horario de "
-								+ initialTime + " a " + finalTime + " el día " + dateStr + " \r\n"
-								+ "\r\nAgradecemos su preferencia.\r\n");
+//				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
+//						"Reservación Confirmada",
+//						"Su reservación ha sido confirmada. Puede ingresar a su perfil para verificar la información de la Bambinaia que estará asistiendo a la cita en el horario de "
+//								+ initialTime + " a " + finalTime + " el día " + dateStr + " \r\n"
+//								+ "\r\nAgradecemos su preferencia.\r\n");
+				
+				try {
+					emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(),
+							"BambinoCare - Nueva reservación",
+							"<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>",
+							"reservacion.jpg");
+				} catch (MessagingException e) {
+					e.printStackTrace();
+				}
 
 			} else {
 				result = "No se permite agendar esta reservación";
