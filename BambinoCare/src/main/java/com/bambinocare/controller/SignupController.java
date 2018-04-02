@@ -215,8 +215,10 @@ public class SignupController {
 		userService.deleteByToken(token);
 		
 		try {
+			
 			emailService.sendMessageWithAttachment(user.getEmail(), "BambinoCare - Registro Exitoso",
-					"<html><body><img src='cid:registro.jpg'/></body></html>", "registro.jpg");
+					"<html><body style='width: 100%; height: 100%'><img style='width: 80vw; height: auto;' src='cid:registro.jpg'/></body></html>",
+					"registro.jpg");
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

@@ -420,7 +420,7 @@ public class AdminController {
 				try {
 					emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(),
 							"BambinoCare - Nueva reservación",
-							"<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>",
+							"<html><body style='width: 100%; height: 100%'><img style='width: 80vw; height: auto;' src='cid:reservacion.jpg'/></body></html>",
 							"reservacion.jpg");
 				} catch (MessagingException e) {
 					e.printStackTrace();
