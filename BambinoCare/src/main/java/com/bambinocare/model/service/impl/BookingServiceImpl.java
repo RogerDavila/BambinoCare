@@ -216,7 +216,7 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public boolean isValideHour(String hour) {
+	public boolean isValideHour(Date date, String hour) {
 
 		boolean isValideHour = false;
 
@@ -224,9 +224,25 @@ public class BookingServiceImpl implements BookingService {
 			return isValideHour;
 		}
 
-		ParameterEntity parameterOpeningHour = parameterService.findByParameterKey("Hora Apertura");
-		ParameterEntity parameterClosingHour = parameterService.findByParameterKey("Hora Cierre");
-
+		ParameterEntity parameterOpeningHour;
+		ParameterEntity parameterClosingHour;
+		
+		Calendar bookingDate = Calendar.getInstance();
+		bookingDate.setTime(date);
+		bookingDate.add(Calendar.DAY_OF_YEAR, 1);
+		
+		System.out.println(bookingDate.getTime());
+		
+		int dayOfWeek = bookingDate.get(Calendar.DAY_OF_WEEK);
+		
+		if( dayOfWeek == Calendar.SUNDAY || dayOfWeek == Calendar.SATURDAY ) {
+			parameterOpeningHour = parameterService.findByParameterKey("Hora Apertura Fin de Semana");
+			parameterClosingHour = parameterService.findByParameterKey("Hora Cierre Fin de Semana");
+		} else {
+			parameterOpeningHour = parameterService.findByParameterKey("Hora Apertura");
+			parameterClosingHour = parameterService.findByParameterKey("Hora Cierre");
+		}
+		
 		if (parameterOpeningHour.getParameterValue().equals("")) {
 			parameterOpeningHour.setParameterValue("00:00");
 		}
@@ -273,7 +289,7 @@ public class BookingServiceImpl implements BookingService {
 				result += " Le sugerimos revisar el servicio Bambino ASAP";
 			}
 			return new ValidationModel(result, requireOtherView, otherView);
-		} else if (!isValideHour(booking.getHour())) {
+		} else if (!isValideHour(booking.getDate(),booking.getHour())) {
 			String serviceHour = parameterService.findByParameterKey("Hora Apertura").getParameterValue();
 			result = "Por el momento el horario para el servicio es a partir de las " + serviceHour + " hrs";
 			return new ValidationModel(result, requireOtherView, otherView);

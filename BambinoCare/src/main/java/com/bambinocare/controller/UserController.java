@@ -114,10 +114,6 @@ public class UserController {
 	private PaymentTypeService paymentTypeService;
 
 	@Autowired
-	@Qualifier("parameterService")
-	private ParameterService parameterService;
-
-	@Autowired
 	@Qualifier("eventService")
 	private EventService eventService;
 
@@ -331,7 +327,9 @@ public class UserController {
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-
+		
+		List<PaymentTypeEntity> paymentTypes = new ArrayList<>();
+		
 		for (BookingTypeEntity bookingType : bookingTypes) {
 			List<CostEntity> costs = costService.findByBookingTypeOrderByHourQuantity(bookingType);
 			if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Care")) {
@@ -344,8 +342,17 @@ public class UserController {
 				modelMap.addAttribute("costsbambinoevents", costs);
 			}
 		}
-		List<PaymentTypeEntity> paymentTypes = paymentTypeService.findAll();
-
+		
+		if(booking.getBookingType() == null) {
+			booking.setBookingType(bookingTypes.get(0));
+		}
+		
+		if(booking.getBookingType().getBookingTypeId() == 4) {
+			paymentTypes = paymentTypeService.findAll();
+		} else {
+			paymentTypes = paymentTypeService.findByPaymentTypeIdNotIn(3);
+		}
+		
 		modelMap.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		modelMap.addAttribute("booking", booking);

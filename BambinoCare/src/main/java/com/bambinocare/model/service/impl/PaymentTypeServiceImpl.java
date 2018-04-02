@@ -18,6 +18,11 @@ public class PaymentTypeServiceImpl implements PaymentTypeService{
 	private PaymentTypeRepository paymentTypeRepository;
 	
 	@Override
+	public List<PaymentTypeEntity> findByPaymentTypeIdNotIn(Integer... paymentId) {
+		return paymentTypeRepository.findByPaymentTypeIdNotIn(paymentId);
+	}
+	
+	@Override
 	public List<PaymentTypeEntity> findAll() {
 		return paymentTypeRepository.findAll();
 	}

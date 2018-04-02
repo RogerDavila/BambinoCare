@@ -8,5 +8,6 @@ public interface PaymentTypeService {
 
 	List<PaymentTypeEntity> findAll();
 	PaymentTypeEntity findByPaymentTypeId(Integer paymentId);
+	List<PaymentTypeEntity> findByPaymentTypeIdNotIn(Integer... paymentId);
 	
 }

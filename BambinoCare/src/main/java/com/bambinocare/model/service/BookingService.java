@@ -45,8 +45,6 @@ public interface BookingService {
 	
 	boolean isValideDate (BookingEntity booking);
 	
-	boolean isValideHour (String hour);
-	
 	ValidationModel validateBookingForm(BookingEntity booking, User user);
 	
 	Date getBookingDateTime(Date bookingDate, String hour, Double duration, boolean isFinalDate);
@@ -56,5 +54,7 @@ public interface BookingService {
 	long getRestrictionHoursByBookingTypeId(int bookingTypeId);
 
 	String getBookingHTML(BookingEntity booking);
+
+	boolean isValideHour(Date date, String hour);
 
 }

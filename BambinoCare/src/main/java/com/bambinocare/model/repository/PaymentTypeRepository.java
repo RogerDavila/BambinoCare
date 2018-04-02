@@ -13,5 +13,6 @@ public interface PaymentTypeRepository extends JpaRepository<PaymentTypeEntity, 
 
 	List<PaymentTypeEntity> findAll();
 	PaymentTypeEntity findByPaymentTypeId(Integer paymentId);
+	List<PaymentTypeEntity> findByPaymentTypeIdNotIn(Integer... paymentId);
 	
 }
