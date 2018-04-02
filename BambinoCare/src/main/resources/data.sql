@@ -94,3 +94,5 @@ INSERT INTO payment_type(payment_type_id, payment_type_desc) VALUES (3, 'Pago en
 
 INSERT INTO parameter(parameter_id, parameter_key, parameter_value) VALUES (1, 'Hora Apertura', '14:00');
 INSERT INTO parameter(parameter_id, parameter_key, parameter_value) VALUES (2, 'Hora Cierre', '');
+INSERT INTO parameter(parameter_id, parameter_key, parameter_value) VALUES (3, 'Hora Apertura Fin de Semana', '');
+INSERT INTO parameter(parameter_id, parameter_key, parameter_value) VALUES (4, 'Hora Cierre Fin de Semana', '');
