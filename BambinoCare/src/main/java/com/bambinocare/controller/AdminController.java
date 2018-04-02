@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bambinocare.constant.EmailConstants;
 import com.bambinocare.constant.ViewConstants;
 import com.bambinocare.model.entity.BambinoEntity;
 import com.bambinocare.model.entity.BookingEntity;
@@ -337,7 +338,7 @@ public class AdminController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido cancelada";
 
-				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
+				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), EmailConstants.ADMINISTRATOR,
 						"Reservación Cancelada",
 						"Su reservación del día del día " + booking.getDate()
 								+ "  ha sido cancelada. Puedes revisar el detalle en"
@@ -451,7 +452,7 @@ public class AdminController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido rechazada";
 
-				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), "rogerdavila.stech@gmail.com",
+				emailService.sendSimpleMessage(booking.getClient().getUser().getEmail(), EmailConstants.ADMINISTRATOR,
 						"Reservación Rechazada",
 						"Su reservación del día " + booking.getDate()
 								+ "  ha sido rechazada. Puedes revisar el detalle en"

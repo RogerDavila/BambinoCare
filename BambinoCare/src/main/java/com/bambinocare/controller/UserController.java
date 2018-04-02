@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.bambinocare.constant.EmailConstants;
 import com.bambinocare.constant.ViewConstants;
 import com.bambinocare.model.TutoryService;
 import com.bambinocare.model.ValidationModel;
@@ -399,7 +400,7 @@ public class UserController {
 		}
 
 		try {
-			emailService.sendHTMLMessage("rogerdavila.stech@gmail.com", "BambinoCare - Nueva reservación",
+			emailService.sendHTMLMessage(EmailConstants.ADMINISTRATOR, "BambinoCare - Nueva reservación",
 					bookingService.getBookingHTML(booking));
 
 			/*emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(),
@@ -589,7 +590,7 @@ public class UserController {
 				bookingService.createBooking(booking);
 				result = "La cita ha sido cancelada";
 
-				emailService.sendSimpleMessage("rogerdavila.stech@gmail.com", "Reservación Cancelada",
+				emailService.sendSimpleMessage(EmailConstants.ADMINISTRATOR, "Reservación Cancelada",
 						"El usuario " + booking.getClient().getUser().getEmail()
 								+ " ha cancelado su reservación del día " + booking.getDate()
 								+ " Puedes revisar el detalle en" + " la siguiente liga: \n\r \n\r localhost:8080");
