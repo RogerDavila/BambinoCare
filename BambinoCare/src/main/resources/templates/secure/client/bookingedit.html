@@ -251,7 +251,6 @@
 		  var costs = [[${costs}]];
 		  /*<![CDATA[*/
 		  var originalDuration = $("#duration")[0].defaultValue.split(".");
-		  console.log(originalDuration);
 		  var originalHour = originalDuration[0];
 		  var originalMinute = originalDuration[1];
 		  
@@ -277,7 +276,6 @@
 		  /*]]>*/
 		  document.getElementById('cost').innerHTML = "<h5>Total: $" + totalCost + "</h5>";
 		  $('#bookingform').bind('submit', function (e) {
-			  	console.log('Entra');
 			    var sendbutton = $('#sendbutton');
 			    var cancelbutton = $('#cancelbutton');
 
@@ -298,7 +296,6 @@
 			EMPIEZA CALCULO DE COSTOS
 			*/
 			function calculateCost(bambinoQuantity) {
-			  console.log("Entra");
 		  		var sum = 0;
 		  		var duration = $("#duration")
 		  		if(!bambinoQuantity){
@@ -313,7 +310,6 @@
 		  		}
 		  		
 		  		if(sum > 3){
-		  			console.log("Entra con: " + totalCost);
 		  			sum -= 3;
 					totalCost += calculateCost(sum);
 					sum = 3;
@@ -357,7 +353,6 @@
 				  var durationHour = parseFloat(durationValue[0]);
 				  var durationMinute = parseFloat(durationValue[1]/60);
 				  durationValue = durationHour + durationMinute;
-				  console.log(`${durationHour}.${durationMinute} = ${durationValue}`);
 				  $("#duration").val(durationValue);
 			});
 		});

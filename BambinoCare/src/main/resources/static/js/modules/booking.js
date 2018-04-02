@@ -163,7 +163,6 @@ $(function () {
                 }
             }
         }/* ]]> */
-        console.log(totalCost);
         return totalCost;
     }
 

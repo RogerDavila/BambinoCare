@@ -52,49 +52,41 @@
 
     $('#contacto')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#Footer";
     });
 
     $('#servicios')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#Servicios";
     });
 
     $('#inicio, #logo-container')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#";
     });
 
     $('#nosotros')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#Nosotros";
     });
 
     $('#contactoMobile')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#Footer";
     });
 
     $('#serviciosMobile')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#Servicios";
     });
 
     $('#inicioMobile')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#";
     });
 
     $('#nosotrosMobile')
     .click(function() {
-    	console.log("Redirigiendo...");
       window.location.href = "http://localhost:8080/#Nosotros";
     });
     
@@ -104,8 +96,6 @@
         startingTop: '4%', // Starting top style attribute
         endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-          console.log(modal);
-          console.log(trigger);
         },
         complete: function() { 
         	document.forms['bookingform'].submit();
