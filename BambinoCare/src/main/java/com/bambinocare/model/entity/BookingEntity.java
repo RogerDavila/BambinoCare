@@ -89,13 +89,16 @@ public class BookingEntity {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date finishDateTime;
 	
+	@Column(name = "reference_no", nullable = true)
+	private String referenceNo;
+	
 	public BookingEntity() {
 	}
 
 	public BookingEntity(Integer bookingId, ClientEntity client, Set<BambinoEntity> bambino,
 			BookingTypeEntity bookingType, Date date, String hour, Double duration, BookingStatusEntity bookingStatus,
 			NannyEntity nanny, Double cost, TutoryEntity tutory, EventEntity event, PaymentTypeEntity paymentType,
-			List<String> bambinoId, Date startDateTime, Date finishDateTime) {
+			List<String> bambinoId, Date startDateTime, Date finishDateTime, String referenceNo) {
 		super();
 		this.bookingId = bookingId;
 		this.client = client;
@@ -113,6 +116,15 @@ public class BookingEntity {
 		this.bambinoId = bambinoId;
 		this.startDateTime = startDateTime;
 		this.finishDateTime = finishDateTime;
+		this.referenceNo = referenceNo;
+	}
+	
+	public String getReferenceNo() {
+		return referenceNo;
+	}
+
+	public void setReferenceNo(String referenceNo) {
+		this.referenceNo = referenceNo;
 	}
 
 	public Integer getBookingId() {

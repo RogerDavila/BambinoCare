@@ -109,8 +109,8 @@
 				</div>
 				<div class="row">
 					<div class="col s12">
-						<label class="black-text" for="eventtype">Tipo de Evento</label>
-						<select id="eventtype" th:field="*{event.eventType.eventTypeId}">
+						<label class="black-text" for="eventtype">Tipo de Evento</label> <select
+							id="eventtype" th:field="*{event.eventType.eventTypeId}">
 							<option th:each="eventType : ${eventTypes}"
 								th:value="${eventType.eventTypeId}"
 								th:text="${eventType.eventTypeDesc}" th:async="true"></option>
@@ -215,7 +215,7 @@
 
 
 					<button class="btn waves-effect waves-light deep-purple accent-2"
-						type="submit" name="action" id="sendbutton" >Enviar</button>
+						type="submit" name="action" id="sendbutton">Enviar</button>
 				</div>
 			</div>
 		</form>
@@ -223,7 +223,7 @@
 		<div th:if="${result != null}" id="result"></div>
 	</div>
 
-	<div th:include="/secure/fragments/modal :: bookingmodals"></div>
+	<div th:include="/secure/fragments/modal :: bookingmodals(${referenceNo})"></div>
 	<div th:include="/secure/fragments/modal :: modal(${result})"></div>
 	<!--  Scripts-->
 	<script src="../static/js/jquery-3.2.1.min.js"
@@ -234,7 +234,8 @@
 	<script src="../static/js/initmodal.js" th:src="@{/js/initmodal.js}"></script>
 	<script src="../static/js/wickedpicker.min.js"
 		th:src="@{/js/wickedpicker.min.js}"></script>
-	<script src="../static/js/modules/booking.js" th:src="@{/js/modules/booking.js}"></script>
+	<script src="../static/js/modules/booking.js"
+		th:src="@{/js/modules/booking.js}"></script>
 
 	<script type="text/javascript" th:inline="javascript">
 		var totalCost = [[${totalCost}]];
@@ -244,6 +245,77 @@
 		var costsBambinoASAP = [[${ costsbambinoasap }]];
 		var costsBambinoEvents = [[${ costsbambinoevents }]];
 		$('.timepickerwicked').wickedpicker(options);
+		
+		/* $('#bookingtype').change(function(){
+			let bookingType = $('#bookingtype')[0].value;
+			let duration = getDurationValue();
+			let date = $('#Date')[0].value;
+			let hour = $('#Hour')[0].value;
+			let eventType = $('#eventtype')[0].value;
+			let bambinos_qty = $('#bambinosqty')[0].value;
+			let street = $('#street_num')[0].value;
+			let neighborhood = $('#neighborhood')[0].value;
+			let city = $('#city')[0].value;
+			let age = $('#age')[0].value;
+			let comments = $('#Observaciones')[0].value;
+			let state = $('#stage')[0].value;
+			let course = $('#Materia')[0].value;
+			let topic = $('#Tema')[0].value;
+			 
+			let bookingObject = {
+				'bookingType': {
+					'bookingTypeId': bookingType
+				},
+				'date': date,
+				'hour': hour,
+				'duration': duration,
+				'tutory': {
+					'course': course,
+					'topic': topic,
+					'comments': comments
+				},
+				'event': {
+					'eventType': eventType,
+					'street': street,
+					'neighborhood': neighborhood,
+					'city': city,
+					'state': state,
+					'bambinos_qty': bambinos_qty,
+					'age': age,
+					'comments': comments
+				}
+			};
+			reloadForm(bookingObject);
+		});
+		
+		function reloadForm(bookingObject){
+			let csrf = [[ ${_csrf.token} ]];
+			
+			let booking = JSON.stringify({'bookingEntity':bookingObject});
+			
+			$.ajax({
+				url:'/users/createbookingform',
+				type: 'POST',
+				data: booking,
+				dataType: 'html',
+				contentType: 'application/json',
+				headers: { 'X-CSRF-TOKEN': csrf}
+			});
+			//$.get('/users/createbookingform',{'_csrf': csrf, 'booking':bookingObject});
+		}
+		
+		function getDurationValue() {
+	        let duration = $("#duration");
+	        let durationValue = duration[0].value.split(":");
+	        let durationHour = parseFloat(durationValue[0]);
+	        let durationMinute = parseFloat(durationValue[1] / 60);
+	        durationValue = durationHour + durationMinute;
+
+	        return durationValue;
+	    }*/
+		
+		
+		
 	</script>
 
 </body>

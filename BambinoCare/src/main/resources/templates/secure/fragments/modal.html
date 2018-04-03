@@ -16,7 +16,7 @@
 			</div>
 		</div>
 	</div>
-	<div th:fragment="bookingmodals">
+	<div th:fragment="bookingmodals(referenceNo)">
 		<div id="paymentmodal" class="modal fade" role="dialog">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -28,7 +28,7 @@
 					<p>Movimiento: Déposito a tarjeta de Débito</p>
 					<p>Nombre de Beneficiario: Erika Yaimeé Rodríguez Rodríguez</p>
 					<p>Número de cuenta: 5579 1001 7184 6510</p>
-					<p>Número de Referencia: 99999999999</p>
+					<p>Número de Referencia: <output th:text="${referenceNo}"></output></p>
 				</div>
 				<div class="modal-footer">
 					<a href="#!"

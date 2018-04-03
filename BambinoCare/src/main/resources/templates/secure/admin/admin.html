@@ -56,6 +56,7 @@
 						<thead>
 							<tr>
 								<th>Reservacion</th>
+								<th>Numero de Referencia</th>
 								<th>Cliente</th>
 								<th>Fecha</th>
 								<th>Hora</th>
@@ -83,6 +84,8 @@
 										</button>
 									</form>
 								</td>
+								<td
+									th:text="${booking.referenceNo} "></td>
 								<td
 									th:text="${booking.client == null ? '' : booking.client.user.firstname} "></td>
 								<td th:text="${booking.date}"></td>

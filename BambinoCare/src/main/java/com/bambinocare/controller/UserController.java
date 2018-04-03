@@ -53,7 +53,6 @@ import com.bambinocare.model.service.EmailService;
 import com.bambinocare.model.service.EmergencyContactService;
 import com.bambinocare.model.service.EventService;
 import com.bambinocare.model.service.EventTypeService;
-import com.bambinocare.model.service.ParameterService;
 import com.bambinocare.model.service.PaymentTypeService;
 import com.bambinocare.model.service.StateService;
 import com.bambinocare.model.service.UserService;
@@ -148,7 +147,7 @@ public class UserController {
 	public ModelAndView showBookingDetail(@RequestParam(name = "bookingId") Integer bookingId, Model model) {
 
 		String result = "";
-		
+
 		ModelAndView mav;
 
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -184,7 +183,6 @@ public class UserController {
 			result = "No se encontró la reservación solicitada o no tiene permisos para verla";
 		}
 
-		
 		mav = new ModelAndView("redirect:/users/showbookings");
 		mav.addObject("result", result);
 		return mav;
@@ -195,6 +193,11 @@ public class UserController {
 	public ModelAndView showCreateBooking(@RequestParam(required = false) String result, Model model) {
 		ModelAndView mav = new ModelAndView(ViewConstants.BOOKING_CREATE);
 		BookingEntity booking = new BookingEntity();
+		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserEntity userEntity = userService.findByEmail(user.getUsername());
+		ClientEntity client = clientService.findByUser(userEntity);
+		String referenceNo = String.format("%07d", client.getClientId());
+		booking.setReferenceNo(referenceNo);
 		mav.addAllObjects(getModelMapForCreateBookingForm(result, booking));
 		return mav;
 	}
@@ -209,6 +212,14 @@ public class UserController {
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserEntity userEntity = userService.findByEmail(user.getUsername());
 
+		if(booking.getPaymentType().getPaymentTypeId() == 2) {
+			ClientEntity client = clientService.findByUser(userEntity);
+			String referenceNo = String.format("%07d", client.getClientId());
+			booking.setReferenceNo(referenceNo);
+		} else {
+			booking.setReferenceNo("");
+		}
+		
 		ValidationModel validationModel = bookingService.validateBookingForm(booking, user);
 
 		if (validationModel.getResult() != null) {
@@ -223,8 +234,7 @@ public class UserController {
 		}
 
 		// Asignación de Bambinos para Care ASAP y Tutoring
-		if (booking.getBookingType().getBookingTypeId() == 1 
-				|| booking.getBookingType().getBookingTypeId() == 4
+		if (booking.getBookingType().getBookingTypeId() == 1 || booking.getBookingType().getBookingTypeId() == 4
 				|| booking.getBookingType().getBookingTypeId() == 2) {
 			if (booking.getBambino() != null) {
 				List<String> bambinoIds = new ArrayList<>();
@@ -328,9 +338,9 @@ public class UserController {
 		List<BookingTypeEntity> bookingTypes = bookingTypeService.findAllBookingTypes();
 		List<EventTypeEntity> eventTypes = eventTypeService.findAllEventTypes();
 		List<BambinoEntity> bambinos = bambinoService.findByClientUser(userEntity);
-		
+
 		List<PaymentTypeEntity> paymentTypes = new ArrayList<>();
-		
+
 		for (BookingTypeEntity bookingType : bookingTypes) {
 			List<CostEntity> costs = costService.findByBookingTypeOrderByHourQuantity(bookingType);
 			if (bookingType.getBookingTypeDesc().equalsIgnoreCase("Bambino Care")) {
@@ -343,17 +353,19 @@ public class UserController {
 				modelMap.addAttribute("costsbambinoevents", costs);
 			}
 		}
-		
-		if(booking.getBookingType() == null) {
+
+		if (booking.getBookingType() == null) {
 			booking.setBookingType(bookingTypes.get(0));
 		}
-		
-		if(booking.getBookingType().getBookingTypeId() == 4) {
+
+		if (booking.getBookingType().getBookingTypeId() == 4) {
 			paymentTypes = paymentTypeService.findAll();
 		} else {
 			paymentTypes = paymentTypeService.findByPaymentTypeIdNotIn(3);
 		}
-		
+
+		modelMap.addAttribute("referenceNo", booking.getReferenceNo());
+
 		modelMap.addAttribute("usernameLogged", userEntity.getFirstname());
 
 		modelMap.addAttribute("booking", booking);
@@ -403,10 +415,12 @@ public class UserController {
 			emailService.sendHTMLMessage(EmailConstants.ADMINISTRATOR, "BambinoCare - Nueva reservación",
 					bookingService.getBookingHTML(booking));
 
-			/*emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail(),
-					"BambinoCare - Nueva reservación",
-					"<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>",
-					"reservacion.jpg");*/
+			/*
+			 * emailService.sendMessageWithAttachment(booking.getClient().getUser().getEmail
+			 * (), "BambinoCare - Nueva reservación",
+			 * "<html><body style='width: 100%; height: 100%'><img style='width: 100%; height: auto;' src='cid:reservacion.jpg'/></body></html>"
+			 * , "reservacion.jpg");
+			 */
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
@@ -509,8 +523,7 @@ public class UserController {
 	 * ". Puedes revisar el detalle en" +
 	 * " la siguiente liga: \n\r \n\r localhost:8080"); result =
 	 * "La reservación fue modificada con éxito!"; } else { result =
-	 * "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo"
-	 * ; }
+	 * "Ocurrió un error al intentar editar la reservación, vuelva a intentarlo" ; }
 	 * 
 	 * mav = new ModelAndView("redirect:/users/showbookings#Reservaciones");
 	 * mav.addObject("result", result); return mav; }
@@ -560,12 +573,10 @@ public class UserController {
 		}
 
 		/*
-		if (clientService.createClient(oldClient) != null) {
-			result = "Se ha modificado el perfil de usuario!";
-		} else {
-			result = "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo";
-		}
-		*/
+		 * if (clientService.createClient(oldClient) != null) { result =
+		 * "Se ha modificado el perfil de usuario!"; } else { result =
+		 * "Ocurrió un error al intentar editar el perfil, vuelva a intentarlo"; }
+		 */
 		mav = new ModelAndView("redirect:/users/showbookings");
 		mav.addObject("result", result);
 		return mav;
@@ -693,8 +704,8 @@ public class UserController {
 	}
 
 	@PostMapping("/editBambino")
-	public ModelAndView editbambino(@ModelAttribute(name = "bambino") BambinoEntity bambino, BindingResult bindingResult,
-			Model model) {
+	public ModelAndView editbambino(@ModelAttribute(name = "bambino") BambinoEntity bambino,
+			BindingResult bindingResult, Model model) {
 
 		String result = "";
 
@@ -742,9 +753,9 @@ public class UserController {
 	@PostMapping("/removeBambino")
 	public ModelAndView removeBambino(@RequestParam(required = false) String result,
 			@RequestParam(required = true) Integer bambinoId, Model model) {
-		
+
 		bambinoService.removeBambino(bambinoId);
-		
+
 		result = "El bambino fue borrado con éxito!";
 		ModelAndView mav = new ModelAndView("redirect:/users/showbookings");
 		mav.addObject("result", result);
@@ -774,7 +785,7 @@ public class UserController {
 		String result = "";
 
 		ModelAndView mav = new ModelAndView("redirect:/users/showbookings");
-		
+
 		if (contact.getFirstname() == null || contact.getFirstname().equals("")) {
 			result = "Favor de verificar el Nombre";
 			mav.addObject("result", result);
@@ -850,7 +861,6 @@ public class UserController {
 		ModelAndView mav;
 		String result = "";
 
-		
 		mav = new ModelAndView("redirect:/users/showbookings");
 		if (contact.getFirstname() == null || contact.getFirstname().equals("")) {
 			result = "Favor de verificar el Nombre";
@@ -907,7 +917,6 @@ public class UserController {
 			result = "Ocurrió un error al intentar editar el contacto, vuelva a intentarlo";
 		}
 
-		
 		mav.addObject("result", result);
 		return mav;
 	}
@@ -915,9 +924,9 @@ public class UserController {
 	@PostMapping("/removeContact")
 	public ModelAndView removeContacts(@RequestParam(required = false) String result,
 			@RequestParam(required = true) Integer contactId, Model model) {
-		
+
 		emergencyContactService.removeContact(contactId);
-		
+
 		ModelAndView mav = new ModelAndView("redirect:/users/showbookings");
 		result = "El contacto fue borrado con éxito!";
 		mav.addObject("result", result);
